@@ -11,8 +11,8 @@ This inventory records the source data collected for the thyroid cancer hybrid d
 ## S3 Upload Verification
 
 - Verified prefix: `s3://say2-4team/thyroid_raw/`
-- Verified object count: `130`
-- Verified total size: `1,937,035,410` bytes, about `1.94 GB`
+- Verified object count: `132`
+- Verified total size: `1,973,354,972` bytes, about `1.97 GB`
 - Verification command: `aws s3 ls s3://say2-4team/thyroid_raw/ --recursive --summarize`
 
 ## Thyroid Screened Response Coverage
@@ -32,6 +32,8 @@ This keeps the recommendation pipeline anchored on drugs with actual screened re
 | Source | Original S3 source | thyroid_raw destination | Main role |
 |---|---|---|---|
 | GDSC2 screened drug response and annotations | `s3://say2-4team/pipeline_bundle/BRCA/stage1/basic_preprocessing_20260406/gdsc/` | `s3://say2-4team/thyroid_raw/source_from_say2/gdsc/` | thyroid screened response labels, cell-line annotations, drug/pathway annotations |
+| GDSC2 original response CSV | `s3://say2-4team/raw_data/GDSC2/GDSC2-dataset.csv` | `s3://say2-4team/thyroid_raw/source_from_say2/gdsc/GDSC2-dataset.csv` | source-level provenance for screened response values |
+| BRCA GDSC drug feature catalog reference | local BRCA pipeline cache `drug_features_catalog.parquet` | `s3://say2-4team/thyroid_raw/source_from_say2/gdsc/drug_features_catalog_brca_reference_20260420.parquet` | SMILES bridge for GDSC drug IDs used by the thyroid model-ready builder |
 | DepMap/CCLE model and CRISPR/repurposing features | `s3://say2-4team/pipeline_bundle/BRCA/stage1/basic_preprocessing_20260406/depmap/` | `s3://say2-4team/thyroid_raw/source_from_say2/depmap/` | sample features, model bridge, optional repurposing matrix reference |
 | DrugBank processed source | `s3://say2-4team/pipeline_bundle/BRCA/stage1/basic_preprocessing_20260406/drugbank/` | `s3://say2-4team/thyroid_raw/source_from_say2/drugbank/` | drug metadata, synonyms, groups, targets |
 | TDC ADMET processed assays | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/admet/` | `s3://say2-4team/thyroid_raw/source_from_say2/admet/` | ADMET safety nearest-neighbor evaluation |
@@ -67,8 +69,34 @@ ClinicalTrials.gov dump check:
 | `admet` | TDC ADMET assays under `source_from_say2/admet/` |
 | `kg_api_validation` | OpenTargets, DrugBank, ChEMBL, and ClinicalTrials.gov thyroid cancer drug studies |
 
+## Model-Ready Build Check
+
+`scripts/02_build_model_ready_from_thyroid_raw.py` converts the staged `thyroid_raw/` sources into the actual pipeline input files.
+
+```bash
+python3 scripts/01_acquire_datasets.py --config config/thyroid_pipeline_config.json --manifest config/data_manifest.thyroid_raw_20260420.json
+python3 scripts/02_build_model_ready_from_thyroid_raw.py --config config/thyroid_pipeline_config.json
+python3 scripts/run_all.py --config config/thyroid_pipeline_config.json
+```
+
+Latest model-ready QC from the actual source build:
+
+| Check | Value |
+|---|---:|
+| Response rows | `4,037` |
+| THCA cell lines | `16` |
+| Screened drugs | `295` |
+| Sample feature table | `16 x 4,114` |
+| Drug feature table | `295 x 1,560` |
+| SMILES present / parse OK | `243 / 243` |
+| Target gene present | `238` |
+| LINCS matched drugs | `101` |
+| External TCGA-THCA expression genes written | `312` |
+| External TCGA-THCA samples | `572` |
+| ADMET assays written | `22` |
+
 ## Notes
 
 - No raw TCGA-THCA individual GDC file manifest was found in `say2-4team`; Xena/GDC hub precompiled THCA matrices were downloaded directly instead.
-- The next build step is to convert these source files into model-ready tables: `thyroid_response_pairs.csv`, `sample_features.csv`, `drug_features.csv`, `drug_annotations.csv`, `thyroid_expression.csv`, `thyroid_clinical.csv`, and ADMET/KG evidence tables.
+- The source-to-model-ready builder converts these source files into `thyroid_response_pairs.csv`, `sample_features.csv`, `drug_features.csv`, `drug_annotations.csv`, `thyroid_expression.csv`, `thyroid_clinical.csv`, and `data/admet/tdc/*.csv`.
 - The final candidate recommendation should continue to use screened-response drugs as the primary ranking set. Unscreened repurposing candidates can be kept as a separate exploratory layer if needed, but should not be mixed into the main screened-response recommendation score without clear labeling.

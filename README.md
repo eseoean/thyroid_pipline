@@ -24,13 +24,25 @@ make inventory
 make run-demo
 ```
 
-실제 데이터를 `config/thyroid_pipeline_config.json`에 지정된 경로에 넣은 뒤 실행하려면 다음을 실행합니다.
+`say2-4team/thyroid_raw/`에 모아둔 실제 원천 데이터를 로컬 staging으로 내려받으려면 다음을 실행합니다.
+
+```bash
+python3 scripts/01_acquire_datasets.py --config config/thyroid_pipeline_config.json --manifest config/data_manifest.thyroid_raw_20260420.json
+```
+
+staging 원천 데이터를 모델 입력 파일로 변환하려면 다음을 실행합니다.
+
+```bash
+make build-model-ready
+```
+
+실제 데이터 전체 파이프라인을 실행하려면 다음을 실행합니다.
 
 ```bash
 make run
 ```
 
-S3 또는 다른 로컬 디렉터리에서 데이터를 내려받아야 하면 `docs/DATASET_ACQUISITION.md`를 참고해 `config/data_manifest.json`을 채운 뒤 `scripts/01_acquire_datasets.py`를 실행합니다. 이 스크립트는 로컬 다운로드/복사만 수행하며 S3 업로드는 하지 않습니다.
+S3 또는 다른 로컬 디렉터리에서 데이터를 내려받아야 하면 `docs/DATASET_ACQUISITION.md`를 참고해 manifest를 채운 뒤 `scripts/01_acquire_datasets.py`를 실행합니다. 이 스크립트는 로컬 다운로드/복사만 수행하며 S3 업로드는 하지 않습니다.
 
 ## 입력 데이터
 
@@ -45,7 +57,7 @@ data/raw/drug_features.csv
 data/raw/drug_annotations.csv
 data/external/thyroid_expression.csv
 data/external/thyroid_clinical.csv
-data/admet/*.csv
+data/admet/tdc/*.csv
 ```
 
 `thyroid_response_pairs.csv` 필수 컬럼:
@@ -114,3 +126,13 @@ phase5_final_results/FINAL_REPORT.html
 - 외부검증 expression은 첫 컬럼이 gene symbol이고 나머지 컬럼이 환자 sample이어야 합니다.
 - ADMET assay 파일은 `smiles`, `label` 컬럼을 권장합니다.
 - 실행 후 `reports/qc_step*.json`에서 row 수, feature 수, SMILES coverage, context unknown 비율, fold QC, model gap을 확인합니다.
+
+## 실제 실행 결과 요약
+
+2026-04-20 실제 `thyroid_raw/` source build 기준으로 `4,037`개 THCA screened response row, `16`개 cell line, `295`개 screened drug가 모델 입력으로 구성됐습니다.
+
+- Best random sample 3-fold OOF: `Numeric+StrongContext+SMILES / LightGBM`, Spearman `0.8370`, RMSE `1.2689`, R2 `0.7947`
+- GroupCV stress test: `Numeric+StrongContext+SMILES / ExtraTrees`, OOF Spearman `0.4481`, RMSE `2.5048`, R2 `0.2000`
+- Final top tier after external validation, ADMET, and KG validation: `Vinorelbine` Tier 1, `Staurosporine` and `Vinblastine` Tier 2, `Romidepsin` Tier 3
+
+자세한 수치와 해석은 `docs/THYROID_ACTUAL_RUN_SUMMARY_20260420.md`에 정리합니다.

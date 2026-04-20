@@ -1,10 +1,13 @@
-.PHONY: inventory acquire seed-demo run-demo run clean
+.PHONY: inventory acquire build-model-ready seed-demo run-demo run clean
 
 inventory:
 	python3 scripts/00_dataset_inventory.py --config config/thyroid_pipeline_config.json
 
 acquire:
 	python3 scripts/01_acquire_datasets.py --config config/thyroid_pipeline_config.json --manifest config/data_manifest.example.json --dry-run
+
+build-model-ready:
+	python3 scripts/02_build_model_ready_from_thyroid_raw.py --config config/thyroid_pipeline_config.json
 
 seed-demo:
 	python3 scripts/seed_demo_data.py --config config/thyroid_pipeline_config.json

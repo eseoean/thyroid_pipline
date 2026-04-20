@@ -8,7 +8,14 @@
       "name": "gdsc2_screened_response_and_annotations",
       "role": "screened_response_labels",
       "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/gdsc/",
-      "destination": "data/source_staging/gdsc/"
+      "destination": "data/source_staging/gdsc/",
+      "required_files": [
+        "GDSC2-dataset.csv",
+        "gdsc2_annotation_normalized_20260406.parquet",
+        "gdsc2_cellline_annotation_table_20260406.parquet",
+        "gdsc2_drug_annotation_table_20260406.parquet",
+        "drug_features_catalog_brca_reference_20260420.parquet"
+      ]
     },
     {
       "name": "depmap_ccle_features",
@@ -75,6 +82,7 @@
     "screened_response_labels": "GDSC2 contains 16 THCA cell lines, 4,037 screened response rows, and 295 unique screened drugs.",
     "external_validation": "TCGA-THCA STAR TPM, clinical, survival, and GENCODE v36 gene annotation are available.",
     "clinical_trial_evidence": "ClinicalTrials.gov thyroid cancer drug query returned 570 studies.",
-    "s3_verification": "130 objects, 1,937,035,410 bytes under s3://say2-4team/thyroid_raw/ as of 2026-04-20."
+    "s3_verification": "132 objects, 1,973,354,972 bytes under s3://say2-4team/thyroid_raw/ as of 2026-04-20.",
+    "model_ready_build": "scripts/02_build_model_ready_from_thyroid_raw.py converts thyroid_raw source staging into data/raw, data/external, and data/admet/tdc model inputs."
   }
 }

@@ -60,6 +60,7 @@ ID_COLUMNS = {
 }
 LABEL_COLUMNS = {"IC50", "LN_IC50", "ln_ic50", "auc", "AUC", "response", "response_label", "y"}
 TEXT_SEPARATORS = re.compile(r"[;,|/]+")
+NAME_NORMALIZER = re.compile(r"[^a-z0-9]+")
 
 
 @dataclass
@@ -947,6 +948,9 @@ def ensemble_and_diversity(cfg: dict[str, Any], input_name: str | None = None) -
         .reset_index()
         .sort_values("ensemble_score", ascending=False)
     )
+    if "drug_name" in top.columns:
+        top["_drug_name_norm"] = top["drug_name"].map(lambda x: NAME_NORMALIZER.sub("", str(x).lower()))
+        top = top.drop_duplicates("_drug_name_norm", keep="first").drop(columns=["_drug_name_norm"])
     top["rank"] = np.arange(1, len(top) + 1)
     top = top[["rank"] + [c for c in top.columns if c != "rank"]]
 

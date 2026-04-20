@@ -146,7 +146,7 @@
     "cell-cycle"
   ],
   "admet": {
-    "assay_glob": "*.csv",
+    "assay_glob": "tdc/*.csv",
     "fingerprint_bits": 2048,
     "fingerprint_radius": 2,
     "exact_threshold": 0.99,
