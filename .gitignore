@@ -12,6 +12,7 @@ data/raw/*
 data/external/*
 data/admet/*
 data/processed/*
+data/source_staging/
 data/*.npy
 data/*.csv
 data/*.json

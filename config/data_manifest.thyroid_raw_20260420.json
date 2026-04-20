@@ -1,0 +1,80 @@
+{
+  "created_at_utc": "2026-04-20T07:08:33Z",
+  "bucket_prefix": "s3://say2-4team/thyroid_raw/",
+  "project": "thyroid cancer hybrid drug repurposing pipeline",
+  "notes": "This manifest copies the collected source data from s3://say2-4team/thyroid_raw/ into ignored local staging directories. These are source files, not final model-ready tables.",
+  "sources": [
+    {
+      "name": "gdsc2_screened_response_and_annotations",
+      "role": "screened_response_labels",
+      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/gdsc/",
+      "destination": "data/source_staging/gdsc/"
+    },
+    {
+      "name": "depmap_ccle_features",
+      "role": "sample_features",
+      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/depmap/",
+      "destination": "data/source_staging/depmap/"
+    },
+    {
+      "name": "drugbank_processed_source",
+      "role": "drug_metadata_targets",
+      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/drugbank/",
+      "destination": "data/source_staging/drugbank/"
+    },
+    {
+      "name": "chembl_compound_and_mechanism_source",
+      "role": "smiles_mechanism_targets",
+      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/chembl/",
+      "destination": "data/source_staging/chembl/"
+    },
+    {
+      "name": "lincs_perturbation_source",
+      "role": "drug_signature_features",
+      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/lincs/",
+      "destination": "data/source_staging/lincs/"
+    },
+    {
+      "name": "opentargets_disease_target_source",
+      "role": "kg_target_disease_evidence",
+      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/opentargets/",
+      "destination": "data/source_staging/opentargets/"
+    },
+    {
+      "name": "tdc_admet_assays",
+      "role": "admet_safety",
+      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/admet/",
+      "destination": "data/source_staging/admet/"
+    },
+    {
+      "name": "tcga_thca_expression_clinical_survival",
+      "role": "external_validation",
+      "s3_uri": "s3://say2-4team/thyroid_raw/external_downloads/tcga_thca/",
+      "destination": "data/source_staging/tcga_thca/"
+    },
+    {
+      "name": "gencode_v36_annotation",
+      "role": "gene_id_mapping",
+      "s3_uri": "s3://say2-4team/thyroid_raw/external_downloads/gencode/",
+      "destination": "data/source_staging/gencode/"
+    },
+    {
+      "name": "clinicaltrials_thyroid_cancer_drug_dump",
+      "role": "clinical_trial_evidence",
+      "s3_uri": "s3://say2-4team/thyroid_raw/external_downloads/clinical_trials/",
+      "destination": "data/source_staging/clinical_trials/"
+    },
+    {
+      "name": "thyroid_raw_source_manifests",
+      "role": "provenance",
+      "s3_uri": "s3://say2-4team/thyroid_raw/manifests/",
+      "destination": "data/source_staging/manifests/"
+    }
+  ],
+  "coverage": {
+    "screened_response_labels": "GDSC2 contains 16 THCA cell lines, 4,037 screened response rows, and 295 unique screened drugs.",
+    "external_validation": "TCGA-THCA STAR TPM, clinical, survival, and GENCODE v36 gene annotation are available.",
+    "clinical_trial_evidence": "ClinicalTrials.gov thyroid cancer drug query returned 570 studies.",
+    "s3_verification": "130 objects, 1,937,035,410 bytes under s3://say2-4team/thyroid_raw/ as of 2026-04-20."
+  }
+}
