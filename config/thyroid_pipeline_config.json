@@ -1,0 +1,156 @@
+{
+  "project": {
+    "name": "thyroid_pipline",
+    "disease": "thyroid cancer",
+    "tcga_code": "THCA",
+    "seed": 42
+  },
+  "paths": {
+    "raw_dir": "data/raw",
+    "processed_dir": "data",
+    "results_dir": "results",
+    "reports_dir": "reports",
+    "external_validation_dir": "external_validation",
+    "admet_output_dir": "admet",
+    "knowledge_validation_dir": "knowledge_validation",
+    "phase5_dir": "phase5_final_results",
+    "external_dir": "data/external",
+    "admet_source_dir": "data/admet"
+  },
+  "inputs": {
+    "response_table": "data/raw/thyroid_response_pairs.csv",
+    "sample_features": "data/raw/sample_features.csv",
+    "drug_features": "data/raw/drug_features.csv",
+    "drug_annotations": "data/raw/drug_annotations.csv",
+    "external_expression": "data/external/thyroid_expression.csv",
+    "external_clinical": "data/external/thyroid_clinical.csv"
+  },
+  "data_sources": [
+    {
+      "name": "thyroid_screened_response_pairs",
+      "required": true,
+      "destination": "data/raw/thyroid_response_pairs.csv",
+      "description": "Thyroid cancer cell line x screened drug response table with LN_IC50 or IC50."
+    },
+    {
+      "name": "sample_features",
+      "required": true,
+      "destination": "data/raw/sample_features.csv",
+      "description": "Sample/cell-line numeric features such as dependency, expression, CRISPR or pathway scores."
+    },
+    {
+      "name": "drug_features",
+      "required": true,
+      "destination": "data/raw/drug_features.csv",
+      "description": "Drug features including canonical_smiles, Morgan/LINCS/target numeric features and five Choi-excluded physchem columns."
+    },
+    {
+      "name": "drug_annotations",
+      "required": true,
+      "destination": "data/raw/drug_annotations.csv",
+      "description": "Target/pathway/context metadata used for strong context and knowledge validation."
+    },
+    {
+      "name": "thyroid_external_expression",
+      "required": false,
+      "destination": "data/external/thyroid_expression.csv",
+      "description": "TCGA-THCA or equivalent expression matrix for target expression validation."
+    },
+    {
+      "name": "thyroid_external_clinical",
+      "required": false,
+      "destination": "data/external/thyroid_clinical.csv",
+      "description": "TCGA-THCA or equivalent clinical endpoint table for survival validation."
+    },
+    {
+      "name": "admet_assays",
+      "required": false,
+      "destination": "data/admet/",
+      "description": "TDC-style ADMET assay CSV files with smiles and label columns."
+    }
+  ],
+  "disease_aliases": [
+    "THCA",
+    "thyroid",
+    "thyroid cancer",
+    "thyroid carcinoma",
+    "papillary thyroid carcinoma",
+    "follicular thyroid carcinoma",
+    "medullary thyroid carcinoma",
+    "anaplastic thyroid carcinoma"
+  ],
+  "thyroid_subtype_aliases": {
+    "PTC": ["papillary", "ptc"],
+    "FTC": ["follicular", "ftc"],
+    "MTC": ["medullary", "mtc"],
+    "ATC": ["anaplastic", "atc"],
+    "PDTC": ["poorly differentiated", "pdtc"]
+  },
+  "features": {
+    "numeric_base_policy": "choi_5524_direction",
+    "physchem_context_columns": [
+      "drug_desc_hba",
+      "drug_desc_hbd",
+      "drug_desc_heavy_atoms",
+      "drug_desc_ring_count",
+      "drug_desc_rot_bonds"
+    ],
+    "smiles_svd_dim": 64,
+    "strong_context_dim": 32,
+    "context_columns": [
+      "TCGA_DESC",
+      "PATHWAY_NAME_NORMALIZED",
+      "classification",
+      "drug_bridge_strength",
+      "stage3_resolution_status"
+    ],
+    "remove_constant_numeric_features": true
+  },
+  "training": {
+    "n_splits": 3,
+    "random_state": 42,
+    "models": [
+      "LightGBM",
+      "LightGBM_DART",
+      "XGBoost",
+      "ExtraTrees",
+      "RandomForest",
+      "FlatMLP"
+    ],
+    "primary_input_set": "numeric_strong_context_smiles"
+  },
+  "known_thyroid_drugs": [
+    "Lenvatinib",
+    "Sorafenib",
+    "Cabozantinib",
+    "Vandetanib",
+    "Selpercatinib",
+    "Pralsetinib",
+    "Dabrafenib",
+    "Trametinib",
+    "Larotrectinib",
+    "Entrectinib"
+  ],
+  "thyroid_biology_terms": [
+    "MAPK",
+    "BRAF",
+    "RET",
+    "NTRK",
+    "RAS",
+    "VEGFR",
+    "angiogenesis",
+    "PI3K",
+    "AKT",
+    "mTOR",
+    "DNA damage",
+    "cell-cycle"
+  ],
+  "admet": {
+    "assay_glob": "*.csv",
+    "fingerprint_bits": 2048,
+    "fingerprint_radius": 2,
+    "exact_threshold": 0.99,
+    "close_threshold": 0.85,
+    "analog_threshold": 0.70
+  }
+}

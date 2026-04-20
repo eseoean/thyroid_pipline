@@ -1,0 +1,48 @@
+{
+  "notes": "Copy this file to config/data_manifest.json and fill local_path or s3_uri for each source. The acquire script only downloads/copies to local data directories; it never uploads to S3.",
+  "sources": [
+    {
+      "name": "thyroid_screened_response_pairs",
+      "local_path": "",
+      "s3_uri": "",
+      "destination": "data/raw/thyroid_response_pairs.csv"
+    },
+    {
+      "name": "sample_features",
+      "local_path": "",
+      "s3_uri": "",
+      "destination": "data/raw/sample_features.csv"
+    },
+    {
+      "name": "drug_features",
+      "local_path": "",
+      "s3_uri": "",
+      "destination": "data/raw/drug_features.csv"
+    },
+    {
+      "name": "drug_annotations",
+      "local_path": "",
+      "s3_uri": "",
+      "destination": "data/raw/drug_annotations.csv"
+    },
+    {
+      "name": "thyroid_external_expression",
+      "local_path": "",
+      "s3_uri": "",
+      "destination": "data/external/thyroid_expression.csv"
+    },
+    {
+      "name": "thyroid_external_clinical",
+      "local_path": "",
+      "s3_uri": "",
+      "destination": "data/external/thyroid_clinical.csv"
+    },
+    {
+      "name": "admet_assays",
+      "local_path": "",
+      "s3_uri": "",
+      "destination": "data/admet/"
+    }
+  ]
+}
+
