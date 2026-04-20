@@ -212,8 +212,9 @@ QC:
 
 주의:
 
-- SMILES가 없는 약물은 모델 학습에서 제거하지 말고, 우선 zero vector 또는 missing flag 정책을 고정한다.
-- 단, ADMET 단계에서는 SMILES가 없으면 안전성 평가가 불가능하므로 별도 `NO_SMILES`로 표시한다.
+- Primary screened-response 추천 pool에서는 SMILES가 없는 약물을 제거한다.
+- 제거된 약물은 `missing_smiles_recovery_review` 대상으로 따로 관리하고, PubChem/ChEMBL 등 외부 source로 valid SMILES가 복구된 경우에만 다음 버전 후보 pool에 재편입한다.
+- LINCS/CRISPR 결측은 SMILES와 달리 hard filter하지 않고 availability flag와 fallback feature로 처리한다.
 
 ## 7. Step 4: say2 기준 strong context 생성
 
@@ -467,7 +468,7 @@ QC:
 - 후보별 exact/close/analog/no_match 수
 - toxicity flag: Ames, DILI, hERG
 - ADMET coverage
-- NO_SMILES 후보 분리
+- SMILES missing 후보가 primary pool에 남아 있지 않은지 확인
 
 산출물:
 
@@ -528,7 +529,7 @@ QC:
 | Tier 1 | 모델 성능, 외부검증, ADMET, knowledge validation이 모두 강한 후보 |
 | Tier 2 | 일부 검증은 강하지만 추가 전임상 검증이 필요한 후보 |
 | Tier 3 | 탐색 후보 또는 안전성/근거가 제한적인 후보 |
-| Excluded | SMILES 없음, ADMET fail, target 근거 부족, label 불안정 |
+| Excluded | ADMET fail, target 근거 부족, label 불안정, 또는 복구되지 않은 SMILES 결측 |
 
 최종 리포트에는 다음을 반드시 구분한다.
 
@@ -661,5 +662,4 @@ BRCA의 METABRIC을 그대로 쓰면 안 된다. 갑상선암에서는 TCGA-THCA
 
 ## 18. 발표/문서용 요약 문장
 
-> 본 갑상선암 확장 프로젝트는 Choi protocol v1의 numeric base 생성 방식을 유지하면서, say2 BRCA pipeline의 SMILES SVD 및 strong context 표현을 결합한 hybrid 입력셋을 사용한다. 모델 학습은 say2 방식의 random sample 3-fold OOF 및 weighted ensemble로 수행하고, 모델 출력 이후의 외부검증, ADMET 안전성 평가, knowledge validation 및 최종 Tier 분류는 Choi protocol v1의 Phase 3~5 구조를 따른다. 최종 추천은 실제 약물 반응값이 존재하는 screened drug set에 한정하며, 반응값이 없는 unscreened 후보는 별도 참고 실험으로 분리한다.
-
+> 본 갑상선암 확장 프로젝트는 Choi protocol v1의 numeric base 생성 방식을 유지하면서, say2 BRCA pipeline의 SMILES SVD 및 strong context 표현을 결합한 hybrid 입력셋을 사용한다. 모델 학습은 say2 방식의 random sample 3-fold OOF 및 weighted ensemble로 수행하고, 모델 출력 이후의 외부검증, ADMET 안전성 평가, knowledge validation 및 최종 Tier 분류는 Choi protocol v1의 Phase 3~5 구조를 따른다. 최종 추천은 실제 약물 반응값이 존재하고 valid SMILES가 확보된 screened drug set에 한정하며, 반응값이 없는 unscreened 후보는 별도 참고 실험으로 분리한다.

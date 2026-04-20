@@ -522,6 +522,59 @@ def build_admet_csvs(staging: Path, admet_out: Path) -> dict[str, Any]:
     return {"admet_assays_written": len(written), "admet_rows_by_assay": written}
 
 
+def apply_primary_candidate_filters(
+    response: pd.DataFrame,
+    drug_features: pd.DataFrame,
+    drug_annotations: pd.DataFrame,
+    cfg: dict[str, Any],
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, dict[str, Any]]:
+    filters = cfg.get("data_filters", {})
+    require_smiles = bool(filters.get("require_valid_smiles_drugs", False))
+    before = {
+        "response_rows": int(len(response)),
+        "response_cell_lines": int(response["sample_id"].nunique()),
+        "response_drugs": int(response["canonical_drug_id"].nunique()),
+        "drug_feature_rows": int(len(drug_features)),
+    }
+    qc: dict[str, Any] = {
+        "require_valid_smiles_drugs": require_smiles,
+        "before": before,
+    }
+    if not require_smiles:
+        qc["after"] = before
+        qc["removed"] = {"response_rows": 0, "drugs": 0}
+        return response, drug_features, drug_annotations, qc
+
+    smiles_ok = (
+        drug_features["canonical_smiles"].fillna("").astype(str).str.len().gt(0)
+        & drug_features.get("smiles_parse_ok", pd.Series(0, index=drug_features.index)).fillna(0).astype(int).eq(1)
+    )
+    keep_ids = set(drug_features.loc[smiles_ok, "canonical_drug_id"].astype(str))
+    missing = drug_features.loc[~smiles_ok, ["canonical_drug_id", "drug_name", "target_genes", "PATHWAY_NAME_NORMALIZED", "classification"]].copy()
+
+    response = response.loc[response["canonical_drug_id"].astype(str).isin(keep_ids)].copy()
+    drug_features = drug_features.loc[drug_features["canonical_drug_id"].astype(str).isin(keep_ids)].copy()
+    drug_annotations = drug_annotations.loc[drug_annotations["canonical_drug_id"].astype(str).isin(keep_ids)].copy()
+
+    after = {
+        "response_rows": int(len(response)),
+        "response_cell_lines": int(response["sample_id"].nunique()),
+        "response_drugs": int(response["canonical_drug_id"].nunique()),
+        "drug_feature_rows": int(len(drug_features)),
+    }
+    qc.update(
+        {
+            "after": after,
+            "removed": {
+                "response_rows": int(before["response_rows"] - after["response_rows"]),
+                "drugs": int(before["response_drugs"] - after["response_drugs"]),
+            },
+            "removed_drugs": missing.to_dict(orient="records"),
+        }
+    )
+    return response, drug_features, drug_annotations, qc
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build model-ready thyroid pipeline inputs from s3 thyroid_raw source staging")
     parser.add_argument("--config", default="config/thyroid_pipeline_config.json")
@@ -540,6 +593,7 @@ def main() -> int:
     response, cell, drug_ann = build_gdsc_response_and_base(staging)
     sample_features, sample_qc = build_sample_features(staging, cell, cfg, args.sample_feature_limit)
     drug_features, drug_annotations, drug_qc = build_drug_features(staging, drug_ann, cfg, args.lincs_feature_limit, args.morgan_bits)
+    response, drug_features, drug_annotations, filter_qc = apply_primary_candidate_filters(response, drug_features, drug_annotations, cfg)
 
     target_genes = set()
     for value in drug_features["target_genes"].dropna():
@@ -564,6 +618,7 @@ def main() -> int:
         "drug_annotations_shape": [int(drug_annotations.shape[0]), int(drug_annotations.shape[1])],
         "sample_qc": sample_qc,
         "drug_qc": drug_qc,
+        "primary_filter_qc": filter_qc,
         "external_qc": external_qc,
         "admet_qc": admet_qc,
         "outputs": {

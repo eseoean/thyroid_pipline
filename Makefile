@@ -1,4 +1,4 @@
-.PHONY: inventory acquire build-model-ready seed-demo run-demo run clean
+.PHONY: inventory acquire build-model-ready audit-missingness seed-demo run-demo run clean
 
 inventory:
 	python3 scripts/00_dataset_inventory.py --config config/thyroid_pipeline_config.json
@@ -8,6 +8,9 @@ acquire:
 
 build-model-ready:
 	python3 scripts/02_build_model_ready_from_thyroid_raw.py --config config/thyroid_pipeline_config.json
+
+audit-missingness:
+	python3 scripts/03_audit_missingness_sources.py --config config/thyroid_pipeline_config.json
 
 seed-demo:
 	python3 scripts/seed_demo_data.py --config config/thyroid_pipeline_config.json

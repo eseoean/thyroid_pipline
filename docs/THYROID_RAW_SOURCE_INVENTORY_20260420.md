@@ -22,10 +22,13 @@ The screened-response layer uses GDSC2 because it contains thyroid cancer cell l
 - THCA cell lines in GDSC2 annotation: `16`
 - THCA screened response rows: `4,037`
 - Unique screened drugs: `295`
+- Primary model-ready rows after SMILES filter: `3,387`
+- Primary model-ready SMILES-valid drugs: `243`
+- SMILES-missing drugs excluded from primary pool: `52`
 - THCA cell lines with labels: `16`
 - Cell lines: `K5`, `FTC-133`, `RO82-W-1`, `TT2609-C02`, `ML-1`, `TT`, `ASH-3`, `HTC-C3`, `IHH-4`, `KMH-2`, `CAL-62`, `BHT-101`, `B-CPAP`, `8505C`, `8305C`, `CGTH-W-1`
 
-This keeps the recommendation pipeline anchored on drugs with actual screened response values, while KG/API and clinical evidence remain post-model validation layers.
+This keeps the recommendation pipeline anchored on drugs with actual screened response values. The primary pool now additionally requires valid SMILES because structure features and ADMET validation are core downstream requirements, while KG/API and clinical evidence remain post-model validation layers.
 
 ## Source From say2-4team
 
@@ -83,15 +86,18 @@ Latest model-ready QC from the actual source build:
 
 | Check | Value |
 |---|---:|
-| Response rows | `4,037` |
+| Response rows before SMILES filter | `4,037` |
+| Response rows after SMILES filter | `3,387` |
 | THCA cell lines | `16` |
-| Screened drugs | `295` |
+| Screened drugs before SMILES filter | `295` |
+| SMILES-valid screened drugs | `243` |
+| Removed SMILES-missing drugs | `52` |
 | Sample feature table | `16 x 4,114` |
-| Drug feature table | `295 x 1,560` |
+| Drug feature table | `243 x 1,560` |
 | SMILES present / parse OK | `243 / 243` |
-| Target gene present | `238` |
-| LINCS matched drugs | `101` |
-| External TCGA-THCA expression genes written | `312` |
+| Target gene present after SMILES filter | `212 / 243` |
+| LINCS matched drugs | `101 / 243` |
+| External TCGA-THCA expression genes written | `296` |
 | External TCGA-THCA samples | `572` |
 | ADMET assays written | `22` |
 
@@ -99,4 +105,5 @@ Latest model-ready QC from the actual source build:
 
 - No raw TCGA-THCA individual GDC file manifest was found in `say2-4team`; Xena/GDC hub precompiled THCA matrices were downloaded directly instead.
 - The source-to-model-ready builder converts these source files into `thyroid_response_pairs.csv`, `sample_features.csv`, `drug_features.csv`, `drug_annotations.csv`, `thyroid_expression.csv`, `thyroid_clinical.csv`, and `data/admet/tdc/*.csv`.
-- The final candidate recommendation should continue to use screened-response drugs as the primary ranking set. Unscreened repurposing candidates can be kept as a separate exploratory layer if needed, but should not be mixed into the main screened-response recommendation score without clear labeling.
+- The final candidate recommendation should continue to use screened-response drugs with valid SMILES as the primary ranking set. Unscreened repurposing candidates can be kept as a separate exploratory layer if needed, but should not be mixed into the main screened-response recommendation score without clear labeling.
+- LINCS and CRISPR missingness are intentionally kept as soft availability features rather than hard filters because hard filtering would shrink the thyroid sample/drug axes too aggressively.

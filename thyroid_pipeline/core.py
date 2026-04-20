@@ -469,6 +469,28 @@ def prepare_response_subset(cfg: dict[str, Any]) -> pd.DataFrame:
     elif "canonical_smiles" not in merged.columns:
         merged["canonical_smiles"] = ""
 
+    smiles_filter_qc: dict[str, Any] = {"enabled": False, "rows_removed": 0, "drugs_removed": 0}
+    if cfg.get("data_filters", {}).get("require_valid_smiles_drugs", False):
+        before_rows = len(merged)
+        before_drugs = merged["canonical_drug_id"].nunique()
+        smiles_status = merged["canonical_smiles"].map(canonicalize_smiles)
+        merged["_smiles_canonicalized_for_filter"] = [x[0] for x in smiles_status]
+        merged["_smiles_parse_ok_for_filter"] = [x[1] for x in smiles_status]
+        merged = merged.loc[
+            merged["_smiles_parse_ok_for_filter"] & merged["_smiles_canonicalized_for_filter"].astype(str).str.len().gt(0)
+        ].copy()
+        merged["canonical_smiles"] = merged["_smiles_canonicalized_for_filter"]
+        merged = merged.drop(columns=["_smiles_canonicalized_for_filter", "_smiles_parse_ok_for_filter"])
+        smiles_filter_qc = {
+            "enabled": True,
+            "rows_before": int(before_rows),
+            "rows_after": int(len(merged)),
+            "rows_removed": int(before_rows - len(merged)),
+            "drugs_before": int(before_drugs),
+            "drugs_after": int(merged["canonical_drug_id"].nunique()),
+            "drugs_removed": int(before_drugs - merged["canonical_drug_id"].nunique()),
+        }
+
     qc = {
         "step": "step1_response_subset",
         "original_rows": int(original_rows),
@@ -483,6 +505,7 @@ def prepare_response_subset(cfg: dict[str, Any]) -> pd.DataFrame:
         "subtype_counts": merged["thyroid_subtype"].value_counts(dropna=False).to_dict(),
         "drug_count_summary": summarize_series(merged.groupby("canonical_drug_id").size()),
         "cell_line_count_summary": summarize_series(merged.groupby("sample_id").size()),
+        "smiles_filter": smiles_filter_qc,
     }
     write_table(merged, paths.processed_dir / "thyroid_response_pairs.csv", also_parquet=True)
     write_table(merged, paths.processed_dir / "row_metadata.csv", also_parquet=True)
