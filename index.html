@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thyroid Drug Repurposing Report | 20260421_thyroid</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #edf4f8;
+      --ink: #102436;
+      --ink-soft: #486277;
+      --panel: #ffffff;
+      --line: #d5e2ea;
+      --brand: #126b7f;
+      --brand-2: #2466a7;
+      --brand-soft: #e8f5f7;
+      --ok: #1d8952;
+      --warn: #9a681c;
+      --bad: #b44747;
+      --shadow: 0 10px 26px rgba(22, 48, 70, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "IBM Plex Sans KR", "Malgun Gothic", sans-serif;
+      background:
+        radial-gradient(900px 520px at -6% -12%, rgba(18, 107, 127, 0.15), transparent 64%),
+        radial-gradient(820px 520px at 108% -6%, rgba(36, 102, 167, 0.12), transparent 60%),
+        var(--bg);
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 16px 36px;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, #ffffff, #f4fbfd);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .kicker {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--brand);
+      background: var(--brand-soft);
+      border: 1px solid #bcdbe2;
+      border-radius: 999px;
+      padding: 4px 10px;
+      margin-bottom: 8px;
+      letter-spacing: 0.2px;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Source Serif 4", serif;
+      font-size: 1.72rem;
+      line-height: 1.2;
+      letter-spacing: 0.15px;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      text-decoration: none;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 8px 11px;
+      border: 1px solid #c5d8e5;
+      color: #1f4058;
+      background: #f6fafc;
+      white-space: nowrap;
+    }
+
+    .btn.primary {
+      border-color: #227992;
+      color: #fff;
+      background: linear-gradient(135deg, #126b7f, #2466a7);
+    }
+
+    .tags {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      color: #2c4f63;
+      background: #edf5f8;
+      border: 1px solid #d0dfe8;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-weight: 600;
+    }
+
+    .kpi-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .kpi {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px;
+      min-height: 84px;
+    }
+
+    .kpi .label {
+      color: var(--ink-soft);
+      font-size: 0.68rem;
+    }
+
+    .kpi .value {
+      margin-top: 5px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .ok { color: var(--ok); }
+    .warn { color: var(--warn); }
+    .bad { color: var(--bad); }
+
+    .panel {
+      margin-top: 12px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 5px 14px rgba(17, 41, 64, 0.05);
+      padding: 14px;
+    }
+
+    .h2 {
+      margin: 0;
+      font-size: 1.02rem;
+      font-weight: 700;
+    }
+
+    .sub {
+      margin: 6px 0 10px;
+      color: var(--ink-soft);
+      font-size: 0.74rem;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.76rem;
+    }
+
+    th, td {
+      padding: 8px 7px;
+      border-bottom: 1px solid #e8edf3;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f4f8fc;
+      color: #5a738a;
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    .status {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.64rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+
+    .pass { color: #116239; background: #dff4e8; border-color: #bde7cd; }
+    .hold { color: #795015; background: #fff1d8; border-color: #ead39e; }
+    .stop { color: #8f3030; background: #fde7e7; border-color: #f1c2c2; }
+
+    .layout-3 {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .weight-row {
+      display: grid;
+      grid-template-columns: 128px 1fr 54px;
+      gap: 8px;
+      align-items: center;
+      font-size: 0.73rem;
+      margin: 7px 0;
+    }
+
+    .bar-bg {
+      height: 9px;
+      border-radius: 999px;
+      background: #dce7f2;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #1f78ff, #14a381);
+    }
+
+    .mono {
+      font-family: ui-monospace, "SFMono-Regular", "Consolas", monospace;
+      font-size: 0.72rem;
+    }
+
+    .note {
+      background: #f8fbfd;
+      border: 1px solid #d9e6f0;
+      border-left: 3px solid var(--brand);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 0.75rem;
+      line-height: 1.6;
+      color: #365068;
+    }
+
+    .rank {
+      font-weight: 700;
+      color: var(--brand-2);
+    }
+
+    @media (max-width: 1080px) {
+      .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .layout-3 { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .wrap { padding: 16px 10px 28px; }
+      .hero-top { flex-direction: column; }
+      .actions { justify-content: flex-start; }
+      .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .split { grid-template-columns: 1fr; }
+      h1 { font-size: 1.42rem; }
+      table { font-size: 0.72rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <span class="kicker">Executive Report</span>
+          <h1>Thyroid Cancer Drug Repurposing 결과 보드</h1>
+          <p class="subtitle">run_id <span class="mono">20260421_thyroid</span> | mixed GroupCV + pan-cancer LINCS 최종 실행 기준</p>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="docs/THYROID_FINAL_HANDOFF_20260421.md">최종 Handoff</a>
+          <a class="btn" href="phase5_final_results/mixed_groupcv_pan_lincs/FINAL_SUMMARY.md">Final Summary</a>
+          <a class="btn" href="phase5_final_results/mixed_groupcv_pan_lincs/final_comprehensive_candidates.csv">후보 CSV</a>
+        </div>
+      </div>
+      <div class="tags">
+        <span class="tag">Drug-level GroupCV 완료</span>
+        <span class="tag">TCGA-THCA 외부검증 포함</span>
+        <span class="tag">ADMET 22 assay 반영</span>
+        <span class="tag">Git + S3 업로드 검증</span>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi"><div class="label">최종 Pair Rows</div><div class="value">3,387</div></div>
+        <div class="kpi"><div class="label">SMILES-valid Drugs</div><div class="value">243</div></div>
+        <div class="kpi"><div class="label">Feature Cols</div><div class="value">6,655</div></div>
+        <div class="kpi"><div class="label">Ensemble Spearman</div><div class="value ok">0.633</div></div>
+        <div class="kpi"><div class="label">Ensemble RMSE</div><div class="value ok">2.139</div></div>
+        <div class="kpi"><div class="label">최종 후보 수</div><div class="value warn">15</div></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="h2">운영 품질 요약</h2>
+      <p class="sub">model input / external validation / ADMET / tier validation 산출물 집계</p>
+      <table>
+        <thead>
+          <tr><th>항목</th><th>값</th><th>해석</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>최종 입력 Variant</td><td><span class="mono">numeric_strong_context_smiles_pan_lincs</span></td><td>numeric + strong context + SMILES + pan-cancer LINCS</td></tr>
+          <tr><td>Cell line / Drug</td><td>16 cell lines / 243 drugs</td><td>SMILES-valid thyroid modeling pool</td></tr>
+          <tr><td>Pan-LINCS coverage</td><td>116 / 243 drugs, row-level 48.3%</td><td>LINCS 결측 보강 후 최종 입력 반영</td></tr>
+          <tr><td>TCGA-THCA validation</td><td>572 patients, 296 expression genes</td><td>Top15 target expressed 9 / 15</td></tr>
+          <tr><td>Known thyroid control P@5 / P@10 / P@20</td><td>0.0 / 0.0 / 0.0</td><td>기존 표준치료 재발견보다 신규 repurposing 후보로 해석</td></tr>
+          <tr><td>ADMET category</td><td>Approved 1 / Candidate 8 / Caution 6</td><td><span class="status pass">완료</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="split">
+      <div class="panel">
+        <h2 class="h2">Model Top 5</h2>
+        <p class="sub">mixed GroupCV ensemble score 기준</p>
+        <table>
+          <thead><tr><th>#</th><th>약물</th><th>Score</th><th>Pathway</th></tr></thead>
+          <tbody>
+            <tr><td class="rank">1</td><td>Dactinomycin</td><td>4.326</td><td>Other</td></tr>
+            <tr><td class="rank">2</td><td>Docetaxel</td><td>3.342</td><td>Mitosis</td></tr>
+            <tr><td class="rank">3</td><td>Topotecan</td><td>2.896</td><td>DNA replication</td></tr>
+            <tr><td class="rank">4</td><td>Vinblastine</td><td>2.332</td><td>Mitosis</td></tr>
+            <tr><td class="rank">5</td><td>Epirubicin</td><td>1.848</td><td>DNA replication</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h2 class="h2">Final Tier Top 5</h2>
+        <p class="sub">ADMET + target evidence + thyroid relevance 기반 최종 우선순위</p>
+        <table>
+          <thead><tr><th>#</th><th>약물</th><th>Knowledge</th><th>Tier</th></tr></thead>
+          <tbody>
+            <tr><td class="rank">1</td><td>Vinorelbine</td><td>4.5</td><td><span class="status pass">Tier 1</span></td></tr>
+            <tr><td class="rank">2</td><td>Lestaurtinib</td><td>4.0</td><td><span class="status pass">Tier 2</span></td></tr>
+            <tr><td class="rank">3</td><td>Staurosporine</td><td>4.0</td><td><span class="status pass">Tier 2</span></td></tr>
+            <tr><td class="rank">4</td><td>Vinblastine</td><td>3.2</td><td><span class="status pass">Tier 2</span></td></tr>
+            <tr><td class="rank">5</td><td>Topotecan</td><td>2.8</td><td><span class="status hold">Tier 3</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="h2">Model Performance</h2>
+      <p class="sub">GroupCV by canonical_drug_id. Held-out drug generalization 기준의 보수적 성능이다.</p>
+      <table>
+        <thead>
+          <tr><th>Model / Ensemble</th><th>n</th><th>Spearman</th><th>Pearson</th><th>RMSE</th><th>MAE</th><th>R2</th><th>NDCG@20</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>CrossAttention</td><td>3,387</td><td>0.6118</td><td>0.6507</td><td>2.2119</td><td>1.6545</td><td>0.4142</td><td>0.8728</td></tr>
+          <tr><td>LightGBM</td><td>3,387</td><td>0.5928</td><td>0.6313</td><td>2.2467</td><td>1.6807</td><td>0.3956</td><td>0.8386</td></tr>
+          <tr><td>ResidualMLP</td><td>3,387</td><td>0.5846</td><td>0.6328</td><td>2.2713</td><td>1.6846</td><td>0.3823</td><td>0.8696</td></tr>
+          <tr><td><b>Spearman-weighted ensemble</b></td><td>3,387</td><td><b>0.6331</b></td><td><b>0.6731</b></td><td><b>2.1392</b></td><td><b>1.5924</b></td><td><b>0.4520</b></td><td><b>0.8638</b></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel layout-3">
+      <div>
+        <h2 class="h2">Ensemble Weight</h2>
+        <p class="sub">Spearman-weighted blend 기여도</p>
+        <div class="weight-row"><div>CrossAttention</div><div class="bar-bg"><div class="bar-fill" style="width:34.19%"></div></div><div>34.19</div></div>
+        <div class="weight-row"><div>LightGBM</div><div class="bar-bg"><div class="bar-fill" style="width:33.13%"></div></div><div>33.13</div></div>
+        <div class="weight-row"><div>ResidualMLP</div><div class="bar-bg"><div class="bar-fill" style="width:32.67%"></div></div><div>32.67</div></div>
+      </div>
+
+      <div>
+        <h2 class="h2">Final Interpretation</h2>
+        <p class="sub">후보 해석 프레임</p>
+        <div class="note">
+          <b>대표 후보: Vinorelbine</b><br>
+          Tier 1, target expression 0.9965, survival p-value 0.0680.<br>
+          결과는 기존 갑상선 표준치료 재발견보다 repurposing/new-candidate discovery로 해석하는 것이 적절하다.
+        </div>
+      </div>
+
+      <div>
+        <h2 class="h2">Upload Evidence</h2>
+        <p class="sub">Git / S3 완료 상태</p>
+        <div class="note mono">
+          git@github.com:eseoean/thyroid_pipline.git<br>
+          branch: codex/thyroid-hybrid-pipeline<br>
+          commit: d6d7b99c7c143245f8bb6c1e5f8e24c7c8b96191<br>
+          s3://say2-4team/20260409_eseo/20260421_thyroid/
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 class="h2">근거 파일</h2>
+      <p class="sub">보고서 재현 및 검증 경로</p>
+      <div class="note mono">
+        reports/pancancer_lincs_input_summary_20260421.json<br>
+        reports/qc_step5_model_inputs.json<br>
+        results/mixed_groupcv/crossattention_residualmlp_lightgbm_groupcv/mixed_groupcv_ensemble_results.json<br>
+        external_validation/mixed_groupcv_pan_lincs/top15_validated.csv<br>
+        admet/mixed_groupcv_pan_lincs/admet_summary.json<br>
+        knowledge_validation/mixed_groupcv_pan_lincs/validation_summary.csv<br>
+        phase5_final_results/mixed_groupcv_pan_lincs/final_comprehensive_candidates.csv
+      </div>
+    </section>
+  </div>
+</body>
+</html>
