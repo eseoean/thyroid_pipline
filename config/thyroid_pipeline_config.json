@@ -112,6 +112,12 @@
     "crispr_missing_policy": "soft_indicator",
     "notes": "SMILES-missing drugs are excluded from the primary screened-response candidate pool. LINCS and CRISPR missingness are retained with explicit availability flags instead of hard filtering."
   },
+  "sample_feature_enhancement": {
+    "expression_feature_limit": 512,
+    "cnv_feature_limit": 512,
+    "mutation_top_gene_limit": 128,
+    "notes": "DepMap 24Q2 expression/CNV/mutation fallback features are added by ModelID so CRISPR-missing thyroid cell lines keep non-CRISPR omics signal."
+  },
   "training": {
     "n_splits": 3,
     "random_state": 42,

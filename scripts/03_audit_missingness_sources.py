@@ -33,6 +33,8 @@ def canonical_smiles(value: Any) -> str:
     if pd.isna(value) or str(value).strip() == "":
         return ""
     text = str(value).strip()
+    if text.lower() in {"restricted", "nan", "none", "null"}:
+        return ""
     if Chem is None:
         return text
     mol = Chem.MolFromSmiles(text)
@@ -116,7 +118,18 @@ def audit_lincs(drug_features: pd.DataFrame, staging: Path, reports_dir: Path) -
     lincs_cols = [c for c in drug_features.columns if c.startswith("drug__lincs__")]
     has_lincs = drug_features[lincs_cols].notna().any(axis=1) if lincs_cols else pd.Series(False, index=drug_features.index)
     review = drug_features[["canonical_drug_id", "drug_name", "canonical_smiles", "target_genes", "classification"]].copy()
-    review["has_lincs_signature"] = has_lincs.values
+    if "drug__has_lincs_signature" in drug_features.columns:
+        review["has_lincs_signature"] = pd.to_numeric(drug_features["drug__has_lincs_signature"], errors="coerce").fillna(0).astype(bool)
+    else:
+        review["has_lincs_signature"] = has_lincs.values
+    if "drug__lincs_signature_source_direct" in drug_features.columns:
+        review["lincs_signature_source_direct"] = pd.to_numeric(drug_features["drug__lincs_signature_source_direct"], errors="coerce").fillna(0).astype(bool)
+    else:
+        review["lincs_signature_source_direct"] = review["has_lincs_signature"]
+    if "drug__lincs_signature_source_recovered" in drug_features.columns:
+        review["lincs_signature_source_recovered"] = pd.to_numeric(drug_features["drug__lincs_signature_source_recovered"], errors="coerce").fillna(0).astype(bool)
+    else:
+        review["lincs_signature_source_recovered"] = False
     review["_drug_norm"] = review["drug_name"].map(norm_name)
     review["_canonical_smiles_norm"] = review["canonical_smiles"].map(canonical_smiles)
 
@@ -153,7 +166,17 @@ def audit_cell_lines(sample_features: pd.DataFrame, staging: Path, reports_dir: 
     crispr = read_parquet(staging / "depmap" / "depmap_crispr_gene_dependency_basic_clean_20260406.parquet", columns=["ModelID"])
     crispr_ids = set(crispr["ModelID"]) if not crispr.empty else set()
 
-    review = sample_features[["sample_id", "cell_line_name", "sample_has_crispr"]].copy()
+    base_cols = ["sample_id", "cell_line_name", "sample_has_crispr"]
+    fallback_cols = [
+        "sample_has_depmap_expression",
+        "sample_has_depmap_cnv",
+        "sample_has_depmap_mutation",
+        "sample_has_non_crispr_omics_fallback",
+    ]
+    review = sample_features[base_cols + [c for c in fallback_cols if c in sample_features.columns]].copy()
+    for col in fallback_cols:
+        if col not in review.columns:
+            review[col] = False
     if not model.empty:
         model = model.drop_duplicates("SangerModelID")
         review = review.merge(
@@ -170,7 +193,9 @@ def audit_cell_lines(sample_features: pd.DataFrame, staging: Path, reports_dir: 
 
     review["suggested_action"] = "keep_crispr_features"
     missing = ~review["sample_has_crispr"].astype(bool)
-    review.loc[missing & review["depmap_model_available"], "suggested_action"] = "add_expression_cnv_mutation_fallback_or_latest_depmap_check"
+    fallback_available = review["sample_has_non_crispr_omics_fallback"].astype(bool)
+    review.loc[missing & review["depmap_model_available"] & fallback_available, "suggested_action"] = "covered_by_expression_cnv_mutation_fallback"
+    review.loc[missing & review["depmap_model_available"] & ~fallback_available, "suggested_action"] = "add_expression_cnv_mutation_fallback_or_latest_depmap_check"
     review.loc[missing & ~review["depmap_model_available"], "suggested_action"] = "resolve_alias_with_sanger_cosmic_cell_model_passports"
     write_table(review, reports_dir / "missingness" / "cellline_feature_coverage_review.csv")
     return review
@@ -204,7 +229,9 @@ def main() -> int:
         "smiles_removed_drugs": int(source_qc.get("primary_filter_qc", {}).get("removed", {}).get("drugs", 0)),
         "smiles_removed_recovery_candidates_with_local_smiles": int(smiles_review.get("candidate_has_smiles", pd.Series(dtype=bool)).sum()) if not smiles_review.empty else 0,
         "lincs_drugs_total": int(len(lincs_review)),
-        "lincs_direct_signature_drugs": int(lincs_review["has_lincs_signature"].sum()),
+        "lincs_signature_drugs_total": int(lincs_review["has_lincs_signature"].sum()),
+        "lincs_signature_direct_flag_drugs": int(lincs_review["lincs_signature_source_direct"].sum()),
+        "lincs_signature_recovered_flag_drugs": int(lincs_review["lincs_signature_source_recovered"].sum()),
         "lincs_local_name_or_smiles_bridge_candidates": int(
             ((~lincs_review["has_lincs_signature"]) & (lincs_review["local_lincs_name_match_available"] | lincs_review["local_lincs_smiles_match_available"])).sum()
         ),
@@ -212,6 +239,9 @@ def main() -> int:
         "cell_lines_with_crispr": int(cell_review["sample_has_crispr"].sum()),
         "cell_lines_missing_crispr_but_depmap_model_available": int(
             ((~cell_review["sample_has_crispr"].astype(bool)) & cell_review["depmap_model_available"]).sum()
+        ),
+        "cell_lines_missing_crispr_with_omics_fallback": int(
+            ((~cell_review["sample_has_crispr"].astype(bool)) & cell_review["sample_has_non_crispr_omics_fallback"].astype(bool)).sum()
         ),
         "outputs": {
             "smiles_removed_drug_recovery_review": str(reports_missing / "smiles_removed_drug_recovery_review.csv"),
@@ -225,4 +255,7 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    code = main()
+    sys.stdout.flush()
+    sys.stderr.flush()
+    raise SystemExit(code)

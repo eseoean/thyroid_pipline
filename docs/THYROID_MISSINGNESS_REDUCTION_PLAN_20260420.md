@@ -1,6 +1,6 @@
 # Thyroid Missingness Reduction Plan 2026-04-20
 
-이 문서는 thyroid cancer screened-response 파이프라인에서 확인된 결측 구조를 줄이기 위한 실행 계획이다.
+이 문서는 thyroid cancer screened-response 파이프라인에서 확인된 결측 구조를 줄이기 위한 실행 계획과 2026-04-20 v3 적용 결과를 정리한다.
 
 ## 현재 결측 구조
 
@@ -16,8 +16,8 @@ SMILES filter 이후에도 남는 주요 결측:
 
 | 결측 축 | 현재 상태 | 해석 |
 |---|---:|---|
-| CRISPR sample coverage | `9 / 16` cell lines | sample biology 축이 얇음 |
-| LINCS drug coverage | `101 / 243` drugs | drug perturbation view가 절반 미만 |
+| CRISPR sample coverage | `9 / 16` cell lines, fallback 적용 후 `16 / 16` | CRISPR 자체는 9개지만 non-CRISPR omics로 7개 보강 |
+| LINCS drug coverage | direct `101 / 243`, recovered 포함 `115 / 243` | drug perturbation view가 개선됐지만 여전히 절반 미만 |
 | Target gene coverage | `212 / 243` SMILES-valid drugs | strong context/KG evidence 약한 약물 존재 |
 
 ## 정책 결정
@@ -63,6 +63,27 @@ CRISPR 있는 cell line만 남기면 `16`개 cell line이 `9`개로 줄어든다
 - CRISPR 없는 cell line은 expression/CNV/mutation/lineage feature로 보강
 - CRISPR-rich model과 all-sample model을 분리한 view-split ensemble 구성
 
+## 적용 결과 요약
+
+v3에서 실제 반영한 보강은 다음과 같다.
+
+| 보강 항목 | 입력 source | 결과 |
+|---|---|---:|
+| LINCS bridge 재매칭 | `lincs_pert_info_basic_20260406.parquet`, `lincs_mcf7.parquet` | `16`개 bridge 후보 중 `14`개 recovered |
+| Cell line expression fallback | DepMap 24Q2 `OmicsExpressionProteinCodingGenesTPMLogp1` | `13 / 16` cell line matched |
+| Cell line CNV fallback | DepMap 24Q2 `OmicsCNGene` | `16 / 16` cell line matched |
+| Cell line mutation fallback | DepMap 24Q2 `OmicsSomaticMutations` | `16 / 16` cell line matched |
+| CRISPR-missing cell line 보강 | expression/CNV/mutation fallback union | `7 / 7` covered |
+
+모델 영향:
+
+| 기준 | Primary random3 Spearman | GroupCV Spearman | 해석 |
+|---|---:|---:|---|
+| v2 SMILES-required | `0.8831` | `0.4515` | SMILES filter로 random split 성능 개선 |
+| v3 missingness-enhanced | `0.8835` | `0.5112` | random split 유지, GroupCV stress 개선 |
+
+즉 v3 보강은 최고 random3 점수를 크게 올리는 작업이라기보다, 결측 축을 줄여 unseen-drug stress 안정성을 높이는 작업이었다.
+
 ## 추가 확보 우선순위
 
 ## Local Source Audit 결과
@@ -74,17 +95,21 @@ CRISPR 있는 cell line만 남기면 `16`개 cell line이 `9`개로 줄어든다
 | SMILES 제거 drug | `52` |
 | 제거 drug 중 local DrugBank/ChEMBL/LINCS name match로 SMILES 복구 가능 | `0` |
 | SMILES-valid drug | `243` |
+| LINCS signature drug total | `115 / 243` |
 | LINCS direct signature drug | `101 / 243` |
-| LINCS local name/SMILES bridge 후보 | `16` |
+| LINCS recovered signature drug | `14 / 243` |
+| LINCS local name/SMILES bridge 후보 remaining | `2` |
 | Cell lines | `16` |
 | CRISPR 있는 cell line | `9 / 16` |
 | CRISPR는 없지만 DepMap model bridge가 있는 cell line | `7 / 7` |
+| CRISPR missing이면서 omics fallback으로 보강된 cell line | `7 / 7` |
 
 해석:
 
 - 제거된 52개 약물은 현재 local source만으로는 SMILES 복구가 어렵다. PubChem/ChEMBL web/API 추가 조회가 필요하다.
-- LINCS는 direct signature가 101개지만, local LINCS metadata에서 bridge 후보가 16개 더 있어 우선 검토 가치가 있다.
-- CRISPR missing 7개 cell line은 DepMap model 자체는 연결되어 있으므로, CRISPR가 없더라도 expression/CNV/mutation fallback feature를 붙일 수 있다.
+- LINCS는 direct signature가 101개였고, local LINCS metadata bridge 후보 16개 중 실제 MCF7 signature가 있는 14개를 복구했다.
+- CRISPR missing 7개 cell line은 DepMap expression/CNV/mutation fallback으로 모두 보강했다.
+- 남은 LINCS bridge 후보 2개는 현재 로컬 MCF7 signature row가 없어 별도 source 또는 analog imputation이 필요하다.
 
 Audit 산출물:
 
@@ -93,7 +118,7 @@ Audit 산출물:
 - `reports/missingness/cellline_feature_coverage_review.csv`
 - `reports/missingness/missingness_source_audit_summary.json`
 
-### Priority A. Cell line feature 보강
+### Priority A. Cell line feature 보강 - 적용 완료
 
 목표:
 
@@ -140,7 +165,13 @@ Audit 산출물:
 - `data/raw/sample_features_enhanced.csv`
 - `reports/qc_cellline_feature_enhancement.json`
 
-### Priority B. LINCS drug signature 보강
+현재 구현 산출물:
+
+- `data/raw/sample_features.csv`
+- `reports/qc_source_to_model_ready_20260420.json`
+- `reports/missingness/cellline_feature_coverage_review.csv`
+
+### Priority B. LINCS drug signature 보강 - 1차 적용 완료
 
 목표:
 
@@ -181,6 +212,13 @@ Nearest-neighbor 보강 기준:
 - `reports/missingness/lincs_coverage_before_after.json`
 - `data/raw/drug_features_enhanced.csv`
 - `data/raw/lincs_signature_imputation_flags.csv`
+
+현재 구현 산출물:
+
+- `data/raw/drug_features.csv`
+- `reports/missingness/lincs_signature_recovery_review.csv`
+- `reports/missingness/lincs_drug_mapping_review.csv`
+- `reports/qc_source_to_model_ready_20260420.json`
 
 ### Priority C. Target/KG context 보강
 
@@ -230,12 +268,20 @@ Nearest-neighbor 보강 기준:
 
 ### v3 missingness-enhanced
 
-추가 source 확보 후 적용할 기준:
+적용 완료한 기준:
 
-- SMILES valid + recovered SMILES review 통과 drug 유지
-- enhanced cell-line features 사용
-- enhanced LINCS direct/imputed signature 사용
-- direct/imputed/unknown availability flag를 모델에 명시
+- SMILES valid drug만 primary pool 유지
+- DepMap 24Q2 expression/CNV/mutation fallback feature 사용
+- LINCS direct signature와 MCF7 recovered signature를 함께 사용
+- direct/recovered/unknown availability flag를 모델에 명시
+
+확인된 결과:
+
+- `sample_features`: `16 x 5,360`
+- `drug_features`: `243 x 1,563`
+- `X_numeric_strong_context_smiles`: `3,387 x 6,655`
+- `Numeric + Strong Context + SMILES / LightGBM` random3 Spearman `0.8835`
+- `Numeric + Strong Context + SMILES / ExtraTrees` GroupCV Spearman `0.5112`
 
 ### v4 view-split ensemble
 

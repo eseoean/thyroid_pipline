@@ -131,9 +131,10 @@ phase5_final_results/FINAL_REPORT.html
 
 2026-04-20 실제 `thyroid_raw/` source build 기준으로 원천 screened response는 `4,037`개 row, `16`개 cell line, `295`개 screened drug였고, primary 추천 pool에서는 SMILES missing drug `52`개를 제거해 `3,387`개 row, `16`개 cell line, `243`개 SMILES-valid drug를 모델 입력으로 구성했습니다.
 
-- Best random sample 3-fold OOF: `Numeric+SMILES / LightGBM`, Spearman `0.8833`, RMSE `1.1251`, R2 `0.8484`
-- Primary final input OOF: `Numeric+StrongContext+SMILES / LightGBM`, Spearman `0.8831`, RMSE `1.1226`, R2 `0.8491`
-- GroupCV stress test: `Numeric+StrongContext+SMILES / ExtraTrees`, OOF Spearman `0.4515`, RMSE `2.7152`, R2 `0.1172`
+- v3 보강: LINCS MCF7 signature 재매칭으로 `101 / 243`에서 `115 / 243` drug coverage로 개선
+- v3 보강: CRISPR 없는 `7`개 cell line을 DepMap expression/CNV/mutation fallback으로 `7 / 7` 보강
+- Best random sample 3-fold OOF: `Numeric+StrongContext+SMILES / LightGBM`, Spearman `0.8835`, RMSE `1.1264`, R2 `0.8481`
+- GroupCV stress test: `Numeric+StrongContext+SMILES / ExtraTrees`, OOF Spearman `0.5112`, RMSE `2.6134`, R2 `0.1822`
 - Final top tier after external validation, ADMET, and KG validation: `Vinorelbine` Tier 1, `Staurosporine` and `Vinblastine` Tier 2, `Romidepsin` Tier 3
 
 자세한 수치와 해석은 `docs/THYROID_ACTUAL_RUN_SUMMARY_20260420.md`에 정리합니다.

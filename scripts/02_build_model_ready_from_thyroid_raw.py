@@ -12,6 +12,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+import pyarrow.parquet as pq
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
@@ -31,6 +32,7 @@ except Exception:  # pragma: no cover - optional dependency
 TOKEN_SPLIT = re.compile(r"[;,|/]+")
 NON_NAME = re.compile(r"[^a-z0-9]+")
 GENE_WITH_ID = re.compile(r"^(.+?)\s+\(\d+\)$")
+BRD_RE = re.compile(r"(BRD-[A-Z0-9]+)")
 
 GENE_ALIASES = {
     "MEK1": ["MAP2K1"],
@@ -83,6 +85,15 @@ def clean_gene_symbol(value: Any) -> str:
     if match:
         text = match.group(1)
     return text.upper().strip()
+
+
+def extract_brd(value: Any) -> str:
+    match = BRD_RE.search("" if pd.isna(value) else str(value).upper())
+    return match.group(1) if match else ""
+
+
+def dedupe_columns(df: pd.DataFrame) -> pd.DataFrame:
+    return df.loc[:, ~df.columns.duplicated()].copy()
 
 
 def parse_targets(*values: Any) -> str:
@@ -183,6 +194,151 @@ def top_variance_columns(df: pd.DataFrame, id_col: str, limit: int, priority_gen
     return selected[: limit + len(priority_genes)]
 
 
+def build_priority_gene_set(cfg: dict[str, Any]) -> set[str]:
+    priority = {g.upper() for g in cfg.get("thyroid_biology_terms", []) if re.match(r"^[A-Za-z0-9.-]+$", g)}
+    priority.update(
+        {
+            "BRAF",
+            "RET",
+            "NTRK1",
+            "NTRK2",
+            "NTRK3",
+            "KRAS",
+            "NRAS",
+            "HRAS",
+            "MAP2K1",
+            "MAP2K2",
+            "MAPK1",
+            "MAPK3",
+            "MTOR",
+            "PIK3CA",
+            "PIK3CB",
+            "PIK3CD",
+            "PIK3CG",
+            "AKT1",
+            "AKT2",
+            "CDK4",
+            "CDK6",
+            "TP53",
+            "TERT",
+            "PTEN",
+            "KDR",
+            "FLT1",
+            "FLT4",
+        }
+    )
+    return priority
+
+
+def gene_symbol_from_omics_col(col: str) -> str:
+    text = str(col).strip()
+    if text.lower() in {"modelid", "depmap_id", "profileid"}:
+        return text
+    text = re.sub(r"\s+\(\d+\)$", "", text)
+    text = text.split(" ")[0] if text else text
+    return clean_gene_symbol(text)
+
+
+def select_omics_columns(df: pd.DataFrame, id_col: str, limit: int, priority_genes: set[str]) -> list[str]:
+    numeric_cols = [c for c in df.columns if c != id_col and pd.api.types.is_numeric_dtype(df[c])]
+    if not numeric_cols:
+        return []
+    variances = df[numeric_cols].var(axis=0, numeric_only=True).fillna(0).sort_values(ascending=False)
+    selected = list(variances.head(limit).index)
+    selected_set = set(selected)
+    for col in numeric_cols:
+        symbol = gene_symbol_from_omics_col(col)
+        if symbol in priority_genes and col not in selected_set:
+            selected.append(col)
+            selected_set.add(col)
+    return selected[: limit + len(priority_genes)]
+
+
+def read_depmap_wide_omics(path: Path, model_ids: set[str], prefix: str, limit: int, priority_genes: set[str]) -> tuple[pd.DataFrame, dict[str, Any]]:
+    if not path.exists():
+        return pd.DataFrame({"ModelID": sorted(model_ids)}), {
+            f"{prefix}_source_found": False,
+            f"{prefix}_feature_rows": 0,
+            f"{prefix}_selected_features": 0,
+        }
+    df = pd.read_csv(path)
+    id_col = "ModelID" if "ModelID" in df.columns else df.columns[0]
+    df[id_col] = df[id_col].astype(str)
+    df = df.rename(columns={id_col: "ModelID"})
+    selected = select_omics_columns(df, "ModelID", limit, priority_genes)
+    small = df.loc[df["ModelID"].isin(model_ids), ["ModelID"] + selected].copy()
+    rename: dict[str, str] = {}
+    seen: set[str] = set()
+    for col in selected:
+        symbol = gene_symbol_from_omics_col(col)
+        if not symbol or symbol in seen:
+            continue
+        rename[col] = f"sample__depmap_{prefix}__{symbol}"
+        seen.add(symbol)
+    small = small.rename(columns=rename)
+    keep_cols = ["ModelID"] + list(rename.values())
+    small = dedupe_columns(small[keep_cols])
+    value_cols = [c for c in small.columns if c != "ModelID"]
+    small[value_cols] = small[value_cols].apply(pd.to_numeric, errors="coerce")
+    qc = {
+        f"{prefix}_source_found": True,
+        f"{prefix}_source_rows": int(len(df)),
+        f"{prefix}_source_features": int(len(df.columns) - 1),
+        f"{prefix}_feature_rows": int(small["ModelID"].nunique()),
+        f"{prefix}_selected_features": int(len(value_cols)),
+        f"{prefix}_matched_requested_models": int(small["ModelID"].isin(model_ids).sum()),
+    }
+    return small, qc
+
+
+def read_depmap_mutation_features(path: Path, model_ids: set[str], priority_genes: set[str], top_limit: int) -> tuple[pd.DataFrame, dict[str, Any]]:
+    base = pd.DataFrame({"ModelID": sorted(model_ids)})
+    if not path.exists():
+        return base, {"mutation_source_found": False, "mutation_feature_rows": 0, "mutation_selected_features": 0}
+
+    header = pd.read_csv(path, nrows=0).columns.tolist()
+    model_col = "ModelID" if "ModelID" in header else "DepMap_ID" if "DepMap_ID" in header else ""
+    gene_col = "HugoSymbol" if "HugoSymbol" in header else "Hugo_Symbol" if "Hugo_Symbol" in header else "Gene" if "Gene" in header else ""
+    if not model_col or not gene_col:
+        return base, {
+            "mutation_source_found": True,
+            "mutation_feature_rows": 0,
+            "mutation_selected_features": 0,
+            "mutation_error": f"Required columns not found in {path.name}",
+        }
+
+    counts: dict[str, int] = defaultdict(int)
+    model_gene: dict[str, set[str]] = {m: set() for m in model_ids}
+    for chunk in pd.read_csv(path, usecols=[model_col, gene_col], chunksize=250_000):
+        chunk[model_col] = chunk[model_col].astype(str)
+        chunk = chunk.loc[chunk[model_col].isin(model_ids)].copy()
+        if chunk.empty:
+            continue
+        chunk[gene_col] = chunk[gene_col].map(clean_gene_symbol)
+        chunk = chunk.loc[chunk[gene_col].ne("")]
+        for gene, count in chunk[gene_col].value_counts().items():
+            counts[gene] += int(count)
+        for model_id, genes in chunk.groupby(model_col)[gene_col]:
+            model_gene.setdefault(str(model_id), set()).update(set(genes))
+
+    top_genes = [g for g, _ in sorted(counts.items(), key=lambda x: (-x[1], x[0]))[:top_limit]]
+    selected = sorted(set(top_genes).union(priority_genes))
+    selected = [g for g in selected if g]
+    feature_data = {
+        f"sample__depmap_mut__{gene}": [int(gene in model_gene.get(mid, set())) for mid in base["ModelID"]]
+        for gene in selected
+    }
+    feature_data["sample_has_depmap_mutation"] = [int(bool(model_gene.get(mid, set()))) for mid in base["ModelID"]]
+    base = pd.concat([base, pd.DataFrame(feature_data)], axis=1)
+    qc = {
+        "mutation_source_found": True,
+        "mutation_feature_rows": int(sum(bool(model_gene.get(mid, set())) for mid in model_ids)),
+        "mutation_selected_features": int(len(selected)),
+        "mutation_top_genes_from_thyroid_models": top_genes[:50],
+    }
+    return base, qc
+
+
 def read_required(path: Path) -> pd.DataFrame:
     if not path.exists():
         raise FileNotFoundError(path)
@@ -255,8 +411,7 @@ def build_sample_features(staging: Path, cell: pd.DataFrame, cfg: dict[str, Any]
     sample["sample__is_poorly_differentiated"] = subtype_text.str.contains("Poorly", case=False).astype(int)
 
     crispr = pd.read_parquet(depmap_dir / "depmap_crispr_gene_dependency_basic_clean_20260406.parquet")
-    priority = {g.upper() for g in cfg.get("thyroid_biology_terms", []) if re.match(r"^[A-Za-z0-9.-]+$", g)}
-    priority.update({"BRAF", "RET", "NTRK1", "NTRK2", "NTRK3", "KRAS", "NRAS", "HRAS", "MAP2K1", "MAP2K2", "MTOR", "PIK3CA", "CDK4", "CDK6"})
+    priority = build_priority_gene_set(cfg)
     selected = top_variance_columns(crispr, "ModelID", feature_limit, priority)
     crispr_small = crispr[["ModelID"] + selected].copy()
     rename = {}
@@ -267,6 +422,47 @@ def build_sample_features(staging: Path, cell: pd.DataFrame, cfg: dict[str, Any]
     sample = sample.merge(cell[["SANGER_MODEL_ID", "ModelID"]], left_on="sample_id", right_on="SANGER_MODEL_ID", how="left")
     sample = sample.merge(crispr_small, on="ModelID", how="left")
     sample["sample_has_crispr"] = sample["ModelID"].isin(set(crispr["ModelID"])).astype(int)
+    model_ids = set(sample["ModelID"].dropna().astype(str))
+
+    enhancement_cfg = cfg.get("sample_feature_enhancement", {})
+    expr_limit = int(enhancement_cfg.get("expression_feature_limit", 512))
+    cnv_limit = int(enhancement_cfg.get("cnv_feature_limit", 512))
+    mut_limit = int(enhancement_cfg.get("mutation_top_gene_limit", 128))
+    expr_small, expr_qc = read_depmap_wide_omics(
+        depmap_dir / "OmicsExpressionProteinCodingGenesTPMLogp1_24Q2.csv",
+        model_ids,
+        "expr",
+        expr_limit,
+        priority,
+    )
+    cnv_small, cnv_qc = read_depmap_wide_omics(
+        depmap_dir / "OmicsCNGene_24Q2.csv",
+        model_ids,
+        "cnv",
+        cnv_limit,
+        priority,
+    )
+    mut_small, mut_qc = read_depmap_mutation_features(
+        depmap_dir / "OmicsSomaticMutations_24Q2.csv",
+        model_ids,
+        priority,
+        mut_limit,
+    )
+    sample = sample.merge(expr_small, on="ModelID", how="left")
+    sample = sample.merge(cnv_small, on="ModelID", how="left")
+    sample = sample.merge(mut_small, on="ModelID", how="left")
+    expr_feature_cols = [c for c in sample.columns if c.startswith("sample__depmap_expr__")]
+    cnv_feature_cols = [c for c in sample.columns if c.startswith("sample__depmap_cnv__")]
+    mut_feature_cols = [c for c in sample.columns if c.startswith("sample__depmap_mut__")]
+    sample["sample_has_depmap_expression"] = sample[expr_feature_cols].notna().any(axis=1).astype(int) if expr_feature_cols else 0
+    sample["sample_has_depmap_cnv"] = sample[cnv_feature_cols].notna().any(axis=1).astype(int) if cnv_feature_cols else 0
+    if "sample_has_depmap_mutation" not in sample.columns:
+        sample["sample_has_depmap_mutation"] = 0
+    sample["sample_has_non_crispr_omics_fallback"] = (
+        sample[["sample_has_depmap_expression", "sample_has_depmap_cnv", "sample_has_depmap_mutation"]].sum(axis=1).gt(0).astype(int)
+    )
+    missing_crispr = sample["sample_has_crispr"].eq(0)
+    fallback_covered = int((missing_crispr & sample["sample_has_non_crispr_omics_fallback"].eq(1)).sum())
     sample = sample.drop(columns=[c for c in ["SANGER_MODEL_ID", "ModelID"] if c in sample.columns])
 
     qc = {
@@ -274,6 +470,12 @@ def build_sample_features(staging: Path, cell: pd.DataFrame, cfg: dict[str, Any]
         "depmap_model_matches": int(cell["ModelID"].notna().sum()),
         "crispr_feature_rows": int(sample["sample_has_crispr"].sum()),
         "selected_crispr_features": int(len(selected)),
+        **expr_qc,
+        **cnv_qc,
+        **mut_qc,
+        "missing_crispr_cell_lines": int(missing_crispr.sum()),
+        "missing_crispr_with_non_crispr_omics_fallback": fallback_covered,
+        "selected_non_crispr_omics_features": int(len(expr_feature_cols) + len(cnv_feature_cols) + len(mut_feature_cols)),
     }
     return sample, qc
 
@@ -311,6 +513,145 @@ def load_drug_reference_maps(staging: Path) -> dict[str, Any]:
     chembl["_norm"] = chembl["pref_name"].map(norm_name)
     refs["chembl_by_norm"] = chembl.drop_duplicates("_norm").set_index("_norm")
     return refs
+
+
+def build_lincs_bridge_candidates(drugs: pd.DataFrame, lincs: pd.DataFrame, staging: Path) -> tuple[pd.DataFrame, dict[str, Any]]:
+    pert_path = staging / "lincs" / "lincs_pert_info_basic_20260406.parquet"
+    if not pert_path.exists():
+        return pd.DataFrame(), {"lincs_bridge_metadata_found": False, "lincs_bridge_candidates": 0}
+
+    pert = pd.read_parquet(pert_path)
+    pert = pert.loc[pert.get("pert_type", "").astype(str).eq("trt_cp")].copy()
+    if pert.empty:
+        return pd.DataFrame(), {"lincs_bridge_metadata_found": True, "lincs_bridge_candidates": 0}
+    pert["_norm"] = pert["pert_iname"].map(norm_name)
+    pert["_brd_id"] = pert["pert_id"].map(extract_brd)
+    pert["_canonical_smiles_norm"] = pert["canonical_smiles"].map(lambda x: canonicalize_smiles(x)[0])
+    pert["_touchstone_rank"] = pd.to_numeric(pert.get("is_touchstone", 0), errors="coerce").fillna(0)
+    pert = pert.sort_values(["_touchstone_rank", "pert_id"], ascending=[False, True])
+
+    direct_ids = set(lincs["canonical_drug_id"].astype(str)) if "canonical_drug_id" in lincs.columns else set()
+    missing = drugs.loc[~drugs["canonical_drug_id"].astype(str).isin(direct_ids)].copy()
+    rows: list[dict[str, Any]] = []
+    used_ids: set[str] = set()
+    for row in missing.to_dict(orient="records"):
+        drug_id = str(row["canonical_drug_id"])
+        norm = norm_name(row.get("drug_name", ""))
+        can = canonicalize_smiles(row.get("canonical_smiles", ""))[0]
+        hit = pd.DataFrame()
+        match_type = ""
+        if norm:
+            hit = pert.loc[pert["_norm"].eq(norm)].head(1)
+            match_type = "name"
+        if hit.empty and can:
+            hit = pert.loc[pert["_canonical_smiles_norm"].eq(can)].head(1)
+            match_type = "smiles"
+        if hit.empty:
+            continue
+        h = hit.iloc[0]
+        brd_id = str(h.get("_brd_id", ""))
+        if not brd_id or drug_id in used_ids:
+            continue
+        used_ids.add(drug_id)
+        rows.append(
+            {
+                "canonical_drug_id": drug_id,
+                "drug_name": row.get("drug_name", ""),
+                "pert_id": h.get("pert_id", ""),
+                "brd_id": brd_id,
+                "pert_iname": h.get("pert_iname", ""),
+                "match_type": match_type,
+                "is_touchstone": int(h.get("is_touchstone", 0) or 0),
+            }
+        )
+    bridge = pd.DataFrame(rows)
+    return bridge, {
+        "lincs_bridge_metadata_found": True,
+        "lincs_bridge_candidates": int(len(bridge)),
+        "lincs_bridge_match_type_counts": bridge["match_type"].value_counts().to_dict() if not bridge.empty else {},
+    }
+
+
+def recover_lincs_signature_from_mcf7(
+    mcf7_path: Path,
+    bridge: pd.DataFrame,
+    selected_lincs_cols: list[str],
+    rename_map: dict[str, str],
+    gene_info_path: Path,
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
+    if bridge.empty:
+        return pd.DataFrame(), bridge, {"lincs_mcf7_source_found": bool(mcf7_path.exists()), "lincs_recovered_drugs": 0}
+    if not mcf7_path.exists():
+        bridge = bridge.copy()
+        bridge["recovery_status"] = "mcf7_source_missing"
+        return pd.DataFrame(), bridge, {"lincs_mcf7_source_found": False, "lincs_recovered_drugs": 0}
+
+    gene_info = pd.read_parquet(gene_info_path)
+    symbol_to_entrez = {
+        clean_gene_symbol(row.pr_gene_symbol): str(row.pr_gene_id)
+        for row in gene_info[["pr_gene_id", "pr_gene_symbol"]].dropna().itertuples(index=False)
+    }
+    schema_cols = set(pq.read_schema(mcf7_path).names)
+    raw_to_out: dict[str, str] = {}
+    for selected in selected_lincs_cols:
+        out_col = rename_map[selected]
+        if selected in schema_cols:
+            raw_to_out[selected] = out_col
+            continue
+        symbol = clean_gene_symbol(selected.replace("crispr__", ""))
+        entrez = symbol_to_entrez.get(symbol, "")
+        if entrez and entrez in schema_cols:
+            raw_to_out[entrez] = out_col
+
+    if not raw_to_out or "sig_id" not in schema_cols:
+        bridge = bridge.copy()
+        bridge["recovery_status"] = "mcf7_schema_incompatible"
+        return pd.DataFrame(), bridge, {
+            "lincs_mcf7_source_found": True,
+            "lincs_recovered_drugs": 0,
+            "lincs_mcf7_selected_raw_features": 0,
+        }
+
+    brd_to_drug = dict(zip(bridge["brd_id"].astype(str), bridge["canonical_drug_id"].astype(str)))
+    wanted_brd = set(brd_to_drug)
+    read_cols = ["sig_id"] + list(raw_to_out)
+    pieces: list[pd.DataFrame] = []
+    pf = pq.ParquetFile(mcf7_path)
+    for i in range(pf.num_row_groups):
+        rg = pf.read_row_group(i, columns=read_cols).to_pandas()
+        rg["brd_id"] = rg["sig_id"].map(extract_brd)
+        rg = rg.loc[rg["brd_id"].isin(wanted_brd)].copy()
+        if rg.empty:
+            continue
+        rg["canonical_drug_id"] = rg["brd_id"].map(brd_to_drug)
+        value_cols = list(raw_to_out)
+        rg[value_cols] = rg[value_cols].apply(pd.to_numeric, errors="coerce")
+        pieces.append(rg[["canonical_drug_id", "brd_id"] + value_cols])
+
+    bridge = bridge.copy()
+    if not pieces:
+        bridge["recovery_status"] = "no_mcf7_signature_rows"
+        return pd.DataFrame(), bridge, {
+            "lincs_mcf7_source_found": True,
+            "lincs_recovered_drugs": 0,
+            "lincs_mcf7_selected_raw_features": int(len(raw_to_out)),
+            "lincs_mcf7_row_groups_scanned": int(pf.num_row_groups),
+        }
+
+    matched = pd.concat(pieces, ignore_index=True)
+    grouped = matched.groupby("canonical_drug_id", as_index=False)[list(raw_to_out)].mean()
+    grouped = grouped.rename(columns=raw_to_out)
+    source_counts = matched.groupby("canonical_drug_id").size().rename("mcf7_signature_rows").reset_index()
+    bridge = bridge.merge(source_counts, on="canonical_drug_id", how="left")
+    bridge["recovery_status"] = np.where(bridge["mcf7_signature_rows"].fillna(0).gt(0), "recovered_from_mcf7", "no_mcf7_signature_rows")
+    qc = {
+        "lincs_mcf7_source_found": True,
+        "lincs_recovered_drugs": int(grouped["canonical_drug_id"].nunique()),
+        "lincs_mcf7_signature_rows_used": int(len(matched)),
+        "lincs_mcf7_selected_raw_features": int(len(raw_to_out)),
+        "lincs_mcf7_row_groups_scanned": int(pf.num_row_groups),
+    }
+    return grouped, bridge, qc
 
 
 def build_drug_features(staging: Path, drug_ann: pd.DataFrame, cfg: dict[str, Any], lincs_limit: int, morgan_bits_n: int) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, Any]]:
@@ -396,19 +737,53 @@ def build_drug_features(staging: Path, drug_ann: pd.DataFrame, cfg: dict[str, An
     drugs = pd.DataFrame(records)
 
     lincs_path = staging / "lincs" / "lincs_drug_signature_normalized.parquet"
-    lincs_qc = {"lincs_rows": 0, "selected_lincs_features": 0, "drug_lincs_matches": 0}
+    lincs_qc = {"lincs_rows": 0, "selected_lincs_features": 0, "drug_lincs_matches": 0, "drug_lincs_recovered_matches": 0}
     if lincs_path.exists():
         lincs = pd.read_parquet(lincs_path)
         lincs["canonical_drug_id"] = lincs["canonical_drug_id"].astype(str)
         selected = top_variance_columns(lincs, "canonical_drug_id", lincs_limit, set())
         rename = {c: f"drug__lincs__{clean_gene_symbol(c.replace('crispr__', ''))}" for c in selected}
         lincs_small = lincs[["canonical_drug_id"] + selected].rename(columns=rename)
+        lincs_small["drug__has_lincs_signature"] = 1
+        lincs_small["drug__lincs_signature_source_direct"] = 1
+        lincs_small["drug__lincs_signature_source_recovered"] = 0
+
+        bridge, bridge_qc = build_lincs_bridge_candidates(drugs, lincs, staging)
+        recovered, bridge_review, recovery_qc = recover_lincs_signature_from_mcf7(
+            staging / "lincs" / "lincs_mcf7.parquet",
+            bridge,
+            selected,
+            rename,
+            staging / "lincs" / "lincs_gene_info_basic_20260406.parquet",
+        )
+        if not bridge_review.empty:
+            write_table(bridge_review, REPO_ROOT / "reports" / "missingness" / "lincs_signature_recovery_review.csv")
+        recovered_count = 0
+        if not recovered.empty:
+            recovered["drug__has_lincs_signature"] = 1
+            recovered["drug__lincs_signature_source_direct"] = 0
+            recovered["drug__lincs_signature_source_recovered"] = 1
+            recovered_count = int(recovered["canonical_drug_id"].nunique())
+            lincs_small = pd.concat([lincs_small, recovered], ignore_index=True, sort=False)
+            lincs_small = lincs_small.drop_duplicates("canonical_drug_id", keep="first")
+
         drugs = drugs.merge(lincs_small, on="canonical_drug_id", how="left")
+        drugs["drug__has_lincs_signature"] = drugs["drug__has_lincs_signature"].fillna(0).astype(int)
+        drugs["drug__lincs_signature_source_direct"] = drugs["drug__lincs_signature_source_direct"].fillna(0).astype(int)
+        drugs["drug__lincs_signature_source_recovered"] = drugs["drug__lincs_signature_source_recovered"].fillna(0).astype(int)
         lincs_qc = {
             "lincs_rows": int(len(lincs)),
             "selected_lincs_features": int(len(selected)),
-            "drug_lincs_matches": int(drugs["canonical_drug_id"].isin(set(lincs["canonical_drug_id"])).sum()),
+            "drug_lincs_direct_matches": int(drugs["canonical_drug_id"].isin(set(lincs["canonical_drug_id"])).sum()),
+            "drug_lincs_recovered_matches": recovered_count,
+            "drug_lincs_matches": int(drugs["drug__has_lincs_signature"].sum()),
+            **bridge_qc,
+            **recovery_qc,
         }
+    else:
+        drugs["drug__has_lincs_signature"] = 0
+        drugs["drug__lincs_signature_source_direct"] = 0
+        drugs["drug__lincs_signature_source_recovered"] = 0
 
     annotations = drugs[
         [

@@ -45,6 +45,17 @@ This keeps the recommendation pipeline anchored on drugs with actual screened re
 | OpenTargets disease/target associations | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/opentargets/` | `s3://say2-4team/thyroid_raw/source_from_say2/opentargets/` | target-thyroid relevance and KG evidence |
 | ChEMBL compound and mechanism subset | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/chembl/` selected compound/mechanism/target tables | `s3://say2-4team/thyroid_raw/source_from_say2/chembl/` | SMILES, compound metadata, drug-target mechanism evidence |
 
+## Local Enhancement Sources
+
+아래 파일은 v3 결측 보강을 위해 로컬 staging에 내려받아 사용했다. 생성 산출물은 S3에 업로드하지 않았다.
+
+| Source | Local path | Main role |
+|---|---|---|
+| LINCS MCF7 raw signature parquet | `data/source_staging/lincs/lincs_mcf7.parquet` | LINCS bridge 후보의 실제 perturbation signature 복구 |
+| DepMap 24Q2 expression | `data/source_staging/depmap/OmicsExpressionProteinCodingGenesTPMLogp1_24Q2.csv` | CRISPR missing cell line expression fallback |
+| DepMap 24Q2 CNV | `data/source_staging/depmap/OmicsCNGene_24Q2.csv` | CRISPR missing cell line CNV fallback |
+| DepMap 24Q2 mutation | `data/source_staging/depmap/OmicsSomaticMutations_24Q2.csv` | CRISPR missing cell line mutation fallback |
+
 ## External Downloads
 
 | Source | URL | thyroid_raw destination | Main role |
@@ -93,10 +104,15 @@ Latest model-ready QC from the actual source build:
 | SMILES-valid screened drugs | `243` |
 | Removed SMILES-missing drugs | `52` |
 | Sample feature table | `16 x 4,114` |
-| Drug feature table | `243 x 1,560` |
+| Sample feature table after v3 fallback | `16 x 5,360` |
+| Drug feature table | `243 x 1,563` |
 | SMILES present / parse OK | `243 / 243` |
 | Target gene present after SMILES filter | `212 / 243` |
-| LINCS matched drugs | `101 / 243` |
+| LINCS direct matched drugs | `101 / 243` |
+| LINCS recovered matched drugs | `14 / 243` |
+| LINCS total matched drugs | `115 / 243` |
+| CRISPR feature cell lines | `9 / 16` |
+| CRISPR-missing cell lines with omics fallback | `7 / 7` |
 | External TCGA-THCA expression genes written | `296` |
 | External TCGA-THCA samples | `572` |
 | ADMET assays written | `22` |
@@ -107,3 +123,4 @@ Latest model-ready QC from the actual source build:
 - The source-to-model-ready builder converts these source files into `thyroid_response_pairs.csv`, `sample_features.csv`, `drug_features.csv`, `drug_annotations.csv`, `thyroid_expression.csv`, `thyroid_clinical.csv`, and `data/admet/tdc/*.csv`.
 - The final candidate recommendation should continue to use screened-response drugs with valid SMILES as the primary ranking set. Unscreened repurposing candidates can be kept as a separate exploratory layer if needed, but should not be mixed into the main screened-response recommendation score without clear labeling.
 - LINCS and CRISPR missingness are intentionally kept as soft availability features rather than hard filters because hard filtering would shrink the thyroid sample/drug axes too aggressively.
+- v3 applies LINCS recovered signature flags and non-CRISPR omics fallback flags so model inputs retain whether a feature was direct, recovered, or unavailable.
