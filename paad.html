@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PAAD Drug Repurposing Report | 20260421_paad</title>
+  <style>
+    :root {
+      --bg: #f3f5f1;
+      --ink: #17231f;
+      --muted: #5b6b64;
+      --panel: #ffffff;
+      --line: #d9dfd7;
+      --teal: #116a68;
+      --green: #2f7d47;
+      --amber: #9b6a18;
+      --coral: #b65243;
+      --violet: #5752a3;
+      --soft-teal: #e4f2ef;
+      --soft-green: #e7f3e8;
+      --soft-amber: #fff1d6;
+      --soft-coral: #fae6e1;
+      --shadow: 0 10px 28px rgba(23, 35, 31, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 22px 16px 40px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+      gap: 18px;
+      align-items: stretch;
+      margin-bottom: 14px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .panel,
+    .metric,
+    .candidate {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: 22px;
+      border-top: 5px solid var(--teal);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--teal);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    h1 {
+      margin: 10px 0 8px;
+      font-size: clamp(2rem, 4vw, 4.1rem);
+      line-height: 0.98;
+      max-width: 900px;
+    }
+
+    .lead {
+      margin: 0;
+      max-width: 780px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 8px 11px;
+      border: 1px solid #c9d5cf;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 800;
+      background: #f8faf8;
+      color: #20342e;
+    }
+
+    .link-btn.primary {
+      color: #fff;
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.24);
+      font-size: 0.74rem;
+      line-height: 1;
+    }
+
+    .link-btn:not(.primary) .icon {
+      color: var(--teal);
+      background: var(--soft-teal);
+    }
+
+    .hero-side {
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .status-title {
+      margin: 0;
+      font-size: 0.86rem;
+      color: var(--muted);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-value {
+      margin: 0;
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: var(--green);
+      line-height: 1;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      border: 1px solid #cad7d1;
+      background: #f7faf7;
+      color: #334a41;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .metric {
+      padding: 13px;
+      min-height: 92px;
+      box-shadow: none;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .metric .value {
+      margin-top: 8px;
+      font-size: 1.42rem;
+      line-height: 1.05;
+      font-weight: 900;
+    }
+
+    .metric .note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .panel {
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 16px rgba(23, 35, 31, 0.05);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.06rem;
+      line-height: 1.2;
+    }
+
+    .caption {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    th,
+    td {
+      padding: 8px 7px;
+      border-bottom: 1px solid #e7ece7;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      color: #66756e;
+      background: #f6f8f5;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 900;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .num {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .tier1 {
+      background: var(--soft-green);
+      color: var(--green);
+      border: 1px solid #b8dfc0;
+    }
+
+    .tier2 {
+      background: var(--soft-amber);
+      color: var(--amber);
+      border: 1px solid #ead39a;
+    }
+
+    .tier3 {
+      background: var(--soft-coral);
+      color: var(--coral);
+      border: 1px solid #edc4bd;
+    }
+
+    .mini-bars {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 130px minmax(0, 1fr) 64px;
+      gap: 10px;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .track {
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #e7ece7;
+    }
+
+    .bar {
+      height: 100%;
+      border-radius: inherit;
+      background: var(--teal);
+    }
+
+    .bar.random {
+      width: 99.1%;
+      background: var(--violet);
+    }
+
+    .bar.group {
+      width: 75.1%;
+      background: var(--green);
+    }
+
+    .candidate-list {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .candidate {
+      padding: 12px;
+      box-shadow: none;
+      min-height: 116px;
+      border-top: 4px solid var(--green);
+    }
+
+    .candidate h3 {
+      margin: 0;
+      font-size: 0.98rem;
+    }
+
+    .candidate p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 0.74rem;
+      line-height: 1.4;
+    }
+
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .artifact {
+      display: block;
+      padding: 11px;
+      border-radius: 8px;
+      border: 1px solid #d9dfd7;
+      background: #f9fbf8;
+      text-decoration: none;
+      min-height: 82px;
+    }
+
+    .artifact strong {
+      display: block;
+      font-size: 0.82rem;
+      margin-bottom: 5px;
+    }
+
+    .artifact span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .footnote {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 0.72rem;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .candidate-list,
+      .artifact-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .wrap {
+        padding: 14px 10px 28px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .panel {
+        padding: 13px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .metrics,
+      .candidate-list,
+      .artifact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .caption {
+        margin-top: 5px;
+      }
+
+      .bar-row {
+        grid-template-columns: 92px minmax(0, 1fr) 52px;
+      }
+
+      table {
+        font-size: 0.74rem;
+      }
+
+      th,
+      td {
+        padding: 7px 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero" aria-label="PAAD pipeline summary">
+      <div class="hero-main">
+        <div class="eyebrow"><span class="dot"></span>TCGA-PAAD / GDSC2 / DepMap / LINCS / ADMET</div>
+        <h1>PAAD Drug Repurposing Report</h1>
+        <p class="lead">
+          Pancreatic cancer pipeline completed with ML, DL, and ensemble models across random 4-fold and drug GroupCV 4-fold checks.
+          The primary interpretation uses drug-level GroupCV because it tests generalization to unseen compounds.
+        </p>
+        <nav class="actions" aria-label="Report links">
+          <a class="link-btn primary" href="docs/PAAD_FULL_PIPELINE_20260421.md"><span class="icon">R</span>Full report</a>
+          <a class="link-btn" href="phase5_final_results/paad/groupcv4_drug/final_comprehensive_candidates.csv"><span class="icon">C</span>Final candidates</a>
+          <a class="link-btn" href="external_validation/paad/groupcv4_drug/top15_validated.csv"><span class="icon">V</span>External validation</a>
+          <a class="link-btn" href="results/paad/ensemble/groupcv4_drug/numeric_strong_context_smiles_pan_lincs/ensemble_metrics.csv"><span class="icon">M</span>Metrics CSV</a>
+        </nav>
+      </div>
+      <aside class="hero-side">
+        <p class="status-title">Primary conclusion</p>
+        <p class="status-value">Completed</p>
+        <div class="pill-row">
+          <span class="pill">4-fold random</span>
+          <span class="pill">4-fold drug GroupCV</span>
+          <span class="pill">ML + DL ensemble</span>
+          <span class="pill">External validation</span>
+        </div>
+        <p class="caption">
+          Final bundle: <strong>s3://say2-4team/20260409_eseo/20260421_paad/</strong>
+        </p>
+      </aside>
+    </section>
+
+    <section class="metrics" aria-label="Key metrics">
+      <div class="metric"><div class="label">Response rows</div><div class="value">6,219</div><div class="note">SMILES-filtered GDSC2 PAAD</div></div>
+      <div class="metric"><div class="label">Feature shape</div><div class="value">2,534</div><div class="note">Strong context + SMILES + LINCS</div></div>
+      <div class="metric"><div class="label">Drugs</div><div class="value">243</div><div class="note">Screened compounds</div></div>
+      <div class="metric"><div class="label">Cell lines</div><div class="value">29</div><div class="note">PAAD model systems</div></div>
+      <div class="metric"><div class="label">GroupCV Spearman</div><div class="value">0.7512</div><div class="note">Top4 weighted ensemble</div></div>
+      <div class="metric"><div class="label">GroupCV RMSE</div><div class="value">1.8676</div><div class="note">LN_IC50 scale</div></div>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <div class="section-head">
+          <h2>Validation Snapshot</h2>
+          <p class="caption">Best ensemble and strongest member models.</p>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Check</th><th>Model</th><th>Spearman</th><th>RMSE</th><th>R2</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Random 4-fold</td><td>Top4 weighted ensemble</td><td class="num">0.9911</td><td class="num">0.3926</td><td class="num">0.9799</td></tr>
+            <tr><td>Random 4-fold</td><td>DL CrossAttention</td><td class="num">0.9920</td><td class="num">0.3702</td><td class="num">0.9821</td></tr>
+            <tr><td>Random 4-fold</td><td>ML LightGBM</td><td class="num">0.9898</td><td class="num">0.4082</td><td class="num">0.9783</td></tr>
+            <tr><td>Drug GroupCV</td><td>Top4 weighted ensemble</td><td class="num">0.7512</td><td class="num">1.8676</td><td class="num">0.5453</td></tr>
+            <tr><td>Drug GroupCV</td><td>ML LightGBM DART</td><td class="num">0.7398</td><td class="num">2.0616</td><td class="num">0.4459</td></tr>
+            <tr><td>Drug GroupCV</td><td>DL CrossAttention</td><td class="num">0.7132</td><td class="num">1.9368</td><td class="num">0.5110</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="section-head">
+          <h2>Generalization Readout</h2>
+          <p class="caption">Random split is a sanity check; GroupCV is the decision metric.</p>
+        </div>
+        <div class="mini-bars" aria-label="Spearman bars">
+          <div class="bar-row">
+            <strong>Random 4-fold</strong>
+            <div class="track"><div class="bar random"></div></div>
+            <span class="num">0.9911</span>
+          </div>
+          <div class="bar-row">
+            <strong>Drug GroupCV</strong>
+            <div class="track"><div class="bar group"></div></div>
+            <span class="num">0.7512</span>
+          </div>
+        </div>
+        <p class="footnote">
+          The GroupCV ensemble combines the strongest four out-of-fold members:
+          ML_LightGBM_DART, ML_LightGBM, ML_XGBoost, and DL_CrossAttention.
+        </p>
+        <table style="margin-top: 13px;">
+          <thead>
+            <tr><th>External evidence</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>TCGA-PAAD patients</td><td class="num">183</td></tr>
+            <tr><td>Expression genes used</td><td class="num">302</td></tr>
+            <tr><td>Top15 target-expressed</td><td class="num">11 / 15</td></tr>
+            <tr><td>Top15 clinical-trial supported</td><td class="num">8 / 15</td></tr>
+            <tr><td>Top15 PRISM evidence</td><td class="num">15 / 15</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Tier 1 Candidates</h2>
+        <p class="caption">Prioritized by model rank, target expression, clinical/knowledge evidence, PRISM signal, and ADMET category.</p>
+      </div>
+      <div class="candidate-list">
+        <article class="candidate">
+          <h3>Topotecan</h3>
+          <p>Known/support control; TOP1/TOP1MT expressed; 58 trial mentions; candidate ADMET.</p>
+        </article>
+        <article class="candidate">
+          <h3>Vinblastine</h3>
+          <p>Trial-supported mitosis agent; broad tubulin target expression; approved ADMET category.</p>
+        </article>
+        <article class="candidate">
+          <h3>Vinorelbine</h3>
+          <p>Trial-supported mitosis agent; target-expressed; candidate ADMET and PRISM support.</p>
+        </article>
+        <article class="candidate">
+          <h3>MG-132</h3>
+          <p>Exploratory proteasome candidate; strong PRISM depletion and expressed CAPN1 signal.</p>
+        </article>
+        <article class="candidate">
+          <h3>BI-2536</h3>
+          <p>Exploratory PLK inhibitor; expressed targets and significant survival-screen signal.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Final Candidate Table</h2>
+        <p class="caption">Tier 2 includes strong model or literature evidence with added ADMET caution where applicable.</p>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Drug</th><th>Tier</th><th>Category</th><th>ADMET</th><th>Score</th><th>Trial mentions</th><th>PRISM log2FC</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Topotecan</td><td><span class="badge tier1">Tier 1</span></td><td>Known/support</td><td>Candidate</td><td class="num">1.0373</td><td class="num">58</td><td class="num">-1.5127</td></tr>
+          <tr><td>Vinblastine</td><td><span class="badge tier1">Tier 1</span></td><td>Trial supported</td><td>Approved</td><td class="num">0.3808</td><td class="num">11</td><td class="num">-0.3885</td></tr>
+          <tr><td>Vinorelbine</td><td><span class="badge tier1">Tier 1</span></td><td>Trial supported</td><td>Candidate</td><td class="num">-0.8925</td><td class="num">26</td><td class="num">-1.7224</td></tr>
+          <tr><td>MG-132</td><td><span class="badge tier1">Tier 1</span></td><td>Exploratory</td><td>Candidate</td><td class="num">1.7314</td><td class="num">0</td><td class="num">-3.2282</td></tr>
+          <tr><td>BI-2536</td><td><span class="badge tier1">Tier 1</span></td><td>Exploratory</td><td>Candidate</td><td class="num">-0.8184</td><td class="num">0</td><td class="num">-2.0015</td></tr>
+          <tr><td>Bortezomib</td><td><span class="badge tier2">Tier 2</span></td><td>Trial supported</td><td>Caution</td><td class="num">-0.7052</td><td class="num">182</td><td class="num">-4.0230</td></tr>
+          <tr><td>Epirubicin</td><td><span class="badge tier2">Tier 2</span></td><td>Trial supported</td><td>Caution</td><td class="num">-0.3472</td><td class="num">56</td><td class="num">-3.4320</td></tr>
+          <tr><td>Mitoxantrone</td><td><span class="badge tier2">Tier 2</span></td><td>Trial supported</td><td>Caution</td><td class="num">-0.4549</td><td class="num">12</td><td class="num">-2.9996</td></tr>
+          <tr><td>Docetaxel</td><td><span class="badge tier2">Tier 2</span></td><td>Known/support</td><td>Caution</td><td class="num">3.0918</td><td class="num">849</td><td class="num">-1.8692</td></tr>
+          <tr><td>Dactinomycin</td><td><span class="badge tier2">Tier 2</span></td><td>Exploratory</td><td>Caution</td><td class="num">3.4108</td><td class="num">0</td><td class="num">-5.1549</td></tr>
+          <tr><td>Staurosporine</td><td><span class="badge tier2">Tier 2</span></td><td>Trial supported</td><td>Candidate</td><td class="num">-1.0570</td><td class="num">27</td><td class="num">-3.3232</td></tr>
+          <tr><td>Lestaurtinib</td><td><span class="badge tier2">Tier 2</span></td><td>Exploratory</td><td>Candidate</td><td class="num">-0.5889</td><td class="num">0</td><td class="num">-2.8677</td></tr>
+          <tr><td>Teniposide</td><td><span class="badge tier2">Tier 2</span></td><td>Exploratory</td><td>Caution</td><td class="num">-0.2337</td><td class="num">0</td><td class="num">-2.4304</td></tr>
+          <tr><td>OSI-027</td><td><span class="badge tier3">Tier 3</span></td><td>Exploratory</td><td>Candidate</td><td class="num">-0.5906</td><td class="num">0</td><td class="num">-0.3381</td></tr>
+          <tr><td>BMS-345541</td><td><span class="badge tier3">Tier 3</span></td><td>Exploratory</td><td>Candidate</td><td class="num">-0.9423</td><td class="num">0</td><td class="num">-0.1259</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <h2>Artifacts</h2>
+        <p class="caption">The PAAD raw source bundle remains under PAAD_raw; this page links the compact final run bundle.</p>
+      </div>
+      <div class="artifact-grid">
+        <a class="artifact" href="scripts/11_run_paad_full_pipeline.py"><strong>Pipeline script</strong><span>scripts/11_run_paad_full_pipeline.py</span></a>
+        <a class="artifact" href="config/paad_pipeline_config.json"><strong>Run config</strong><span>config/paad_pipeline_config.json</span></a>
+        <a class="artifact" href="reports/paad/paad_full_pipeline_run_summary_20260421.json"><strong>Run summary</strong><span>reports/paad/paad_full_pipeline_run_summary_20260421.json</span></a>
+        <a class="artifact" href="results/paad/ensemble/groupcv4_drug/numeric_strong_context_smiles_pan_lincs/individual_metrics.csv"><strong>Member metrics</strong><span>GroupCV ML, DL, and ensemble inputs</span></a>
+        <a class="artifact" href="knowledge_validation/paad/groupcv4_drug/validation_summary.csv"><strong>Knowledge validation</strong><span>Target and clinical evidence summary</span></a>
+        <a class="artifact" href="admet/paad/admet_detailed_candidates.csv"><strong>ADMET detail</strong><span>Candidate-level ADMET annotations</span></a>
+      </div>
+      <p class="footnote">
+        Source prefix: s3://say2-4team/PAAD_raw/. Code branch: codex/thyroid-hybrid-pipeline.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
