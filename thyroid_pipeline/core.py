@@ -241,7 +241,10 @@ def canonicalize_smiles(smiles: Any) -> tuple[str, bool]:
 def split_genes(value: Any) -> list[str]:
     if pd.isna(value):
         return []
-    parts = [p.strip().upper() for p in TEXT_SEPARATORS.split(str(value)) if p.strip()]
+    text = str(value).strip()
+    if text.lower() in {"", "nan", "none", "null", "na", "n/a"}:
+        return []
+    parts = [p.strip().upper() for p in TEXT_SEPARATORS.split(text) if p.strip()]
     return sorted(set(parts))
 
 
@@ -1115,6 +1118,12 @@ def admet_assessment(cfg: dict[str, Any], candidates: pd.DataFrame | None = None
 
     rows = read_table(paths.processed_dir / "row_metadata.csv")
     drug_meta = rows[["canonical_drug_id", "drug_name", "canonical_smiles", "target_genes", "PATHWAY_NAME_NORMALIZED", "classification"]].drop_duplicates("canonical_drug_id") if rows is not None else candidates
+    if "canonical_drug_id" in candidates.columns:
+        candidates = candidates.copy()
+        candidates["canonical_drug_id"] = candidates["canonical_drug_id"].astype(str)
+    if "canonical_drug_id" in drug_meta.columns:
+        drug_meta = drug_meta.copy()
+        drug_meta["canonical_drug_id"] = drug_meta["canonical_drug_id"].astype(str)
     candidates = candidates.merge(drug_meta, on=["canonical_drug_id", "drug_name"], how="left", suffixes=("", "_meta"))
     if "canonical_smiles" not in candidates.columns and "canonical_smiles_meta" in candidates.columns:
         candidates["canonical_smiles"] = candidates["canonical_smiles_meta"]
@@ -1129,6 +1138,7 @@ def admet_assessment(cfg: dict[str, Any], candidates: pd.DataFrame | None = None
         candidate_fp = _fingerprint(can, cfg) if ok else None
         no_match = 0
         toxic_flags = []
+        low_confidence_toxic_signals = []
         assay_hits = 0
         for assay_name, assay_df in assay_cache:
             match = _nearest_admet_match(candidate_fp, assay_df, cfg)
@@ -1137,7 +1147,10 @@ def admet_assessment(cfg: dict[str, Any], candidates: pd.DataFrame | None = None
             else:
                 assay_hits += 1
             if assay_name.lower() in {"ames", "dili", "herg"} and match.get("predicted_label") == 1:
-                toxic_flags.append(assay_name)
+                if match["match_type"] == "no_match":
+                    low_confidence_toxic_signals.append(assay_name)
+                else:
+                    toxic_flags.append(assay_name)
             details.append(
                 {
                     "canonical_drug_id": row.canonical_drug_id,
@@ -1168,6 +1181,7 @@ def admet_assessment(cfg: dict[str, Any], candidates: pd.DataFrame | None = None
                 "admet_coverage": coverage,
                 "admet_no_match_assays": no_match,
                 "toxicity_flags": ";".join(toxic_flags),
+                "low_confidence_toxic_signals": ";".join(low_confidence_toxic_signals),
                 "admet_category": admet_category,
             }
         )
@@ -1181,6 +1195,7 @@ def admet_assessment(cfg: dict[str, Any], candidates: pd.DataFrame | None = None
         "assay_count": int(len(assay_cache)),
         "category_counts": summary["admet_category"].value_counts(dropna=False).to_dict() if not summary.empty else {},
         "toxicity_flag_count": int(summary["toxicity_flags"].astype(str).str.len().gt(0).sum()) if not summary.empty else 0,
+        "low_confidence_toxic_signal_count": int(summary["low_confidence_toxic_signals"].astype(str).str.len().gt(0).sum()) if not summary.empty else 0,
     }
     write_json(paths.admet_output_dir / "admet_summary.json", qc)
     write_json(paths.reports_dir / "qc_step9_admet.json", qc)
@@ -1249,11 +1264,13 @@ def knowledge_validation(cfg: dict[str, Any], candidates: pd.DataFrame | None = 
     terms = [t.upper() for t in cfg["thyroid_biology_terms"]]
     records = []
     for row in candidates.itertuples():
-        target_genes = str(getattr(row, "target_genes", ""))
+        raw_target_genes = getattr(row, "target_genes", "")
+        genes = split_genes(raw_target_genes)
+        target_genes = "" if not genes else str(raw_target_genes).strip()
         pathway = str(getattr(row, "PATHWAY_NAME_NORMALIZED", ""))
         text = f"{target_genes} {pathway}".upper()
         drug_name = str(row.drug_name)
-        drug_target = 1.0 if split_genes(target_genes) else 0.0
+        drug_target = 1.0 if genes else 0.0
         target_relevance = 1.0 if any(term in text for term in terms) else 0.0
         clinical = 1.0 if drug_name.upper() in known or str(getattr(row, "classification", "")).lower() == "approved" else 0.4
         mechanism = 1.0 if target_relevance else 0.3

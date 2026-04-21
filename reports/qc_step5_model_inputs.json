@@ -1,0 +1,11 @@
+{
+  "step": "step5_model_inputs",
+  "row_count": 3387,
+  "numeric_dim": 6559,
+  "smiles_dim": 64,
+  "strong_context_dim": 32,
+  "numeric_smiles_dim": 6623,
+  "numeric_strong_context_smiles_dim": 6655,
+  "guidance_expected_full_dim_when_numeric_5524": 5620,
+  "dtype": "float32"
+}

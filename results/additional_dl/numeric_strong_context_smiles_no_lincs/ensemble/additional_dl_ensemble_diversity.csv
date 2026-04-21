@@ -1,0 +1,2 @@
+model_a,model_b,prediction_pearson_corr,prediction_spearman_corr,residual_pearson_corr,mean_abs_prediction_gap
+CrossAttention,ResidualMLP,0.9703603386878967,0.9584977297767087,0.8311131596565247,0.5143065452575684

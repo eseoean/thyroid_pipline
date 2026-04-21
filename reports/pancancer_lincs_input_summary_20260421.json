@@ -1,0 +1,35 @@
+[
+  {
+    "input_set": "numeric_pan_lincs",
+    "source_input_set": "numeric",
+    "rows": 3387,
+    "features": 6559,
+    "replaced_lincs_features": 1027,
+    "pan_lincs_drugs": 116,
+    "row_level_has_pan_lincs_ratio": 0.4830233156681061,
+    "array_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/X_numeric_pan_lincs.npy",
+    "feature_names_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/numeric_pan_lincs_feature_names.json"
+  },
+  {
+    "input_set": "numeric_smiles_pan_lincs",
+    "source_input_set": "numeric_smiles",
+    "rows": 3387,
+    "features": 6623,
+    "replaced_lincs_features": 1027,
+    "pan_lincs_drugs": 116,
+    "row_level_has_pan_lincs_ratio": 0.4830233156681061,
+    "array_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/X_numeric_smiles_pan_lincs.npy",
+    "feature_names_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/numeric_smiles_pan_lincs_feature_names.json"
+  },
+  {
+    "input_set": "numeric_strong_context_smiles_pan_lincs",
+    "source_input_set": "numeric_strong_context_smiles",
+    "rows": 3387,
+    "features": 6655,
+    "replaced_lincs_features": 1027,
+    "pan_lincs_drugs": 116,
+    "row_level_has_pan_lincs_ratio": 0.4830233156681061,
+    "array_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/X_numeric_strong_context_smiles_pan_lincs.npy",
+    "feature_names_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/numeric_strong_context_smiles_pan_lincs_feature_names.json"
+  }
+]

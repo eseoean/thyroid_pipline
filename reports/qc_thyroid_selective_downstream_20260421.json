@@ -1,0 +1,15 @@
+{
+  "external_validation_rows": 15,
+  "admet_rows": 15,
+  "knowledge_rows": 15,
+  "tier_counts": {
+    "Tier 2": 10,
+    "Excluded": 3,
+    "Tier 1": 2
+  },
+  "outputs": {
+    "external_top15": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/external_validation/thyroid_selective/top15_validated.csv",
+    "admet_final": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/admet/thyroid_selective/final_drug_candidates.csv",
+    "knowledge_final": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/phase5_final_results/thyroid_selective/final_comprehensive_candidates.csv"
+  }
+}

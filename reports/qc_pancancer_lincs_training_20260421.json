@@ -1,0 +1,135 @@
+{
+  "step": "pancancer_lincs_random3_training",
+  "input_sets": {
+    "numeric_pan_lincs": {
+      "shape": [
+        3387,
+        6559
+      ],
+      "models_completed": [
+        "LightGBM",
+        "RandomForest",
+        "XGBoost",
+        "ExtraTrees",
+        "LightGBM_DART",
+        "FlatMLP"
+      ],
+      "fold_count": 3,
+      "drug_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_canonical_drug_id": 237
+        },
+        {
+          "fold": 2,
+          "unique_canonical_drug_id": 236
+        },
+        {
+          "fold": 3,
+          "unique_canonical_drug_id": 237
+        }
+      ],
+      "cell_line_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 2,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 3,
+          "unique_sample_id": 16
+        }
+      ]
+    },
+    "numeric_smiles_pan_lincs": {
+      "shape": [
+        3387,
+        6623
+      ],
+      "models_completed": [
+        "LightGBM",
+        "XGBoost",
+        "RandomForest",
+        "LightGBM_DART",
+        "ExtraTrees",
+        "FlatMLP"
+      ],
+      "fold_count": 3,
+      "drug_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_canonical_drug_id": 237
+        },
+        {
+          "fold": 2,
+          "unique_canonical_drug_id": 236
+        },
+        {
+          "fold": 3,
+          "unique_canonical_drug_id": 237
+        }
+      ],
+      "cell_line_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 2,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 3,
+          "unique_sample_id": 16
+        }
+      ]
+    },
+    "numeric_strong_context_smiles_pan_lincs": {
+      "shape": [
+        3387,
+        6655
+      ],
+      "models_completed": [
+        "LightGBM",
+        "XGBoost",
+        "RandomForest",
+        "ExtraTrees",
+        "LightGBM_DART",
+        "FlatMLP"
+      ],
+      "fold_count": 3,
+      "drug_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_canonical_drug_id": 237
+        },
+        {
+          "fold": 2,
+          "unique_canonical_drug_id": 236
+        },
+        {
+          "fold": 3,
+          "unique_canonical_drug_id": 237
+        }
+      ],
+      "cell_line_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 2,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 3,
+          "unique_sample_id": 16
+        }
+      ]
+    }
+  },
+  "skipped_models": []
+}

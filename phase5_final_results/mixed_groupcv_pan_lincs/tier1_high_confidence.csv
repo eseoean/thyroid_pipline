@@ -1,0 +1,2 @@
+drug_name,canonical_drug_id,target_genes,pathway,ensemble_score,admet_category,drug_target_evidence,target_thyroid_relevance,clinical_evidence,mechanism_rationale,safety_profile,target_expression_bonus,knowledge_score,tier,final_category
+Vinorelbine,2048,BCL2;MAP4;MAPK1;TUBB,Mitosis,-0.18153763,Candidate,1.0,1.0,0.4,1.0,0.6,0.5,4.5,Tier 1,Thyroid indication expansion candidate

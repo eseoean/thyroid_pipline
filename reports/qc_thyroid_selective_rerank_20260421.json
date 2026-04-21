@@ -1,0 +1,89 @@
+{
+  "step": "thyroid_selective_rerank",
+  "input_set": "numeric_strong_context_smiles_pan_lincs",
+  "drug_count": 234,
+  "targeted_non_broad_count": 155,
+  "score_formula": {
+    "model_rank_score": 0.3,
+    "selectivity_rank_score": 0.3,
+    "thyroid_response_rank_score": 0.2,
+    "thyroid_context_score": 0.2,
+    "broad_cytotoxic_penalty": "subtract 0.20 for broad target/pathway and 0.20 for broad pan-cancer activity without thyroid selectivity"
+  },
+  "layer_counts": {
+    "screened_selectivity_candidate": 146,
+    "broad_cytotoxic_downweighted": 79,
+    "thyroid_context_supported": 9
+  },
+  "top30_broad_cytotoxic_count": 2,
+  "targeted_top30_broad_cytotoxic_count": 0,
+  "brca_overlap_all_rerank": {
+    "status": "completed",
+    "brca_top30_path": "/Users/skku_aws2_18/team4_project/pre_project/say2_preproject/models/ensemble_results_random3_strong_context_smiles/top30_drugs.csv",
+    "top10_overlap_count": 1,
+    "top10_overlap_ratio": 0.1,
+    "top10_overlap_drugs": [
+      "Staurosporine"
+    ],
+    "top15_overlap_count": 1,
+    "top15_overlap_ratio": 0.06666666666666667,
+    "top15_overlap_drugs": [
+      "Staurosporine"
+    ],
+    "top20_overlap_count": 3,
+    "top20_overlap_ratio": 0.15,
+    "top20_overlap_drugs": [
+      "Staurosporine",
+      "Podophyllotoxin bromide",
+      "AZD8055"
+    ],
+    "top30_overlap_count": 7,
+    "top30_overlap_ratio": 0.23333333333333334,
+    "top30_overlap_drugs": [
+      "Staurosporine",
+      "Podophyllotoxin bromide",
+      "Lestaurtinib",
+      "AZD8055",
+      "SL0101",
+      "Romidepsin",
+      "Camptothecin"
+    ]
+  },
+  "brca_overlap_targeted_non_broad": {
+    "status": "completed",
+    "brca_top30_path": "/Users/skku_aws2_18/team4_project/pre_project/say2_preproject/models/ensemble_results_random3_strong_context_smiles/top30_drugs.csv",
+    "top10_overlap_count": 1,
+    "top10_overlap_ratio": 0.1,
+    "top10_overlap_drugs": [
+      "Staurosporine"
+    ],
+    "top15_overlap_count": 1,
+    "top15_overlap_ratio": 0.06666666666666667,
+    "top15_overlap_drugs": [
+      "Staurosporine"
+    ],
+    "top20_overlap_count": 3,
+    "top20_overlap_ratio": 0.15,
+    "top20_overlap_drugs": [
+      "Staurosporine",
+      "Podophyllotoxin bromide",
+      "AZD8055"
+    ],
+    "top30_overlap_count": 6,
+    "top30_overlap_ratio": 0.2,
+    "top30_overlap_drugs": [
+      "Staurosporine",
+      "Podophyllotoxin bromide",
+      "Lestaurtinib",
+      "AZD8055",
+      "SL0101",
+      "Daporinad"
+    ]
+  },
+  "outputs": {
+    "all_ranked": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/results/thyroid_selective_rerank/thyroid_selective_reranked_all_drugs.csv",
+    "top30": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/results/thyroid_selective_rerank/thyroid_selective_reranked_top30.csv",
+    "targeted_all_ranked": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/results/thyroid_selective_rerank/thyroid_targeted_non_broad_reranked_all_drugs.csv",
+    "targeted_top30": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/results/thyroid_selective_rerank/thyroid_targeted_non_broad_reranked_top30.csv"
+  }
+}

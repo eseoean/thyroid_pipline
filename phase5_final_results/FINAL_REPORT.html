@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>Thyroid Hybrid Pipeline Final Report</title>
+  <style>
+    body { margin: 0; padding: 40px; background: #07111f; color: #e8f1ff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    main { max-width: 1180px; margin: 0 auto; }
+    h1, h2 { color: #6ee7ff; }
+    p, pre { color: #c7d4e6; line-height: 1.6; }
+    pre { background: #101d31; border: 1px solid #223550; border-radius: 12px; padding: 12px; overflow-x: auto; }
+    .bullet { margin-left: 12px; }
+    .card { background: #0d1b2e; border: 1px solid #223550; border-radius: 18px; padding: 20px; margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="card"><h1>갑상선암 약물 재창출 Hybrid Pipeline 최종 리포트</h1><p class='bullet'>- 프로젝트: thyroid_pipline</p><p class='bullet'>- 질환: thyroid cancer (THCA)</p><p class='bullet'>- 기준: Choi numeric base + say2 SMILES/strong context/random3 ensemble + Choi external/ADMET/KG validation</p><p class='bullet'>- 최종 추천은 screened drug-response 데이터에 한정한다.</p><h2>1. 실행 요약</h2><p class='bullet'>- Numeric policy: choi_5524_direction</p><p class='bullet'>- SMILES dimension: 64</p><p class='bullet'>- Strong context dimension: 32</p><p class='bullet'>- CV: random sample 3-fold OOF</p><h2>2. 모델 성능</h2><pre>| input_set | model | spearman | pearson | rmse | mae | r2 | ndcg_at_20 | train_oof_spearman_gap |</pre><pre>| --- | --- | --- | --- | --- | --- | --- | --- | --- |</pre><pre>| numeric | LightGBM | 0.8776 | 0.9165 | 1.1587 | 0.8854 | 0.8392 | 0.9692 | 0.0758 |</pre><pre>| numeric | RandomForest | 0.868 | 0.9078 | 1.2172 | 0.9165 | 0.8226 | 0.9685 | 0.1046 |</pre><pre>| numeric | XGBoost | 0.8617 | 0.9077 | 1.2398 | 0.9749 | 0.816 | 0.9646 | 0.0489 |</pre><pre>| numeric | ExtraTrees | 0.8587 | 0.9023 | 1.2459 | 0.9191 | 0.8141 | 0.9602 | 0.1335 |</pre><pre>| numeric | LightGBM_DART | 0.8483 | 0.8936 | 1.5652 | 1.2515 | 0.7067 | 0.9636 | 0.0569 |</pre><pre>| numeric | FlatMLP | 0.8172 | 0.8591 | 1.4821 | 1.1417 | 0.737 | 0.911 | 0.1505 |</pre><pre>| numeric_smiles | LightGBM | 0.8833 | 0.9199 | 1.1353 | 0.863 | 0.8457 | 0.9654 | 0.079 |</pre><pre>| numeric_smiles | XGBoost | 0.8765 | 0.9146 | 1.1895 | 0.9226 | 0.8306 | 0.9688 | 0.0487 |</pre><pre>| numeric_smiles | RandomForest | 0.8765 | 0.9134 | 1.1815 | 0.8937 | 0.8328 | 0.968 | 0.0969 |</pre><pre>| numeric_smiles | LightGBM_DART | 0.8641 | 0.904 | 1.5133 | 1.2102 | 0.7258 | 0.9609 | 0.0561 |</pre><pre>| numeric_smiles | ExtraTrees | 0.8629 | 0.9044 | 1.2335 | 0.9108 | 0.8178 | 0.9599 | 0.1297 |</pre><pre>| numeric_smiles | FlatMLP | 0.8253 | 0.8634 | 1.4597 | 1.1131 | 0.7448 | 0.9122 | 0.1388 |</pre><pre>| numeric_strong_context_smiles | LightGBM | 0.8835 | 0.9212 | 1.1264 | 0.8609 | 0.8481 | 0.9689 | 0.0789 |</pre><pre>| numeric_strong_context_smiles | XGBoost | 0.8767 | 0.9158 | 1.1825 | 0.9188 | 0.8326 | 0.9663 | 0.0481 |</pre><pre>| numeric_strong_context_smiles | RandomForest | 0.8763 | 0.9132 | 1.1826 | 0.8947 | 0.8325 | 0.9679 | 0.0972 |</pre><pre>| numeric_strong_context_smiles | LightGBM_DART | 0.8638 | 0.9048 | 1.512 | 1.2094 | 0.7263 | 0.9599 | 0.0563 |</pre><pre>| numeric_strong_context_smiles | ExtraTrees | 0.8635 | 0.905 | 1.2295 | 0.908 | 0.819 | 0.9651 | 0.1292 |</pre><pre>| numeric_strong_context_smiles | FlatMLP | 0.8287 | 0.8677 | 1.4382 | 1.0997 | 0.7523 | 0.9223 | 0.1262 |</pre><h2>3. 앙상블 및 Diversity</h2><p class='bullet'>- 앙상블 OOF Spearman: 0.8821965117740939</p><p class='bullet'>- 앙상블 OOF RMSE: 1.1713416576385498</p><p class='bullet'>- 모델 가중치: {&#x27;LightGBM&#x27;: 0.17014973972721734, &#x27;XGBoost&#x27;: 0.16883644801315215, &#x27;RandomForest&#x27;: 0.16876126633429683, &#x27;LightGBM_DART&#x27;: 0.1663534145925931, &#x27;ExtraTrees&#x27;: 0.16629326106133865, &#x27;FlatMLP&#x27;: 0.15960587027140197}</p><h2>4. 최종 후보</h2><pre>| drug_name | canonical_drug_id | target_genes | pathway | ensemble_score | admet_category | drug_target_evidence | target_thyroid_relevance | clinical_evidence | mechanism_rationale | safety_profile | target_expression_bonus | knowledge_score | tier | final_category |</pre><pre>| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |</pre><pre>| Vinorelbine | 2048 | BCL2;MAP4;MAPK1;TUBB | Mitosis | 2.430091619491577 | Candidate | 1.0 | 1.0 | 0.4 | 1.0 | 0.6 | 0.5 | 4.5 | Tier 1 | Thyroid indication expansion candidate |</pre><pre>| Staurosporine | 1034 | CDK2;CHRM1;CSK;GSK3B;IKBKB;ITK;LCK;MAPKAPK2;PDPK1;PIK3CG;PIM1;PRKCA;PRKCQ;SYK;ZAP70 | RTK signaling | 2.650351047515869 | Caution | 1.0 | 1.0 | 0.4 | 1.0 | 0.2 | 0.0 | 3.6 | Tier 2 | True repurposing or exploratory candidate |</pre><pre>| Vinblastine | 1004 | JUN;TUBA1A;TUBB;TUBB2A;TUBD1;TUBE1;TUBG1 | Mitosis | 2.6648731231689453 | Approved | 1.0 | 0.0 | 0.4 | 0.3 | 1.0 | 0.5 | 3.2 | Tier 2 | True repurposing or exploratory candidate |</pre><pre>| Romidepsin | 1817 | HDAC1;HDAC2;HDAC3;HDAC4;HDAC6;HDAC8 | Chromatin histone acetylation | 2.5289530754089355 | Candidate | 1.0 | 0.0 | 0.4 | 0.3 | 0.6 | 0.5 | 2.8 | Tier 3 | Thyroid indication expansion candidate |</pre><pre>| Bortezomib | 1191 | PROTEASOME;PRSS1;PSMB1;PSMB5 | Protein stability and degradation | 4.065159797668457 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.5 | 2.4 | Excluded | Thyroid indication expansion candidate |</pre><pre>| Dactinomycin | 1911 | TOP1;TOP2A | Other | 3.944403648376465 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.5 | 2.4 | Excluded | True repurposing or exploratory candidate |</pre><pre>| SN-38 | 1494 | TOP1 | DNA replication | 2.378016471862793 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.5 | 2.4 | Excluded | True repurposing or exploratory candidate |</pre><pre>| Daporinad | 1248 | NAMPT | Metabolism | 2.1311774253845215 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.5 | 2.4 | Excluded | True repurposing or exploratory candidate |</pre><pre>| Camptothecin | 1003 | TOP1 | DNA replication | 1.9975780248641968 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.5 | 2.4 | Excluded | Thyroid indication expansion candidate |</pre><pre>| MG-132 | 1862 | CAPN1;PROTEASOME | Protein stability and degradation | 1.3018019199371338 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.5 | 2.4 | Excluded | True repurposing or exploratory candidate |</pre><pre>| Dinaciclib | 1180 | CDK1;CDK2;CDK5;CDK9 | Cell cycle | 1.2586849927902222 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.5 | 2.4 | Excluded | True repurposing or exploratory candidate |</pre><pre>| Docetaxel | 1007 | BCL2;NR1I2;TUBB1 | Mitosis | 3.530460834503174 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.0 | 1.9 | Excluded | Thyroid indication expansion candidate |</pre><pre>| Sepantronium bromide | 1941 | BIRC5 | Apoptosis regulation | 2.7170848846435547 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.0 | 1.9 | Excluded | True repurposing or exploratory candidate |</pre><pre>| Paclitaxel | 1080 | BCL2;NR1I2;TUBB1 | Mitosis | 1.797881245613098 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.0 | 1.9 | Excluded | Thyroid indication expansion candidate |</pre><pre>| Luminespib | 1559 | HSP90 | Protein stability and degradation | 1.57468581199646 | Caution | 1.0 | 0.0 | 0.4 | 0.3 | 0.2 | 0.0 | 1.9 | Excluded | True repurposing or exploratory candidate |</pre><h2>5. QC 요약</h2><p class='bullet'>- 각 단계별 상세 QC는 `reports/qc_step*.json`에 저장했다.</p><p class='bullet'>- 외부검증 결과는 `external_validation/`, ADMET 결과는 `admet/`, knowledge validation 결과는 `phase5_final_results/`에 저장했다.</p><h2>6. 산출물 경로</h2><p class='bullet'>- `data/X_numeric.npy`</p><p class='bullet'>- `data/X_numeric_smiles.npy`</p><p class='bullet'>- `data/X_numeric_strong_context_smiles.npy`</p><p class='bullet'>- `results/random3/`</p><p class='bullet'>- `results/ensemble/thyroid_ensemble_top30_drugs.csv`</p><p class='bullet'>- `external_validation/top15_validated.csv`</p><p class='bullet'>- `admet/final_drug_candidates.csv`</p><p class='bullet'>- `phase5_final_results/final_comprehensive_candidates.csv`</p></div>
+    <h2>QC JSON Snapshot</h2>
+    <pre>{
+  &quot;qc_step10_knowledge_validation&quot;: {
+    &quot;step&quot;: &quot;step10_knowledge_validation&quot;,
+    &quot;candidate_count&quot;: 15,
+    &quot;tier_counts&quot;: {
+      &quot;Excluded&quot;: 11,
+      &quot;Tier 2&quot;: 2,
+      &quot;Tier 1&quot;: 1,
+      &quot;Tier 3&quot;: 1
+    },
+    &quot;category_counts&quot;: {
+      &quot;True repurposing or exploratory candidate&quot;: 9,
+      &quot;Thyroid indication expansion candidate&quot;: 6
+    }
+  },
+  &quot;qc_step1_response_subset&quot;: {
+    &quot;step&quot;: &quot;step1_response_subset&quot;,
+    &quot;original_rows&quot;: 3387,
+    &quot;thyroid_alias_rows&quot;: 3387,
+    &quot;rows_after_label_filter&quot;: 3387,
+    &quot;rows_after_dedup&quot;: 3387,
+    &quot;unique_cell_lines&quot;: 16,
+    &quot;unique_drugs&quot;: 243,
+    &quot;duplicate_cell_line_drug_rows_before_dedup&quot;: 0,
+    &quot;label_missing&quot;: 0,
+    &quot;label_summary&quot;: {
+      &quot;count&quot;: 3387,
+      &quot;missing&quot;: 0,
+      &quot;min&quot;: -6.939037,
+      &quot;q1&quot;: 1.8566105,
+      &quot;median&quot;: 3.584068,
+      &quot;q3&quot;: 5.1731485,
+      &quot;max&quot;: 12.843131
+    },
+    &quot;subtype_counts&quot;: {
+      &quot;Unknown&quot;: 3387
+    },
+    &quot;drug_count_summary&quot;: {
+      &quot;count&quot;: 243,
+      &quot;missing&quot;: 0,
+      &quot;min&quot;: 2.0,
+      &quot;q1&quot;: 14.0,
+      &quot;median&quot;: 15.0,
+      &quot;q3&quot;: 16.0,
+      &quot;max&quot;: 16.0
+    },
+    &quot;cell_line_count_summary&quot;: {
+      &quot;count&quot;: 16,
+      &quot;missing&quot;: 0,
+      &quot;min&quot;: 157.0,
+      &quot;q1&quot;: 206.5,
+      &quot;median&quot;: 227.0,
+      &quot;q3&quot;: 227.25,
+      &quot;max&quot;: 228.0
+    },
+    &quot;smiles_filter&quot;: {
+      &quot;enabled&quot;: true,
+      &quot;rows_before&quot;: 3387,
+      &quot;rows_after&quot;: 3387,
+      &quot;rows_removed&quot;: 0,
+      &quot;drugs_before&quot;: 243,
+      &quot;drugs_after&quot;: 243,
+      &quot;drugs_removed&quot;: 0
+    }
+  },
+  &quot;qc_step2_numeric_base&quot;: {
+    &quot;step&quot;: &quot;step2_numeric_base&quot;,
+    &quot;policy&quot;: &quot;choi_5524_direction&quot;,
+    &quot;row_count&quot;: 3387,
+    &quot;feature_count&quot;: 6559,
+    &quot;excluded_physchem_columns&quot;: [
+      &quot;drug_desc_hba&quot;,
+      &quot;drug_desc_hbd&quot;,
+      &quot;drug_desc_heavy_atoms&quot;,
+      &quot;drug_desc_ring_count&quot;,
+      &quot;drug_desc_rot_bonds&quot;
+    ],
+    &quot;nan_before_imputation&quot;: 8322769,
+    &quot;inf_before_imputation&quot;: 0,
+    &quot;all_zero_columns_before_constant_filter&quot;: 338,
+    &quot;constant_columns_removed&quot;: 344,
+    &quot;removed_constant_feature_names&quot;: [
+      &quot;sample_has_depmap_model&quot;,
+      &quot;sample__depmap_dependency__PCDHGB5&quot;,
+      &quot;sample__depmap_dependency__GRK1&quot;,
+      &quot;sample__depmap_dependency__RFX7&quot;,
+      &quot;sample__depmap_dependency__CLASP2&quot;,
+      &quot;sample__depmap_dependency__RNASEK&quot;,
+      &quot;sample__depmap_dependency__EMG1&quot;,
+      &quot;sample__depmap_dependency__UMAD1&quot;,
+      &quot;sample__depmap_dependency__CCDC187&quot;,
+      &quot;sample__depmap_dependency__NR2E3&quot;,
+      &quot;sample__depmap_dependency__SLC35F4&quot;,
+      &quot;sample__depmap_dependency__UBC&quot;,
+      &quot;sample__depmap_dependency__SYNM&quot;,
+      &quot;sample__depmap_dependency__PAPOLB&quot;,
+      &quot;sample__depmap_dependency__MILR1&quot;,
+      &quot;sample__depmap_dependency__DCAF7&quot;,
+      &quot;sample__depmap_dependency__OTOGL&quot;,
+      &quot;sample__depmap_dependency__TENM2&quot;,
+      &quot;sample__depmap_dependency__TIMM50&quot;,
+      &quot;sample__depmap_dependency__TEX52&quot;,
+      &quot;sample__depmap_dependency__ODAD4&quot;,
+      &quot;sample__depmap_dependency__CEBPZOS&quot;,
+      &quot;sample__depmap_dependency__JRK&quot;,
+      &quot;sample__depmap_dependency__SH3RF3&quot;,
+      &quot;sample__depmap_dependency__CFAP54&quot;,
+      &quot;sample__depmap_dependency__C2ORF92&quot;,
+      &quot;sample__depmap_dependency__COPG2&quot;,
+      &quot;sample__depmap_dependency__NUDT18&quot;,
+      &quot;sample__depmap_dependency__PTPRQ&quot;,
+      &quot;sample__depmap_dependency__ZC3H12D&quot;,
+      &quot;sample__depmap_dependency__C17ORF100&quot;,
+      &quot;sample__depmap_dependency__CSNKA2IP&quot;,
+      &quot;sample__depmap_dependency__FER1L5&quot;,
+      &quot;sample__depmap_dependency__SUMO2&quot;,
+      &quot;sample__depmap_dependency__MAP3K14&quot;,
+      &quot;sample__depmap_dependency__ASDURF&quot;,
+      &quot;sample__depmap_dependency__SEMA3B&quot;,
+      &quot;sample__depmap_dependency__BNIP2&quot;,
+      &quot;sample__depmap_dependency__CD24&quot;,
+      &quot;sample__depmap_dependency__SPRR1B&quot;,
+      &quot;sample__depmap_dependency__ERICH2&quot;,
+      &quot;sample__depmap_dependency__NAIP&quot;,
+      &quot;sample__depmap_dependency__KRTAP21-1&quot;,
+      &quot;sample__depmap_dependency__ZNF431&quot;,
+      &quot;sample__depmap_dependency__DCP1A&quot;,
+      &quot;sample__depmap_dependency__ZNF724&quot;,
+      &quot;sample__depmap_dependency__GSG1L2&quot;,
+      &quot;sample__depmap_dependency__FBRS&quot;,
+      &quot;sample__depmap_dependency__MYO15B&quot;,
+      &quot;sample__depmap_dependency__ZNF595&quot;,
+      &quot;sample__depmap_dependency__HEATR5A&quot;,
+      &quot;sample__depmap_dependency__NDUFB1&quot;,
+      &quot;sample__depmap_dependency__VPS11&quot;,
+      &quot;sample__depmap_dependency__WDR64&quot;,
+      &quot;sample__depmap_dependency__MINDY4B&quot;,
+      &quot;sample__depmap_dependency__ZNF487&quot;,
+      &quot;sample__depmap_dependency__FAM227A&quot;,
+      &quot;sample__depmap_dependency__ANKRD18B&quot;,
+      &quot;sample__depmap_dependency__FOXL3&quot;,
+      &quot;sample__depmap_dependency__UHRF1&quot;,
+      &quot;sample__depmap_dependency__CCDC196&quot;,
+      &quot;sample__depmap_dependency__GRAP&quot;,
+      &quot;sample__depmap_dependency__TLE7&quot;,
+      &quot;sample__depmap_dependency__C3ORF85&quot;,
+      &quot;sample__depmap_dependency__CD300H&quot;,
+      &quot;sample__depmap_dependency__EIF1AY&quot;,
+      &quot;sample__depmap_dependency__CCDC163&quot;,
+      &quot;sample__depmap_dependency__TEX48&quot;,
+      &quot;sample__depmap_dependency__NPM1&quot;,
+      &quot;sample__depmap_dependency__YWHAZ&quot;,
+      &quot;sample__depmap_dependency__DGKK&quot;,
+      &quot;sample__depmap_dependency__TMEM265&quot;,
+      &quot;sample__depmap_dependency__MUC5AC&quot;,
+      &quot;sample__depmap_dependency__SPON1&quot;,
+      &quot;sample__depmap_dependency__SPDYE3&quot;,
+      &quot;sample__depmap_dependency__CXADR&quot;,
+      &quot;sample__depmap_dependency__PLET1&quot;,
+      &quot;sample__depmap_dependency__COPZ2&quot;,
+      &quot;sample__depmap_dependency__C3ORF49&quot;,
+      &quot;sample__depmap_dependency__SHLD3&quot;,
+      &quot;sample__depmap_dependency__SLC22A24&quot;,
+      &quot;sample__depmap_dependency__COL6A5&quot;,
+      &quot;sample__depmap_dependency__CECR2&quot;,
+      &quot;sample__depmap_dependency__KRT8&quot;,
+      &quot;sample__depmap_dependency__TEX49&quot;,
+      &quot;sample__depmap_dependency__ZNF738&quot;,
+      &quot;sample__depmap_dependency__TERF1&quot;,
+      &quot;sample__depmap_dependency__PPP4R3C&quot;,
+      &quot;sample__depmap_dependency__SMIM27&quot;,
+      &quot;sample__depmap_dependency__DEXI&quot;,
+      &quot;sample__depmap_dependency__MSANTD5&quot;,
+      &quot;sample__depmap_dependency__SMAD5&quot;,
+      &quot;sample__depmap_dependency__ZSCAN26&quot;,
+      &quot;sample__depmap_dependency__DNAH17&quot;,
+      &quot;sample__depmap_dependency__IQCA1L&quot;,
+      &quot;sample__depmap_dependency__H2BC12&quot;,
+      &quot;sample__depmap_dependency__PTTG1IP2&quot;,
+      &quot;sample__depmap_dependency__KIAA0040&quot;,
+      &quot;sample__depmap_dependency__PADI6&quot;,
+      &quot;sample__depmap_dependency__CLASP1&quot;,
+      &quot;sample__depmap_dependency__GVQW3&quot;,
+      &quot;sample__depmap_dependency__CDC14C&quot;,
+      &quot;sample__depmap_dependency__GTPBP6&quot;,
+      &quot;sample__depmap_dependency__CFAP97D2&quot;,
+      &quot;sample__depmap_dependency__CSAG2&quot;,
+      &quot;sample__depmap_dependency__ECSCR&quot;,
+      &quot;sample__depmap_dependency__EXOC1L&quot;,
+      &quot;sample__depmap_dependency__HTD2&quot;,
+      &quot;sample__depmap_dependency__ZDHHC11B&quot;,
+      &quot;sample__depmap_dependency__P3R3URF&quot;,
+      &quot;sample__depmap_dependency__SELENOF&quot;,
+      &quot;sample__depmap_dependency__LOC112694756&quot;,
+      &quot;sample__depmap_dependency__OR14A2&quot;,
+      &quot;sample__depmap_dependency__ATG9B&quot;,
+      &quot;sample__depmap_dependency__ZSCAN12&quot;,
+      &quot;sample__depmap_dependency__ZFTA&quot;,
+      &quot;sample__depmap_dependency__MRLN&quot;,
+      &quot;sample__depmap_dependency__PRR20G&quot;,
+      &quot;sample__depmap_dependency__CYFIP2&quot;,
+      &quot;sample__depmap_dependency__PRAC2&quot;,
+      &quot;sample__depmap_dependency__ANKRD36&quot;,
+      &quot;sample__depmap_dependency__MYRFL&quot;,
+      &quot;sample__depmap_dependency__ZNF735&quot;,
+      &quot;sample__depmap_dependency__FCGR1A&quot;,
+      &quot;sample__depmap_dependency__GPHB5&quot;,
+      &quot;sample__depmap_dependency__FIGNL2&quot;,
+      &quot;sample__depmap_dependency__MLXIP&quot;,
+      &quot;sample__depmap_dependency__SPRR1A&quot;,
+      &quot;sample__depmap_dependency__PKD1L3&quot;,
+      &quot;sample__depmap_dependency__OR6J1&quot;,
+      &quot;sample__depmap_dependency__OR51F1&quot;,
+      &quot;sample__depmap_dependency__LY6L&quot;,
+      &quot;sample__depmap_dependency__DNAH8&quot;,
+      &quot;sample__depmap_dependency__CWC15&quot;,
+      &quot;sample__depmap_dependency__TDRD15&quot;,
+      &quot;sample__depmap_dependency__NUDT4&quot;,
+      &quot;sample__depmap_dependency__POLDIP2&quot;,
+      &quot;sample__depmap_dependency__LRRC9&quot;,
+      &quot;sample__depmap_dependency__ANKRD36C&quot;,
+      &quot;sample__depmap_dependency__C2ORF81&quot;,
+      &quot;sample__depmap_dependency__PERCC1&quot;,
+      &quot;sample__depmap_dependency__DPPA3&quot;,
+      &quot;sample__depmap_dependency__ETNK1&quot;,
+      &quot;sample__depmap_dependency__ZAN&quot;,
+      &quot;sample__depmap_dependency__NLRP2B&quot;,
+      &quot;sample__depmap_dependency__SDR42E2&quot;,
+      &quot;sample__depmap_dependency__XNDC1N&quot;,
+      &quot;sample__depmap_dependency__RECQL4&quot;,
+      &quot;sample__depmap_dependency__IZUMO1R&quot;,
+      &quot;sample__depmap_dependency__RBM4B&quot;,
+      &quot;sample__depmap_dependency__GGT1&quot;,
+      &quot;sample__depmap_dependency__TMEM114&quot;,
+      &quot;sample__depmap_dependency__PPP1R2C&quot;,
+      &quot;sample__depmap_dependency__SMIM32&quot;,
+      &quot;sample__depmap_dependency__RABGEF1&quot;,
+      &quot;sample__depmap_dependency__SCAMP1&quot;,
+      &quot;sample__depmap_dependency__SERTM2&quot;,
+      &quot;sample__depmap_dependency__C17ORF113&quot;,
+      &quot;sample__depmap_dependency__CCDC168&quot;,
+      &quot;sample__depmap_dependency__PARG&quot;,
+      &quot;sample__depmap_dependency__DHRSX&quot;,
+      &quot;sample__depmap_dependency__MEIOSIN&quot;,
+      &quot;sample__depmap_dependency__ALDH3B1&quot;,
+      &quot;sample__depmap_dependency__LACTBL1&quot;,
+      &quot;sample__depmap_dependency__CPHXL&quot;,
+      &quot;sample__depmap_dependency__ZNF274&quot;,
+      &quot;sample__depmap_dependency__SPADH&quot;,
+      &quot;sample__depmap_dependency__ENO4&quot;,
+      &quot;sample__depmap_dependency__THSD7B&quot;,
+      &quot;sample__depmap_dependency__SYN2&quot;,
+      &quot;sample__depmap_dependency__TMEM272&quot;,
+      &quot;sample__depmap_dependency__INAFM2&quot;,
+      &quot;sample__depmap_dependency__AQP7B&quot;,
+      &quot;sample__depmap_dependency__PPP1R2B&quot;,
+      &quot;sample__depmap_dependency__OVCH1&quot;,
+      &quot;sample__depmap_dependency__PLEKHA2&quot;,
+      &quot;sample__depmap_dependency__NHSL2&quot;,
+      &quot;sample__depmap_dependency__C11ORF97&quot;,
+      &quot;sample__depmap_dependency__SPPL2B&quot;,
+      &quot;sample__depmap_dependency__HIPK2&quot;,
+      &quot;sample__depmap_dependency__RAB44&quot;,
+      &quot;sample__depmap_dependency__TSGA10IP&quot;,
+      &quot;sample__depmap_dependency__C10ORF143&quot;,
+      &quot;sample__depmap_dependency__DERPC&quot;,
+      &quot;sample__depmap_dependency__C11ORF96&quot;,
+      &quot;sample__depmap_dependency__LOC730098&quot;,
+      &quot;sample__depmap_dependency__TIGD1&quot;,
+      &quot;sample__depmap_dependency__CCDC57&quot;,
+      &quot;sample__depmap_dependency__TYW1B&quot;,
+      &quot;sample__depmap_dependency__DOCK1&quot;,
+      &quot;sample__depmap_dependency__LCE1F&quot;,
+      &quot;sample__depmap_dependency__C10ORF95&quot;,
+      &quot;sample__depmap_dependency__TREH&quot;,
+      &quot;sample__depmap_dependency__ASXL2&quot;,
+      &quot;sample__depmap_dependency__SUPT20HL2&quot;,
+      &quot;sample__depmap_dependency__SHISA8&quot;,
+      &quot;sample__depmap_dependency__BECN2&quot;,
+      &quot;sample__depmap_dependency__LOC728392&quot;,
+      &quot;sample__depmap_dependency__FOLR3&quot;,
+      &quot;sample__depmap_dependency__MARCOL&quot;
+    ],
+    &quot;expected_direction&quot;: &quot;Choi-style numeric base; BRCA reference was 5524 after excluding five physchem columns&quot;
+  },
+  &quot;qc_step3_smiles&quot;: {
+    &quot;step&quot;: &quot;step3_smiles_svd&quot;,
+    &quot;drug_count&quot;: 243,
+    &quot;smiles_present_drugs&quot;: 243,
+    &quot;rdkit_parse_success_drugs&quot;: 243,
+    &quot;row_count&quot;: 3387,
+    &quot;feature_count&quot;: 64,
+    &quot;svd_explained_variance_sum&quot;: 0.6403064914305236,
+    &quot;all_zero_row_count&quot;: 0,
+    &quot;missing_smiles_drugs&quot;: [],
+    &quot;duplicate_smiles_count&quot;: 10
+  },
+  &quot;qc_step4_strong_context&quot;: {
+    &quot;step&quot;: &quot;step4_strong_context&quot;,
+    &quot;row_count&quot;: 3387,
+    &quot;feature_count&quot;: 32,
+    &quot;raw_onehot_feature_count&quot;: 32,
+    &quot;target_dim&quot;: 32,
+    &quot;hashed_due_to_dim&quot;: false,
+    &quot;unique_class_counts&quot;: {
+      &quot;TCGA_DESC&quot;: 1,
+      &quot;PATHWAY_NAME_NORMALIZED&quot;: 24,
+      &quot;classification&quot;: 3,
+      &quot;drug_bridge_strength&quot;: 2,
+      &quot;stage3_resolution_status&quot;: 2
+    },
+    &quot;unknown_or_unclassified_ratio&quot;: {
+      &quot;TCGA_DESC&quot;: 0.0,
+      &quot;PATHWAY_NAME_NORMALIZED&quot;: 0.04930617065249483,
+      &quot;classification&quot;: 0.0,
+      &quot;drug_bridge_strength&quot;: 0.0,
+      &quot;stage3_resolution_status&quot;: 0.0
+    }
+  },
+  &quot;qc_step5_model_inputs&quot;: {
+    &quot;step&quot;: &quot;step5_model_inputs&quot;,
+    &quot;row_count&quot;: 3387,
+    &quot;numeric_dim&quot;: 6559,
+    &quot;smiles_dim&quot;: 64,
+    &quot;strong_context_dim&quot;: 32,
+    &quot;numeric_smiles_dim&quot;: 6623,
+    &quot;numeric_strong_context_smiles_dim&quot;: 6655,
+    &quot;guidance_expected_full_dim_when_numeric_5524&quot;: 5620,
+    &quot;dtype&quot;: &quot;float32&quot;
+  },
+  &quot;qc_step6_training&quot;: {
+    &quot;step&quot;: &quot;step6_training&quot;,
+    &quot;input_sets&quot;: {
+      &quot;numeric&quot;: {
+        &quot;shape&quot;: [
+          3387,
+          6559
+        ],
+        &quot;models_completed&quot;: [
+          &quot;LightGBM&quot;,
+          &quot;RandomForest&quot;,
+          &quot;XGBoost&quot;,
+          &quot;ExtraTrees&quot;,
+          &quot;LightGBM_DART&quot;,
+          &quot;FlatMLP&quot;
+        ],
+        &quot;fold_count&quot;: 3,
+        &quot;label_summary&quot;: {
+          &quot;count&quot;: 3387,
+          &quot;missing&quot;: 0,
+          &quot;min&quot;: -6.939036846160889,
+          &quot;q1&quot;: 1.8566105365753174,
+          &quot;median&quot;: 3.5840680599212646,
+          &quot;q3&quot;: 5.1731486320495605,
+          &quot;max&quot;: 12.843131065368652
+        },
+        &quot;drug_coverage_per_fold&quot;: [
+          {
+            &quot;fold&quot;: 1,
+            &quot;unique_canonical_drug_id&quot;: 237
+          },
+          {
+            &quot;fold&quot;: 2,
+            &quot;unique_canonical_drug_id&quot;: 236
+          },
+          {
+            &quot;fold&quot;: 3,
+            &quot;unique_canonical_drug_id&quot;: 237
+          }
+        ],
+        &quot;cell_line_coverage_per_fold&quot;: [
+          {
+            &quot;fold&quot;: 1,
+            &quot;unique_sample_id&quot;: 16
+          },
+          {
+            &quot;fold&quot;: 2,
+            &quot;unique_sample_id&quot;: 16
+          },
+          {
+            &quot;fold&quot;: 3,
+            &quot;unique_sample_id&quot;: 16
+          }
+        ]
+      },
+      &quot;numeric_smiles&quot;: {
+        &quot;shape&quot;: [
+          3387,
+          6623
+        ],
+        &quot;models_completed&quot;: [
+          &quot;LightGBM&quot;,
+          &quot;XGBoost&quot;,
+          &quot;RandomForest&quot;,
+          &quot;LightGBM_DART&quot;,
+          &quot;ExtraTrees&quot;,
+          &quot;FlatMLP&quot;
+        ],
+        &quot;fold_count&quot;: 3,
+        &quot;label_summary&quot;: {
+          &quot;count&quot;: 3387,
+          &quot;missing&quot;: 0,
+          &quot;min&quot;: -6.939036846160889,
+          &quot;q1&quot;: 1.8566105365753174,
+          &quot;median&quot;: 3.5840680599212646,
+          &quot;q3&quot;: 5.1731486320495605,
+          &quot;max&quot;: 12.843131065368652
+        },
+        &quot;drug_coverage_per_fold&quot;: [
+          {
+            &quot;fold&quot;: 1,
+            &quot;unique_canonical_drug_id&quot;: 237
+          },
+          {
+            &quot;fold&quot;: 2,
+            &quot;unique_canonical_drug_id&quot;: 236
+          },
+          {
+            &quot;fold&quot;: 3,
+            &quot;unique_canonical_drug_id&quot;: 237
+          }
+        ],
+        &quot;cell_line_coverage_per_fold&quot;: [
+          {
+            &quot;fold&quot;: 1,
+            &quot;unique_sample_id&quot;: 16
+          },
+          {
+            &quot;fold&quot;: 2,
+            &quot;unique_sample_id&quot;: 16
+          },
+          {
+            &quot;fold&quot;: 3,
+            &quot;unique_sample_id&quot;: 16
+          }
+        ]
+      },
+      &quot;numeric_strong_context_smiles&quot;: {
+        &quot;shape&quot;: [
+          3387,
+          6655
+        ],
+        &quot;models_completed&quot;: [
+          &quot;LightGBM&quot;,
+          &quot;XGBoost&quot;,
+          &quot;RandomForest&quot;,
+          &quot;LightGBM_DART&quot;,
+          &quot;ExtraTrees&quot;,
+          &quot;FlatMLP&quot;
+        ],
+        &quot;fold_count&quot;: 3,
+        &quot;label_summary&quot;: {
+          &quot;count&quot;: 3387,
+          &quot;missing&quot;: 0,
+          &quot;min&quot;: -6.939036846160889,
+          &quot;q1&quot;: 1.8566105365753174,
+          &quot;median&quot;: 3.5840680599212646,
+          &quot;q3&quot;: 5.1731486320495605,
+          &quot;max&quot;: 12.843131065368652
+        },
+        &quot;drug_coverage_per_fold&quot;: [
+          {
+            &quot;fold&quot;: 1,
+            &quot;unique_canonical_drug_id&quot;: 237
+          },
+          {
+            &quot;fold&quot;: 2,
+            &quot;unique_canonical_drug_id&quot;: 236
+          },
+          {
+            &quot;fold&quot;: 3,
+            &quot;unique_canonical_drug_id&quot;: 237
+          }
+        ],
+        &quot;cell_line_coverage_per_fold&quot;: [
+          {
+            &quot;fold&quot;: 1,
+            &quot;unique_sample_id&quot;: 16
+          },
+          {
+            &quot;fold&quot;: 2,
+            &quot;unique_sample_id&quot;: 16
+          },
+          {
+            &quot;fold&quot;: 3,
+            &quot;unique_sample_id&quot;: 16
+          }
+        ]
+      }
+    },
+    &quot;skipped_models&quot;: []
+  },
+  &quot;qc_step7_ensemble_diversity&quot;: {
+    &quot;input_set&quot;: &quot;numeric_strong_context_smiles&quot;,
+    &quot;weights&quot;: {
+      &quot;LightGBM&quot;: 0.17014973972721734,
+      &quot;XGBoost&quot;: 0.16883644801315215,
+      &quot;RandomForest&quot;: 0.16876126633429683,
+      &quot;LightGBM_DART&quot;: 0.1663534145925931,
+      &quot;ExtraTrees&quot;: 0.16629326106133865,
+      &quot;FlatMLP&quot;: 0.15960587027140197
+    },
+    &quot;ensemble_metrics&quot;: {
+      &quot;n&quot;: 3387,
+      &quot;spearman&quot;: 0.8821965117740939,
+      &quot;pearson&quot;: 0.9189794659614563,
+      &quot;rmse&quot;: 1.1713416576385498,
+      &quot;mae&quot;: 0.9074194431304932,
+      &quot;r2&quot;: 0.8357092756269741,
+      &quot;ndcg_at_20&quot;: 0.9594621078580391
+    },
+    &quot;best_single_model&quot;: {
+      &quot;input_set&quot;: &quot;numeric_strong_context_smiles&quot;,
+      &quot;model&quot;: &quot;LightGBM&quot;,
+      &quot;n&quot;: 3387,
+      &quot;spearman&quot;: 0.8834859902750168,
+      &quot;pearson&quot;: 0.9211755394935608,
+      &quot;rmse&quot;: 1.126425862312317,
+      &quot;mae&quot;: 0.8608535528182983,
+      &quot;r2&quot;: 0.8480673535696814,
+      &quot;ndcg_at_20&quot;: 0.9688983757690606,
+      &quot;train_oof_spearman_gap&quot;: 0.0789368517044768,
+      &quot;prediction_variance&quot;: 6.75344181060791
+    },
+    &quot;diversity_summary&quot;: {
+      &quot;model_a&quot;: {
+        &quot;count&quot;: 15,
+        &quot;unique&quot;: 5,
+        &quot;top&quot;: &quot;LightGBM&quot;,
+        &quot;freq&quot;: 5,
+        &quot;mean&quot;: null,
+        &quot;std&quot;: null,
+        &quot;min&quot;: null,
+        &quot;25%&quot;: null,
+        &quot;50%&quot;: null,
+        &quot;75%&quot;: null,
+        &quot;max&quot;: null
+      },
+      &quot;model_b&quot;: {
+        &quot;count&quot;: 15,
+        &quot;unique&quot;: 5,
+        &quot;top&quot;: &quot;FlatMLP&quot;,
+        &quot;freq&quot;: 5,
+        &quot;mean&quot;: null,
+        &quot;std&quot;: null,
+        &quot;min&quot;: null,
+        &quot;25%&quot;: null,
+        &quot;50%&quot;: null,
+        &quot;75%&quot;: null,
+        &quot;max&quot;: null
+      },
+      &quot;prediction_pearson_corr&quot;: {
+        &quot;count&quot;: 15.0,
+        &quot;unique&quot;: null,
+        &quot;top&quot;: null,
+        &quot;freq&quot;: null,
+        &quot;mean&quot;: 0.9635821461677552,
+        &quot;std&quot;: 0.030371656086252814,
+        &quot;min&quot;: 0.9145235419273376,
+        &quot;25%&quot;: 0.929076224565506,
+        &quot;50%&quot;: 0.978729248046875,
+        &quot;75%&quot;: 0.9877430498600006,
+        &quot;max&quot;: 0.9890313148498535
+      },
+      &quot;prediction_spearman_corr&quot;: {
+        &quot;count&quot;: 15.0,
+        &quot;unique&quot;: null,
+        &quot;top&quot;: null,
+        &quot;freq&quot;: null,
+        &quot;mean&quot;: 0.9524904306991594,
+        &quot;std&quot;: 0.03626934569858602,
+        &quot;min&quot;: 0.8969983523032574,
+        &quot;25%&quot;: 0.9107808361226235,
+        &quot;50%&quot;: 0.9691821075058977,
+        &quot;75%&quot;: 0.9818594103364708,
+        &quot;max&quot;: 0.9849514338373984
+      },
+      &quot;residual_pearson_corr&quot;: {
+        &quot;count&quot;: 15.0,
+        &quot;unique&quot;: null,
+        &quot;top&quot;: null,
+        &quot;freq&quot;: null,
+        &quot;mean&quot;: 0.8406521916389466,
+        &quot;std&quot;: 0.09266305121706485,
+        &quot;min&quot;: 0.6908996105194092,
+        &quot;25%&quot;: 0.7489221394062042,
+        &quot;50%&quot;: 0.8723210096359253,
+        &quot;75%&quot;: 0.9216935634613037,
+        &quot;max&quot;: 0.9461846351623535
+      },
+      &quot;mean_abs_prediction_gap&quot;: {
+        &quot;count&quot;: 15.0,
+        &quot;unique&quot;: null,
+        &quot;top&quot;: null,
+        &quot;freq&quot;: null,
+        &quot;mean&quot;: 0.5971549610296886,
+        &quot;std&quot;: 0.2339189925140762,
+        &quot;min&quot;: 0.2513510584831238,
+        &quot;25%&quot;: 0.34918004274368286,
+        &quot;50%&quot;: 0.7037912607192993,
+        &quot;75%&quot;: 0.7682847082614899,
+        &quot;max&quot;: 0.934533417224884
+      }
+    }
+  },
+  &quot;qc_step8_external_validation&quot;: {
+    &quot;step&quot;: &quot;step8_external_validation&quot;,
+    &quot;status&quot;: &quot;completed&quot;,
+    &quot;expression_gene_count&quot;: 296,
+    &quot;patient_count&quot;: 572,
+    &quot;target_gene_match_rate_mean&quot;: 0.8764367816091954,
+    &quot;target_expressed_count_top15&quot;: 10,
+    &quot;clinical_available&quot;: true,
+    &quot;topk_precision&quot;: {
+      &quot;p_at_5&quot;: 0.0,
+      &quot;p_at_10&quot;: 0.0,
+      &quot;p_at_20&quot;: 0.05
+    }
+  },
+  &quot;qc_step9_admet&quot;: {
+    &quot;step&quot;: &quot;step9_admet&quot;,
+    &quot;candidate_count&quot;: 15,
+    &quot;assay_count&quot;: 22,
+    &quot;category_counts&quot;: {
+      &quot;Caution&quot;: 12,
+      &quot;Candidate&quot;: 2,
+      &quot;Approved&quot;: 1
+    },
+    &quot;toxicity_flag_count&quot;: 12
+  }
+}</pre>
+  </main>
+</body>
+</html>

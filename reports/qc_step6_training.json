@@ -1,0 +1,162 @@
+{
+  "step": "step6_training",
+  "input_sets": {
+    "numeric": {
+      "shape": [
+        3387,
+        6559
+      ],
+      "models_completed": [
+        "LightGBM",
+        "RandomForest",
+        "XGBoost",
+        "ExtraTrees",
+        "LightGBM_DART",
+        "FlatMLP"
+      ],
+      "fold_count": 3,
+      "label_summary": {
+        "count": 3387,
+        "missing": 0,
+        "min": -6.939036846160889,
+        "q1": 1.8566105365753174,
+        "median": 3.5840680599212646,
+        "q3": 5.1731486320495605,
+        "max": 12.843131065368652
+      },
+      "drug_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_canonical_drug_id": 237
+        },
+        {
+          "fold": 2,
+          "unique_canonical_drug_id": 236
+        },
+        {
+          "fold": 3,
+          "unique_canonical_drug_id": 237
+        }
+      ],
+      "cell_line_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 2,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 3,
+          "unique_sample_id": 16
+        }
+      ]
+    },
+    "numeric_smiles": {
+      "shape": [
+        3387,
+        6623
+      ],
+      "models_completed": [
+        "LightGBM",
+        "XGBoost",
+        "RandomForest",
+        "LightGBM_DART",
+        "ExtraTrees",
+        "FlatMLP"
+      ],
+      "fold_count": 3,
+      "label_summary": {
+        "count": 3387,
+        "missing": 0,
+        "min": -6.939036846160889,
+        "q1": 1.8566105365753174,
+        "median": 3.5840680599212646,
+        "q3": 5.1731486320495605,
+        "max": 12.843131065368652
+      },
+      "drug_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_canonical_drug_id": 237
+        },
+        {
+          "fold": 2,
+          "unique_canonical_drug_id": 236
+        },
+        {
+          "fold": 3,
+          "unique_canonical_drug_id": 237
+        }
+      ],
+      "cell_line_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 2,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 3,
+          "unique_sample_id": 16
+        }
+      ]
+    },
+    "numeric_strong_context_smiles": {
+      "shape": [
+        3387,
+        6655
+      ],
+      "models_completed": [
+        "LightGBM",
+        "XGBoost",
+        "RandomForest",
+        "LightGBM_DART",
+        "ExtraTrees",
+        "FlatMLP"
+      ],
+      "fold_count": 3,
+      "label_summary": {
+        "count": 3387,
+        "missing": 0,
+        "min": -6.939036846160889,
+        "q1": 1.8566105365753174,
+        "median": 3.5840680599212646,
+        "q3": 5.1731486320495605,
+        "max": 12.843131065368652
+      },
+      "drug_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_canonical_drug_id": 237
+        },
+        {
+          "fold": 2,
+          "unique_canonical_drug_id": 236
+        },
+        {
+          "fold": 3,
+          "unique_canonical_drug_id": 237
+        }
+      ],
+      "cell_line_coverage_per_fold": [
+        {
+          "fold": 1,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 2,
+          "unique_sample_id": 16
+        },
+        {
+          "fold": 3,
+          "unique_sample_id": 16
+        }
+      ]
+    }
+  },
+  "skipped_models": []
+}

@@ -1,0 +1,113 @@
+{
+  "input_set": "numeric_strong_context_smiles",
+  "weights": {
+    "LightGBM": 0.17014973972721734,
+    "XGBoost": 0.16883644801315215,
+    "RandomForest": 0.16876126633429683,
+    "LightGBM_DART": 0.1663534145925931,
+    "ExtraTrees": 0.16629326106133865,
+    "FlatMLP": 0.15960587027140197
+  },
+  "ensemble_metrics": {
+    "n": 3387,
+    "spearman": 0.8821965117740939,
+    "pearson": 0.9189794659614563,
+    "rmse": 1.1713416576385498,
+    "mae": 0.9074194431304932,
+    "r2": 0.8357092756269741,
+    "ndcg_at_20": 0.9594621078580391
+  },
+  "best_single_model": {
+    "input_set": "numeric_strong_context_smiles",
+    "model": "LightGBM",
+    "n": 3387,
+    "spearman": 0.8834859902750168,
+    "pearson": 0.9211755394935608,
+    "rmse": 1.126425862312317,
+    "mae": 0.8608535528182983,
+    "r2": 0.8480673535696814,
+    "ndcg_at_20": 0.9688983757690606,
+    "train_oof_spearman_gap": 0.0789368517044768,
+    "prediction_variance": 6.75344181060791
+  },
+  "diversity_summary": {
+    "model_a": {
+      "count": 15,
+      "unique": 5,
+      "top": "LightGBM",
+      "freq": 5,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "25%": null,
+      "50%": null,
+      "75%": null,
+      "max": null
+    },
+    "model_b": {
+      "count": 15,
+      "unique": 5,
+      "top": "FlatMLP",
+      "freq": 5,
+      "mean": null,
+      "std": null,
+      "min": null,
+      "25%": null,
+      "50%": null,
+      "75%": null,
+      "max": null
+    },
+    "prediction_pearson_corr": {
+      "count": 15.0,
+      "unique": null,
+      "top": null,
+      "freq": null,
+      "mean": 0.9635821461677552,
+      "std": 0.030371656086252814,
+      "min": 0.9145235419273376,
+      "25%": 0.929076224565506,
+      "50%": 0.978729248046875,
+      "75%": 0.9877430498600006,
+      "max": 0.9890313148498535
+    },
+    "prediction_spearman_corr": {
+      "count": 15.0,
+      "unique": null,
+      "top": null,
+      "freq": null,
+      "mean": 0.9524904306991594,
+      "std": 0.03626934569858602,
+      "min": 0.8969983523032574,
+      "25%": 0.9107808361226235,
+      "50%": 0.9691821075058977,
+      "75%": 0.9818594103364708,
+      "max": 0.9849514338373984
+    },
+    "residual_pearson_corr": {
+      "count": 15.0,
+      "unique": null,
+      "top": null,
+      "freq": null,
+      "mean": 0.8406521916389466,
+      "std": 0.09266305121706485,
+      "min": 0.6908996105194092,
+      "25%": 0.7489221394062042,
+      "50%": 0.8723210096359253,
+      "75%": 0.9216935634613037,
+      "max": 0.9461846351623535
+    },
+    "mean_abs_prediction_gap": {
+      "count": 15.0,
+      "unique": null,
+      "top": null,
+      "freq": null,
+      "mean": 0.5971549610296886,
+      "std": 0.2339189925140762,
+      "min": 0.2513510584831238,
+      "25%": 0.34918004274368286,
+      "50%": 0.7037912607192993,
+      "75%": 0.7682847082614899,
+      "max": 0.934533417224884
+    }
+  }
+}

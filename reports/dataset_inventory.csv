@@ -1,0 +1,8 @@
+name,required,destination,exists,type,file_count,total_bytes,description
+thyroid_screened_response_pairs,True,/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/thyroid_response_pairs.csv,True,file,1,18501,Thyroid cancer cell line x screened drug response table with LN_IC50 or IC50.
+sample_features,True,/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/sample_features.csv,True,file,1,1932,"Sample/cell-line numeric features such as dependency, expression, CRISPR or pathway scores."
+drug_features,True,/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/drug_features.csv,True,file,1,5018,"Drug features including canonical_smiles, Morgan/LINCS/target numeric features and five Choi-excluded physchem columns."
+drug_annotations,True,/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/drug_annotations.csv,True,file,1,1583,Target/pathway/context metadata used for strong context and knowledge validation.
+thyroid_external_expression,False,/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/external/thyroid_expression.csv,True,file,1,9559,TCGA-THCA or equivalent expression matrix for target expression validation.
+thyroid_external_clinical,False,/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/external/thyroid_clinical.csv,True,file,1,1204,TCGA-THCA or equivalent clinical endpoint table for survival validation.
+admet_assays,False,/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/admet,True,directory,6,4612,TDC-style ADMET assay CSV files with smiles and label columns.

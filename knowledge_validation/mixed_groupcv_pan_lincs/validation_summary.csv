@@ -1,0 +1,16 @@
+drug_name,canonical_drug_id,target_genes,pathway,ensemble_score,admet_category,drug_target_evidence,target_thyroid_relevance,clinical_evidence,mechanism_rationale,safety_profile,target_expression_bonus,knowledge_score,tier,final_category
+Vinorelbine,2048,BCL2;MAP4;MAPK1;TUBB,Mitosis,-0.18153763,Candidate,1.0,1.0,0.4,1.0,0.6,0.5,4.5,Tier 1,Thyroid indication expansion candidate
+Lestaurtinib,1024,FLT3;JAK2;NTRK1;NTRK2;NTRK3,Other kinases,0.520394,Candidate,1.0,1.0,0.4,1.0,0.6,0.0,4.0,Tier 2,True repurposing or exploratory candidate
+Staurosporine,1034,CDK2;CHRM1;CSK;GSK3B;IKBKB;ITK;LCK;MAPKAPK2;PDPK1;PIK3CG;PIM1;PRKCA;PRKCQ;SYK;ZAP70,RTK signaling,0.44776854,Candidate,1.0,1.0,0.4,1.0,0.6,0.0,4.0,Tier 2,True repurposing or exploratory candidate
+Vinblastine,1004,JUN;TUBA1A;TUBB;TUBB2A;TUBD1;TUBE1;TUBG1,Mitosis,2.332168,Approved,1.0,0.0,0.4,0.3,1.0,0.5,3.2,Tier 2,True repurposing or exploratory candidate
+Topotecan,1808,TOP1;TOP1MT,DNA replication,2.89604,Candidate,1.0,0.0,0.4,0.3,0.6,0.5,2.8,Tier 3,True repurposing or exploratory candidate
+Camptothecin,1003,TOP1,DNA replication,0.89506537,Candidate,1.0,0.0,0.4,0.3,0.6,0.5,2.8,Tier 3,Thyroid indication expansion candidate
+MG-132,1862,CAPN1;PROTEASOME,Protein stability and degradation,0.17591485,Candidate,1.0,0.0,0.4,0.3,0.6,0.5,2.8,Tier 3,True repurposing or exploratory candidate
+BX795,1037,AURKB;AURKC;IKK;TBK1,Other kinases,0.0037337542,Candidate,1.0,0.0,0.4,0.3,0.6,0.0,2.3,Tier 3,True repurposing or exploratory candidate
+Piperlongumine,1243,,Other,0.24984804,Candidate,0.0,0.0,0.4,0.3,0.6,0.0,1.2999999999999998,Tier 3,True repurposing or exploratory candidate
+Dactinomycin,1811,TOP1;TOP2A,Other,4.3256083,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,True repurposing or exploratory candidate
+Epirubicin,1511,ANTHRACYCLINE;TOP2A;TOP2B,DNA replication,1.8479921,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,Thyroid indication expansion candidate
+Mitoxantrone,1810,TOP2;TOP2A;TOP2B,DNA replication,1.647765,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,Thyroid indication expansion candidate
+Teniposide,1809,TOP2A;TOP2B,DNA replication,-0.066674195,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,True repurposing or exploratory candidate
+Docetaxel,1819,BCL2;NR1I2;TUBB1,Mitosis,3.3416893,Caution,1.0,0.0,0.4,0.3,0.2,0.0,1.9,Excluded,Thyroid indication expansion candidate
+Paclitaxel,1080,BCL2;NR1I2;TUBB1,Mitosis,0.1458569,Caution,1.0,0.0,0.4,0.3,0.2,0.0,1.9,Excluded,Thyroid indication expansion candidate

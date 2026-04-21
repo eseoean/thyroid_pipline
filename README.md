@@ -10,6 +10,16 @@
 - 모델 출력 이후 외부검증, ADMET, knowledge validation, 최종 Tier 분류는 Choi protocol 흐름을 따릅니다.
 - 최종 추천은 screened drug-response, 즉 실제 반응값이 있는 약물-샘플 pair에 한정합니다.
 
+## 최신 최종 기준
+
+2026-04-21 기준 최종 업로드/인수 기준은 `mixed_groupcv_pan_lincs`입니다. 이 결과는 `numeric + strong context + smiles + pan-cancer LINCS` 입력셋으로 `canonical_drug_id` GroupCV를 수행한 `CrossAttention + ResidualMLP + LightGBM` 앙상블입니다.
+
+- 최종 정리: `docs/THYROID_FINAL_HANDOFF_20260421.md`
+- 모델/외부검증 상세: `docs/THYROID_MIXED_GROUPCV_EXTERNAL_VALIDATION_20260421.md`
+- 최종 후보: `phase5_final_results/mixed_groupcv_pan_lincs/final_comprehensive_candidates.csv`
+
+아래의 2026-04-20 실제 실행 결과 요약과 `phase5_final_results/FINAL_REPORT.md`는 이전 random sample 3-fold 흐름의 기록이며, 보수적인 최종 결론은 위 `mixed_groupcv_pan_lincs` 기준을 우선합니다.
+
 ## 빠른 실행
 
 원천 데이터 준비 상태를 먼저 확인합니다.

@@ -1,0 +1,22 @@
+{
+  "step": "step4_strong_context",
+  "row_count": 3387,
+  "feature_count": 32,
+  "raw_onehot_feature_count": 32,
+  "target_dim": 32,
+  "hashed_due_to_dim": false,
+  "unique_class_counts": {
+    "TCGA_DESC": 1,
+    "PATHWAY_NAME_NORMALIZED": 24,
+    "classification": 3,
+    "drug_bridge_strength": 2,
+    "stage3_resolution_status": 2
+  },
+  "unknown_or_unclassified_ratio": {
+    "TCGA_DESC": 0.0,
+    "PATHWAY_NAME_NORMALIZED": 0.04930617065249483,
+    "classification": 0.0,
+    "drug_bridge_strength": 0.0,
+    "stage3_resolution_status": 0.0
+  }
+}

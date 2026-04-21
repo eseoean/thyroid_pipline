@@ -1,0 +1,105 @@
+{
+  "sources": [
+    {
+      "name": "thyroid_screened_response_pairs",
+      "required": true,
+      "destination": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/thyroid_response_pairs.csv",
+      "exists": true,
+      "type": "file",
+      "file_count": 1,
+      "total_bytes": 18501,
+      "description": "Thyroid cancer cell line x screened drug response table with LN_IC50 or IC50.",
+      "examples": [
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/thyroid_response_pairs.csv"
+      ]
+    },
+    {
+      "name": "sample_features",
+      "required": true,
+      "destination": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/sample_features.csv",
+      "exists": true,
+      "type": "file",
+      "file_count": 1,
+      "total_bytes": 1932,
+      "description": "Sample/cell-line numeric features such as dependency, expression, CRISPR or pathway scores.",
+      "examples": [
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/sample_features.csv"
+      ]
+    },
+    {
+      "name": "drug_features",
+      "required": true,
+      "destination": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/drug_features.csv",
+      "exists": true,
+      "type": "file",
+      "file_count": 1,
+      "total_bytes": 5018,
+      "description": "Drug features including canonical_smiles, Morgan/LINCS/target numeric features and five Choi-excluded physchem columns.",
+      "examples": [
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/drug_features.csv"
+      ]
+    },
+    {
+      "name": "drug_annotations",
+      "required": true,
+      "destination": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/drug_annotations.csv",
+      "exists": true,
+      "type": "file",
+      "file_count": 1,
+      "total_bytes": 1583,
+      "description": "Target/pathway/context metadata used for strong context and knowledge validation.",
+      "examples": [
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/drug_annotations.csv"
+      ]
+    },
+    {
+      "name": "thyroid_external_expression",
+      "required": false,
+      "destination": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/external/thyroid_expression.csv",
+      "exists": true,
+      "type": "file",
+      "file_count": 1,
+      "total_bytes": 9559,
+      "description": "TCGA-THCA or equivalent expression matrix for target expression validation.",
+      "examples": [
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/external/thyroid_expression.csv"
+      ]
+    },
+    {
+      "name": "thyroid_external_clinical",
+      "required": false,
+      "destination": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/external/thyroid_clinical.csv",
+      "exists": true,
+      "type": "file",
+      "file_count": 1,
+      "total_bytes": 1204,
+      "description": "TCGA-THCA or equivalent clinical endpoint table for survival validation.",
+      "examples": [
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/external/thyroid_clinical.csv"
+      ]
+    },
+    {
+      "name": "admet_assays",
+      "required": false,
+      "destination": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/admet",
+      "exists": true,
+      "type": "directory",
+      "file_count": 6,
+      "total_bytes": 4612,
+      "description": "TDC-style ADMET assay CSV files with smiles and label columns.",
+      "examples": [
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/admet/herg.csv",
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/admet/solubility.csv",
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/admet/dili.csv",
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/admet/.gitkeep",
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/admet/cyp3a4.csv",
+        "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/admet/ames.csv"
+      ]
+    }
+  ],
+  "s3": {
+    "checked": false
+  },
+  "missing_required": [],
+  "ready_for_pipeline": true
+}

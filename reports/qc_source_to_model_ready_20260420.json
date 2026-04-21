@@ -1,0 +1,620 @@
+{
+  "step": "source_to_model_ready",
+  "source_staging_dir": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/source_staging",
+  "response_rows": 3387,
+  "response_cell_lines": 16,
+  "response_drugs": 243,
+  "sample_features_shape": [
+    16,
+    5360
+  ],
+  "drug_features_shape": [
+    243,
+    1563
+  ],
+  "drug_annotations_shape": [
+    243,
+    11
+  ],
+  "sample_qc": {
+    "thca_cell_lines": 16,
+    "depmap_model_matches": 16,
+    "crispr_feature_rows": 9,
+    "selected_crispr_features": 4110,
+    "expr_source_found": true,
+    "expr_source_rows": 1517,
+    "expr_source_features": 19193,
+    "expr_feature_rows": 13,
+    "expr_selected_features": 539,
+    "expr_matched_requested_models": 13,
+    "cnv_source_found": true,
+    "cnv_source_rows": 1788,
+    "cnv_source_features": 24383,
+    "cnv_feature_rows": 16,
+    "cnv_selected_features": 536,
+    "cnv_matched_requested_models": 16,
+    "mutation_source_found": true,
+    "mutation_feature_rows": 16,
+    "mutation_selected_features": 159,
+    "mutation_top_genes_from_thyroid_models": [
+      "TP53",
+      "TTN",
+      "MUC4",
+      "FCGBP",
+      "MUC19",
+      "BRAF",
+      "MUC16",
+      "TERT",
+      "FAT3",
+      "HERC1",
+      "MGA",
+      "MT-ND4",
+      "PXDNL",
+      "ASTN2",
+      "HLA-A",
+      "LRP1",
+      "MT-CYB",
+      "MT-ND5",
+      "OTOG",
+      "AHNAK2",
+      "COPA",
+      "DENND4B",
+      "DLG2",
+      "ERBB4",
+      "FAM205A",
+      "FMN1",
+      "HEATR1",
+      "HECTD4",
+      "HLA-B",
+      "HLA-DRB1",
+      "HMCN1",
+      "LAMA5",
+      "MT-ND1",
+      "MUC3A",
+      "OBSCN",
+      "RNF17",
+      "RP1",
+      "SORL1",
+      "ACAN",
+      "ADARB2",
+      "ADGRG4",
+      "ANKRD11",
+      "ANKRD12",
+      "ARHGEF26",
+      "ATP8A2",
+      "C2CD3",
+      "CATSPERG",
+      "CFAP92",
+      "CNGB3",
+      "COL4A3"
+    ],
+    "missing_crispr_cell_lines": 7,
+    "missing_crispr_with_non_crispr_omics_fallback": 7,
+    "selected_non_crispr_omics_features": 1234
+  },
+  "drug_qc": {
+    "drug_count": 295,
+    "smiles_present": 243,
+    "smiles_parse_ok": 243,
+    "target_gene_present": 238,
+    "classification_counts": {
+      "screened_candidate": 238,
+      "indication_expansion": 54,
+      "approved": 3
+    },
+    "smiles_source_counts": {
+      "brca_gdsc_catalog": 243,
+      "missing": 52
+    },
+    "morgan_bits": 512,
+    "lincs_rows": 101,
+    "selected_lincs_features": 1024,
+    "drug_lincs_direct_matches": 101,
+    "drug_lincs_recovered_matches": 14,
+    "drug_lincs_matches": 115,
+    "lincs_bridge_metadata_found": true,
+    "lincs_bridge_candidates": 16,
+    "lincs_bridge_match_type_counts": {
+      "smiles": 10,
+      "name": 6
+    },
+    "lincs_mcf7_source_found": true,
+    "lincs_recovered_drugs": 14,
+    "lincs_mcf7_signature_rows_used": 153,
+    "lincs_mcf7_selected_raw_features": 1024,
+    "lincs_mcf7_row_groups_scanned": 1
+  },
+  "primary_filter_qc": {
+    "require_valid_smiles_drugs": true,
+    "before": {
+      "response_rows": 4037,
+      "response_cell_lines": 16,
+      "response_drugs": 295,
+      "drug_feature_rows": 295
+    },
+    "after": {
+      "response_rows": 3387,
+      "response_cell_lines": 16,
+      "response_drugs": 243,
+      "drug_feature_rows": 243
+    },
+    "removed": {
+      "response_rows": 650,
+      "drugs": 52
+    },
+    "removed_drugs": [
+      {
+        "canonical_drug_id": "1428",
+        "drug_name": "IAP_5620",
+        "target_genes": "IAP",
+        "PATHWAY_NAME_NORMALIZED": "Other",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1584",
+        "drug_name": "BDOCA000347a",
+        "target_genes": "BRPF1;BRPF2;BRPF3",
+        "PATHWAY_NAME_NORMALIZED": "Chromatin histone acetylation",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1585",
+        "drug_name": "BDF00022089a",
+        "target_genes": "BRPF1;BRPF2;BRPF3",
+        "PATHWAY_NAME_NORMALIZED": "Chromatin histone acetylation",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1586",
+        "drug_name": "BDILV000379a",
+        "target_genes": "BAZ2A;BAZ2B",
+        "PATHWAY_NAME_NORMALIZED": "Chromatin histone acetylation",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1635",
+        "drug_name": "Picolinici-acid",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Other",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1708",
+        "drug_name": "CDK9_5576",
+        "target_genes": "CDK9",
+        "PATHWAY_NAME_NORMALIZED": "Cell cycle",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1709",
+        "drug_name": "CDK9_5038",
+        "target_genes": "CDK9",
+        "PATHWAY_NAME_NORMALIZED": "Cell cycle",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1712",
+        "drug_name": "Eg5_9814",
+        "target_genes": "KSP11",
+        "PATHWAY_NAME_NORMALIZED": "Other",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1713",
+        "drug_name": "ERK_2440",
+        "target_genes": "MAPK1;MAPK3",
+        "PATHWAY_NAME_NORMALIZED": "ERK MAPK signaling",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1714",
+        "drug_name": "ERK_6604",
+        "target_genes": "MAPK1;MAPK3",
+        "PATHWAY_NAME_NORMALIZED": "ERK MAPK signaling",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1716",
+        "drug_name": "IRAK4_4710",
+        "target_genes": "IRAK4",
+        "PATHWAY_NAME_NORMALIZED": "Other kinases",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1718",
+        "drug_name": "JAK1_8709",
+        "target_genes": "JAK1",
+        "PATHWAY_NAME_NORMALIZED": "Other kinases",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1730",
+        "drug_name": "PAK_5339",
+        "target_genes": "PAK1;PAK2",
+        "PATHWAY_NAME_NORMALIZED": "Cytoskeleton",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1732",
+        "drug_name": "TAF1_5496",
+        "target_genes": "TAF1",
+        "PATHWAY_NAME_NORMALIZED": "Other",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1733",
+        "drug_name": "ULK1_4989",
+        "target_genes": "ULK1",
+        "PATHWAY_NAME_NORMALIZED": "Other kinases",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1734",
+        "drug_name": "VSP34_8731",
+        "target_genes": "VSP34",
+        "PATHWAY_NAME_NORMALIZED": "Other",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1738",
+        "drug_name": "IGF1R_3801",
+        "target_genes": "IGFR1",
+        "PATHWAY_NAME_NORMALIZED": "IGF1R signaling",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1739",
+        "drug_name": "JAK_8517",
+        "target_genes": "JAK1;JAK2",
+        "PATHWAY_NAME_NORMALIZED": "Other kinases",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1776",
+        "drug_name": "GSK2256098C",
+        "target_genes": "FAK1",
+        "PATHWAY_NAME_NORMALIZED": "Cytoskeleton",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1777",
+        "drug_name": "GSK2276186C",
+        "target_genes": "JAK1;JAK2;JAK3",
+        "PATHWAY_NAME_NORMALIZED": "Other kinases",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1779",
+        "drug_name": "GSK626616AC",
+        "target_genes": "DYRK1A",
+        "PATHWAY_NAME_NORMALIZED": "Other kinases",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1780",
+        "drug_name": "GSK3337463A",
+        "target_genes": "NIK",
+        "PATHWAY_NAME_NORMALIZED": "Other kinases",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1782",
+        "drug_name": "GSK2830371A",
+        "target_genes": "PPM1D",
+        "PATHWAY_NAME_NORMALIZED": "Other",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1783",
+        "drug_name": "LMB_AB1",
+        "target_genes": "ADRA1A;ADRB1",
+        "PATHWAY_NAME_NORMALIZED": "Other",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1784",
+        "drug_name": "LMB_AB2",
+        "target_genes": "GADD34",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1785",
+        "drug_name": "LMB_AB3",
+        "target_genes": "PPP1R15B",
+        "PATHWAY_NAME_NORMALIZED": "Other",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1820",
+        "drug_name": "123829",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1821",
+        "drug_name": "765771",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1824",
+        "drug_name": "123138",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1826",
+        "drug_name": "50869",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1828",
+        "drug_name": "720427",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1829",
+        "drug_name": "667880",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1832",
+        "drug_name": "729189",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1833",
+        "drug_name": "741909",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1834",
+        "drug_name": "743380",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1836",
+        "drug_name": "150412",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1839",
+        "drug_name": "615590",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1840",
+        "drug_name": "630600",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1844",
+        "drug_name": "776928",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1855",
+        "drug_name": "KRAS (G12C) Inhibitor-12",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "ERK MAPK signaling",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1866",
+        "drug_name": "BDP-00009066",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Cytoskeleton",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1998",
+        "drug_name": "BPD-00008900",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Other",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "1999",
+        "drug_name": "N25720-51-A1",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "2000",
+        "drug_name": "N27922-53-1",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "2002",
+        "drug_name": "N30652-18-1",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "2003",
+        "drug_name": "N29087-69-1",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "2112",
+        "drug_name": "VTP-A",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "2113",
+        "drug_name": "VTP-B",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "2145",
+        "drug_name": "PBD-288",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "Unclassified",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "2149",
+        "drug_name": "CT7033-2",
+        "target_genes": "KDM3A;KDM4A;KDM4C;KDM4E;KDM6B",
+        "PATHWAY_NAME_NORMALIZED": "Chromatin histone methylation",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "2361",
+        "drug_name": "THR-102",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "PI3K/MTOR signaling",
+        "classification": "screened_candidate"
+      },
+      {
+        "canonical_drug_id": "2362",
+        "drug_name": "THR-103",
+        "target_genes": "",
+        "PATHWAY_NAME_NORMALIZED": "PI3K/MTOR signaling",
+        "classification": "screened_candidate"
+      }
+    ]
+  },
+  "external_qc": {
+    "target_gene_universe": 356,
+    "external_expression_genes_written": 296,
+    "external_expression_samples": 572,
+    "clinical_rows": 579
+  },
+  "admet_qc": {
+    "admet_assays_written": 22,
+    "admet_rows_by_assay": [
+      {
+        "assay": "ames",
+        "rows": 7255
+      },
+      {
+        "assay": "bbb_martins",
+        "rows": 1985
+      },
+      {
+        "assay": "bioavailability_ma",
+        "rows": 640
+      },
+      {
+        "assay": "caco2_wang",
+        "rows": 910
+      },
+      {
+        "assay": "clearance_hepatocyte_az",
+        "rows": 1213
+      },
+      {
+        "assay": "clearance_microsome_az",
+        "rows": 1102
+      },
+      {
+        "assay": "cyp2c9_substrate_carbonmangels",
+        "rows": 666
+      },
+      {
+        "assay": "cyp2c9_veith",
+        "rows": 12092
+      },
+      {
+        "assay": "cyp2d6_substrate_carbonmangels",
+        "rows": 665
+      },
+      {
+        "assay": "cyp2d6_veith",
+        "rows": 13130
+      },
+      {
+        "assay": "cyp3a4_substrate_carbonmangels",
+        "rows": 667
+      },
+      {
+        "assay": "cyp3a4_veith",
+        "rows": 12328
+      },
+      {
+        "assay": "dili",
+        "rows": 475
+      },
+      {
+        "assay": "half_life_obach",
+        "rows": 667
+      },
+      {
+        "assay": "herg",
+        "rows": 651
+      },
+      {
+        "assay": "hia_hou",
+        "rows": 578
+      },
+      {
+        "assay": "ld50_zhu",
+        "rows": 7376
+      },
+      {
+        "assay": "lipophilicity_astrazeneca",
+        "rows": 4200
+      },
+      {
+        "assay": "pgp_broccatelli",
+        "rows": 1212
+      },
+      {
+        "assay": "ppbr_az",
+        "rows": 2790
+      },
+      {
+        "assay": "solubility_aqsoldb",
+        "rows": 9982
+      },
+      {
+        "assay": "vdss_lombardo",
+        "rows": 1128
+      }
+    ]
+  },
+  "outputs": {
+    "response_table": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/thyroid_response_pairs.csv",
+    "sample_features": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/sample_features.csv",
+    "drug_features": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/drug_features.csv",
+    "drug_annotations": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/raw/drug_annotations.csv",
+    "external_expression": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/external/thyroid_expression.csv",
+    "external_clinical": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/external/thyroid_clinical.csv",
+    "admet_dir": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/admet"
+  }
+}

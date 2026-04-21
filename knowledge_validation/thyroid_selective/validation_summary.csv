@@ -1,0 +1,16 @@
+drug_name,canonical_drug_id,target_genes,pathway,ensemble_score,admet_category,drug_target_evidence,target_thyroid_relevance,clinical_evidence,mechanism_rationale,safety_profile,target_expression_bonus,knowledge_score,tier,final_category
+Trametinib,1372,MAP2K1;MAP2K2,ERK MAPK signaling,0.4799599703401327,Candidate,1.0,1.0,1.0,1.0,0.6,0.5,5.1,Tier 1,Known thyroid cancer positive control
+Ulixertinib,1908,EPHB2;MAPK1;MAPK3,ERK MAPK signaling,-2.1544026024639606,Candidate,1.0,1.0,0.4,1.0,0.6,0.5,4.5,Tier 1,Thyroid indication expansion candidate
+Dabrafenib,1373,BRAF;LIMK1;NEK11;RAF1;SIK1,ERK MAPK signaling,-2.9742196947336197,Caution,1.0,1.0,1.0,1.0,0.2,0.0,4.2,Tier 2,Known thyroid cancer positive control
+PD0325901,1060,MAP2K1;MAP2K2,ERK MAPK signaling,-0.7096683268900961,Caution,1.0,1.0,0.4,1.0,0.2,0.5,4.1,Tier 2,True repurposing or exploratory candidate
+Dasatinib,1079,ABL;ABL1;ABL2;BCR;BTK;CSK;EPHA2;EPHA5;EPHB4;EPHRINS;FGR;FRK;FYN;HSPA8;KIT;LCK;LYN;MAP3K20;MAPK14;NR4A3;PDGFR;PDGFRB;PPAT;SRC;STAT5B;YES1,Other kinases,-1.0116481366567314,Caution,1.0,1.0,0.4,1.0,0.2,0.5,4.1,Tier 2,Thyroid indication expansion candidate
+Refametinib,1014,MAP2K1;MAP2K2,ERK MAPK signaling,-1.8724587997421622,Caution,1.0,1.0,0.4,1.0,0.2,0.5,4.1,Tier 2,True repurposing or exploratory candidate
+SCH772984,1564,MAPK1;MAPK3,ERK MAPK signaling,-2.5917029306292534,Caution,1.0,1.0,0.4,1.0,0.2,0.5,4.1,Tier 2,True repurposing or exploratory candidate
+AZD2014,1441,MTOR,PI3K/MTOR signaling,-2.5965310434500375,Caution,1.0,1.0,0.4,1.0,0.2,0.5,4.1,Tier 2,True repurposing or exploratory candidate
+OSI-027,1594,MTOR,PI3K/MTOR signaling,-2.5971290320158005,Caution,1.0,1.0,0.4,1.0,0.2,0.5,4.1,Tier 2,True repurposing or exploratory candidate
+Selumetinib,1736,MAP2K1;MAP2K2,ERK MAPK signaling,-2.717894231279691,Caution,1.0,1.0,0.4,1.0,0.2,0.5,4.1,Tier 2,Thyroid indication expansion candidate
+VX-11e,2096,MAPK1,ERK MAPK signaling,-2.7656555573145547,Caution,1.0,1.0,0.4,1.0,0.2,0.5,4.1,Tier 2,True repurposing or exploratory candidate
+Staurosporine,1034,CDK2;CHRM1;CSK;GSK3B;IKBKB;ITK;LCK;MAPKAPK2;PDPK1;PIK3CG;PIM1;PRKCA;PRKCQ;SYK;ZAP70,RTK signaling,2.739223465323448,Caution,1.0,1.0,0.4,1.0,0.2,0.0,3.6,Tier 2,True repurposing or exploratory candidate
+Cediranib,1922,FLT1;FLT2;FLT3;FLT4;KDR;KIT;PDGFRB,RTK signaling,-2.609502963721752,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,Thyroid indication expansion candidate
+Podophyllotoxin bromide,1825,nan,Unclassified,-0.40230650703112286,Caution,1.0,0.0,0.4,0.3,0.2,0.0,1.9,Excluded,True repurposing or exploratory candidate
+BX795,1037,AURKB;AURKC;IKK;TBK1,Other kinases,-1.470781683921814,Caution,1.0,0.0,0.4,0.3,0.2,0.0,1.9,Excluded,True repurposing or exploratory candidate

@@ -1,0 +1,55 @@
+{
+  "step": "additional_dl_groupcv",
+  "input_set": "numeric_strong_context_smiles_no_lincs",
+  "group_column": "canonical_drug_id",
+  "device": "mps",
+  "shape": [
+    3387,
+    5628
+  ],
+  "unique_groups": 243,
+  "feature_blocks": {
+    "sample": 5012,
+    "drug_morgan": 512,
+    "drug_other": 7,
+    "strong_context": 30,
+    "smiles": 64,
+    "other": 3
+  },
+  "models": {
+    "CrossAttention": {
+      "elapsed_sec": 11.4603590965271,
+      "oof_metrics": {
+        "n": 3387,
+        "spearman": 0.5190336346722383,
+        "pearson": 0.5898921489715576,
+        "rmse": 2.3489346504211426,
+        "mae": 1.784090280532837,
+        "r2": 0.3393252493921495,
+        "ndcg_at_20": 0.8829944833954404
+      },
+      "best_epochs": [
+        3,
+        22,
+        13
+      ]
+    },
+    "ResidualMLP": {
+      "elapsed_sec": 10.626116037368774,
+      "oof_metrics": {
+        "n": 3387,
+        "spearman": 0.45068443693785887,
+        "pearson": 0.49954724311828613,
+        "rmse": 2.5577163696289062,
+        "mae": 1.9058927297592163,
+        "r2": 0.21665948266423174,
+        "ndcg_at_20": 0.9057674942359659
+      },
+      "best_epochs": [
+        10,
+        7,
+        12
+      ]
+    }
+  }
+}

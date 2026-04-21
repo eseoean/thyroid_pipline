@@ -1,0 +1,47 @@
+{
+  "input_set": "numeric_strong_context_smiles_no_lincs",
+  "weights": {
+    "CrossAttention": 0.503566454740134,
+    "ResidualMLP": 0.4964335452598661
+  },
+  "ensemble_metrics": {
+    "n": 3387,
+    "spearman": 0.8892047346537625,
+    "pearson": 0.9237322807312012,
+    "rmse": 1.112091064453125,
+    "mae": 0.8461488485336304,
+    "r2": 0.8519097356137421,
+    "ndcg_at_20": 0.9484185296690044
+  },
+  "member_metrics": [
+    {
+      "input_set": "numeric_strong_context_smiles_no_lincs",
+      "model": "CrossAttention",
+      "n": 3387,
+      "spearman": 0.8865782756209227,
+      "pearson": 0.9229980111122132,
+      "rmse": 1.1201227903366089,
+      "mae": 0.8481928110122681,
+      "r2": 0.8497629223068701,
+      "ndcg_at_20": 0.9553074726660922,
+      "train_oof_spearman_gap": 0.0449723067934606,
+      "prediction_variance": 7.8461995124816895,
+      "elapsed_sec": 10.005908012390137
+    },
+    {
+      "input_set": "numeric_strong_context_smiles_no_lincs",
+      "model": "ResidualMLP",
+      "n": 3387,
+      "spearman": 0.874020086870166,
+      "pearson": 0.91060072183609,
+      "rmse": 1.2050658464431765,
+      "mae": 0.9207642674446106,
+      "r2": 0.826112878325781,
+      "ndcg_at_20": 0.9216217304628156,
+      "train_oof_spearman_gap": 0.0881397364649375,
+      "prediction_variance": 7.750627517700195,
+      "elapsed_sec": 24.207899808883667
+    }
+  ],
+  "diversity_rows": 1
+}

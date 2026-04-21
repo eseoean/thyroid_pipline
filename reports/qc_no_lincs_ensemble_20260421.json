@@ -1,0 +1,35 @@
+{
+  "input_set": "numeric_strong_context_smiles_no_lincs",
+  "removed_feature_family": "LINCS",
+  "weights": {
+    "LightGBM": 0.1713761479042494,
+    "XGBoost": 0.17018893884288638,
+    "RandomForest": 0.16947419993149543,
+    "LightGBM_DART": 0.16769468546216795,
+    "ExtraTrees": 0.16632100607433986,
+    "FlatMLP": 0.15494502178486103
+  },
+  "ensemble_metrics": {
+    "n": 3387,
+    "spearman": 0.8828212719843742,
+    "pearson": 0.9168866872787476,
+    "rmse": 1.1955634355545044,
+    "mae": 0.9296017289161682,
+    "r2": 0.8288444192755899,
+    "ndcg_at_20": 0.9136275050163111
+  },
+  "best_single_model": {
+    "input_set": "numeric_strong_context_smiles_no_lincs",
+    "model": "LightGBM",
+    "n": 3387,
+    "spearman": 0.8848487815113646,
+    "pearson": 0.9189019203186036,
+    "rmse": 1.144033908843994,
+    "mae": 0.8684800863265991,
+    "r2": 0.8432802930813794,
+    "ndcg_at_20": 0.9558166245990376,
+    "train_oof_spearman_gap": 0.0764724337193071,
+    "prediction_variance": 6.558382511138916
+  },
+  "diversity_rows": 15
+}

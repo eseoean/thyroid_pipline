@@ -1,0 +1,19 @@
+{
+  "step": "missingness_source_audit",
+  "smiles_removed_drugs": 52,
+  "smiles_removed_recovery_candidates_with_local_smiles": 0,
+  "lincs_drugs_total": 243,
+  "lincs_signature_drugs_total": 115,
+  "lincs_signature_direct_flag_drugs": 101,
+  "lincs_signature_recovered_flag_drugs": 14,
+  "lincs_local_name_or_smiles_bridge_candidates": 2,
+  "cell_lines_total": 16,
+  "cell_lines_with_crispr": 9,
+  "cell_lines_missing_crispr_but_depmap_model_available": 7,
+  "cell_lines_missing_crispr_with_omics_fallback": 7,
+  "outputs": {
+    "smiles_removed_drug_recovery_review": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/reports/missingness/smiles_removed_drug_recovery_review.csv",
+    "lincs_drug_mapping_review": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/reports/missingness/lincs_drug_mapping_review.csv",
+    "cellline_feature_coverage_review": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/reports/missingness/cellline_feature_coverage_review.csv"
+  }
+}

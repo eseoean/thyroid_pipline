@@ -1,0 +1,49 @@
+{
+  "pan_cancer_definition": "LINCS GSE92742 trt_cp signatures from tumor sample_type cell lines",
+  "tumor_cell_ids_total": 70,
+  "tumor_trt_cp_signature_rows": 166996,
+  "mapped_signature_drug_pairs": 8864,
+  "mapped_unique_signatures": 8430,
+  "mapped_drugs": 116,
+  "mapped_cells": 53,
+  "mapping_source_breakdown": {
+    "name": 8213,
+    "smiles": 651
+  },
+  "top_mapped_cell_counts": {
+    "MCF7": 1786,
+    "PC3": 995,
+    "A549": 960,
+    "VCAP": 806,
+    "A375": 439,
+    "HT29": 386,
+    "SKBR3": 360,
+    "MDAMB231": 360,
+    "BT20": 360,
+    "HS578T": 359,
+    "HEPG2": 249,
+    "U937": 62,
+    "SKM1": 46,
+    "THP1": 46,
+    "OV7": 44,
+    "SW948": 44,
+    "SW620": 44,
+    "SW480": 44,
+    "SNU1040": 44,
+    "SNGM": 44
+  },
+  "unmapped_drugs": 127,
+  "gctx_source": "/Users/skku_aws2_18/drug/derived/official_dataset_sources_20260406/lincs/GSE92742_Broad_LINCS_Level5_COMPZ.MODZ_n473647x12328.gctx.gz",
+  "decompressed_gctx": "/tmp/thyroid_lincs_pancancer_cache/GSE92742_Broad_LINCS_Level5_COMPZ.MODZ_n473647x12328.gctx",
+  "row_major": false,
+  "target_lincs_gene_features": 1024,
+  "matched_gctx_gene_features": 1024,
+  "missing_gctx_gene_features": 0,
+  "mapped_signatures_in_gctx": 8430,
+  "mapped_signature_drug_pairs_in_gctx": 8864,
+  "pan_lincs_drug_signature_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/source_staging/lincs/lincs_drug_signature_pancancer_20260421.parquet",
+  "pan_lincs_drug_signature_shape": [
+    116,
+    1025
+  ]
+}

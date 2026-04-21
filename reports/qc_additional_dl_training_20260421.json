@@ -1,0 +1,53 @@
+{
+  "step": "additional_dl_training",
+  "input_set": "numeric_strong_context_smiles_no_lincs",
+  "device": "mps",
+  "shape": [
+    3387,
+    5628
+  ],
+  "feature_blocks": {
+    "sample": 5012,
+    "drug_morgan": 512,
+    "drug_other": 7,
+    "strong_context": 30,
+    "smiles": 64,
+    "other": 3
+  },
+  "models": {
+    "CrossAttention": {
+      "elapsed_sec": 10.005908012390137,
+      "oof_metrics": {
+        "n": 3387,
+        "spearman": 0.8865782756209227,
+        "pearson": 0.9229980111122131,
+        "rmse": 1.1201227903366089,
+        "mae": 0.8481928110122681,
+        "r2": 0.8497629223068701,
+        "ndcg_at_20": 0.9553074726660922
+      },
+      "best_epochs": [
+        20,
+        18,
+        13
+      ]
+    },
+    "ResidualMLP": {
+      "elapsed_sec": 24.207899808883667,
+      "oof_metrics": {
+        "n": 3387,
+        "spearman": 0.874020086870166,
+        "pearson": 0.9106007218360901,
+        "rmse": 1.2050658464431763,
+        "mae": 0.9207642674446106,
+        "r2": 0.826112878325781,
+        "ndcg_at_20": 0.9216217304628155
+      },
+      "best_epochs": [
+        48,
+        45,
+        42
+      ]
+    }
+  }
+}

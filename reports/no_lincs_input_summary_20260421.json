@@ -1,0 +1,32 @@
+[
+  {
+    "input_set": "numeric_no_lincs",
+    "source_input_set": "numeric",
+    "rows": 3387,
+    "source_features": 6559,
+    "removed_lincs_features": 1027,
+    "remaining_features": 5532,
+    "array_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/X_numeric_no_lincs.npy",
+    "feature_names_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/numeric_no_lincs_feature_names.json"
+  },
+  {
+    "input_set": "numeric_smiles_no_lincs",
+    "source_input_set": "numeric_smiles",
+    "rows": 3387,
+    "source_features": 6623,
+    "removed_lincs_features": 1027,
+    "remaining_features": 5596,
+    "array_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/X_numeric_smiles_no_lincs.npy",
+    "feature_names_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/numeric_smiles_no_lincs_feature_names.json"
+  },
+  {
+    "input_set": "numeric_strong_context_smiles_no_lincs",
+    "source_input_set": "numeric_strong_context_smiles",
+    "rows": 3387,
+    "source_features": 6655,
+    "removed_lincs_features": 1027,
+    "remaining_features": 5628,
+    "array_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/X_numeric_strong_context_smiles_no_lincs.npy",
+    "feature_names_path": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/numeric_strong_context_smiles_no_lincs_feature_names.json"
+  }
+]

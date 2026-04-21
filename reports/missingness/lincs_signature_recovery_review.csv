@@ -1,0 +1,17 @@
+canonical_drug_id,drug_name,pert_id,brd_id,pert_iname,match_type,is_touchstone,mcf7_signature_rows,recovery_status
+1007,Docetaxel,BRD-K63265447,BRD-K63265447,docetaxel,name,1,2.0,recovered_from_mcf7
+1047,Nutlin-3a (-),BRD-A12230535,BRD-A12230535,nutlin-3,smiles,0,2.0,recovered_from_mcf7
+1057,Dactolisib,BRD-K12184916,BRD-K12184916,NVP-BEZ235,smiles,1,20.0,recovered_from_mcf7
+1058,Pictilisib,BRD-K52911425,BRD-K52911425,GDC-0941,smiles,1,12.0,recovered_from_mcf7
+1062,Selumetinib,BRD-K57080016,BRD-K57080016,selumetinib,name,1,27.0,recovered_from_mcf7
+1073,5-Fluorouracil,BRD-K24844714,BRD-K24844714,fluorouracil,smiles,0,20.0,recovered_from_mcf7
+1084,Rapamycin,BRD-K84937637,BRD-K84937637,sirolimus,smiles,0,26.0,recovered_from_mcf7
+1200,Fulvestrant,BRD-A83237092,BRD-A83237092,fulvestrant,name,1,6.0,recovered_from_mcf7
+1248,Daporinad,BRD-K58550667,BRD-K58550667,FK-866,smiles,0,2.0,recovered_from_mcf7
+1373,Dabrafenib,BRD-K09951645,BRD-K09951645,dabrafenib,name,0,,no_mcf7_signature_rows
+1559,Luminespib,BRD-K41859756,BRD-K41859756,NVP-AUY922,smiles,1,28.0,recovered_from_mcf7
+1576,IWP-2,BRD-K82924899,BRD-K82924899,IWP-2,name,0,,no_mcf7_signature_rows
+1811,Dactinomycin,BRD-A73909368,BRD-A73909368,dactinomycin,name,1,2.0,recovered_from_mcf7
+1930,Telomerase Inhibitor IX,BRD-K19894101,BRD-K19894101,MST-312,smiles,1,2.0,recovered_from_mcf7
+2156,5-azacytidine,BRD-K03406345,BRD-K03406345,azacitidine,smiles,1,2.0,recovered_from_mcf7
+2360,THR-101,BRD-K45278408,BRD-K45278408,BRD-K45278408,smiles,0,2.0,recovered_from_mcf7

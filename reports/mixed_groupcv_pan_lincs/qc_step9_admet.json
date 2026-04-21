@@ -1,0 +1,12 @@
+{
+  "step": "step9_admet",
+  "candidate_count": 15,
+  "assay_count": 22,
+  "category_counts": {
+    "Candidate": 8,
+    "Caution": 6,
+    "Approved": 1
+  },
+  "toxicity_flag_count": 6,
+  "low_confidence_toxic_signal_count": 10
+}

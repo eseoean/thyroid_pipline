@@ -1,0 +1,14 @@
+{
+  "step": "step8_external_validation",
+  "status": "completed",
+  "expression_gene_count": 296,
+  "patient_count": 572,
+  "target_gene_match_rate_mean": 0.9168245547555892,
+  "target_expressed_count_top15": 11,
+  "clinical_available": true,
+  "topk_precision": {
+    "p_at_5": 0.2,
+    "p_at_10": 0.2,
+    "p_at_20": 0.1
+  }
+}

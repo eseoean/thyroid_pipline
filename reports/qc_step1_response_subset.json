@@ -1,0 +1,50 @@
+{
+  "step": "step1_response_subset",
+  "original_rows": 3387,
+  "thyroid_alias_rows": 3387,
+  "rows_after_label_filter": 3387,
+  "rows_after_dedup": 3387,
+  "unique_cell_lines": 16,
+  "unique_drugs": 243,
+  "duplicate_cell_line_drug_rows_before_dedup": 0,
+  "label_missing": 0,
+  "label_summary": {
+    "count": 3387,
+    "missing": 0,
+    "min": -6.939037,
+    "q1": 1.8566105,
+    "median": 3.584068,
+    "q3": 5.1731485,
+    "max": 12.843131
+  },
+  "subtype_counts": {
+    "Unknown": 3387
+  },
+  "drug_count_summary": {
+    "count": 243,
+    "missing": 0,
+    "min": 2.0,
+    "q1": 14.0,
+    "median": 15.0,
+    "q3": 16.0,
+    "max": 16.0
+  },
+  "cell_line_count_summary": {
+    "count": 16,
+    "missing": 0,
+    "min": 157.0,
+    "q1": 206.5,
+    "median": 227.0,
+    "q3": 227.25,
+    "max": 228.0
+  },
+  "smiles_filter": {
+    "enabled": true,
+    "rows_before": 3387,
+    "rows_after": 3387,
+    "rows_removed": 0,
+    "drugs_before": 243,
+    "drugs_after": 243,
+    "drugs_removed": 0
+  }
+}

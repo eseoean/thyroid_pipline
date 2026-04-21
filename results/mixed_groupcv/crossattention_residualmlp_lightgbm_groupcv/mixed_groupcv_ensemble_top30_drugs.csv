@@ -1,0 +1,31 @@
+rank,canonical_drug_id,drug_name,canonical_smiles,target_genes,PATHWAY_NAME_NORMALIZED,classification,mean_pred_ln_ic50,mixed_groupcv_score,screened_rows
+1,1811,Dactinomycin,Cc1c2oc3c(C)ccc(C(=O)N[C@@H]4C(=O)N[C@H](C(C)C)C(=O)N5CCC[C@H]5C(=O)N(C)CC(=O)N(C)[C@@H](C(C)C)C(=O)O[C@@H]4C)c3nc-2c(C(=O)N[C@@H]2C(=O)N[C@H](C(C)C)C(=O)N3CCC[C@H]3C(=O)N(C)CC(=O)N(C)[C@@H](C(C)C)C(=O)O[C@@H]2C)c(N)c1=O,TOP1;TOP2A,Other,screened_candidate,-4.3256083,4.3256083,12
+2,1819,Docetaxel,CC(=O)O[C@@]12CO[C@@H]1C[C@H](O)[C@@]1(C)C(=O)[C@H](O)C3=C(C)[C@@H](OC(=O)[C@H](O)[C@@H](NC(=O)OC(C)(C)C)c4ccccc4)C[C@@](O)([C@@H](OC(=O)c4ccccc4)[C@H]21)C3(C)C.O.O.O,BCL2;NR1I2;TUBB1,Mitosis,indication_expansion,-3.3416893,3.3416893,12
+3,1808,Topotecan,CC[C@@]1(O)C(=O)OCc2c1cc1n(c2=O)Cc2cc3c(CN(C)C)c(O)ccc3nc2-1,TOP1;TOP1MT,DNA replication,screened_candidate,-2.89604,2.89604,12
+4,1004,Vinblastine,CC[C@]1(O)C[C@@H]2CN(CCc3c([nH]c4ccccc34)[C@@](C(=O)OC)(c3cc4c(cc3OC)N(C)[C@H]3[C@@](O)(C(=O)OC)[C@H](OC(C)=O)[C@]5(CC)C=CCN6CC[C@]43[C@@H]65)C2)C1,JUN;TUBA1A;TUBB;TUBB2A;TUBD1;TUBE1;TUBG1,Mitosis,screened_candidate,-2.332168,2.332168,14
+5,1511,Epirubicin,COc1cccc2c1C(=O)c1c(O)c3c(c(O)c1C2=O)C[C@@](O)(C(=O)CO)C[C@@H]3O[C@H]1C[C@H](N)[C@@H](O)[C@H](C)O1,ANTHRACYCLINE;TOP2A;TOP2B,DNA replication,indication_expansion,-1.8479921,1.8479921,16
+6,1810,Mitoxantrone,O=C1c2c(O)ccc(O)c2C(=O)c2c(NCCNCCO)ccc(NCCNCCO)c21,TOP2;TOP2A;TOP2B,DNA replication,indication_expansion,-1.647765,1.647765,12
+7,1003,Camptothecin,CC[C@@]1(O)C(=O)OCc2c1cc1n(c2=O)Cc2cc3ccccc3nc2-1,TOP1,DNA replication,indication_expansion,-0.89506537,0.89506537,16
+8,1024,Lestaurtinib,C[C@]12O[C@H](C[C@]1(O)CO)n1c3ccccc3c3c4c(c5c6ccccc6n2c5c31)CNC4=O,FLT3;JAK2;NTRK1;NTRK2;NTRK3,Other kinases,screened_candidate,-0.520394,0.520394,16
+9,1034,Staurosporine,CN[C@@H]1C[C@H]2O[C@@](C)([C@@H]1OC)n1c3ccccc3c3c4c(c5c6ccccc6n2c5c31)C(=O)NC4,CDK2;CHRM1;CSK;GSK3B;IKBKB;ITK;LCK;MAPKAPK2;PDPK1;PIK3CG;PIM1;PRKCA;PRKCQ;SYK;ZAP70,RTK signaling,screened_candidate,-0.44776854,0.44776854,16
+10,1243,Piperlongumine,COc1cc(C=CC(=O)N2CCC=CC2=O)cc(OC)c1OC,,Other,screened_candidate,-0.24984804,0.24984804,2
+11,1862,MG-132,CC(C)C[C@@H](C=O)NC(=O)[C@H](CC(C)C)NC(=O)[C@H](CC(C)C)NC(=O)OCc1ccccc1,CAPN1;PROTEASOME,Protein stability and degradation,screened_candidate,-0.17591485,0.17591485,16
+12,1080,Paclitaxel,CC(=O)O[C@H]1C(=O)[C@@]2(C)[C@H]([C@H](OC(=O)c3ccccc3)[C@]3(O)C[C@H](OC(=O)[C@H](O)[C@@H](NC(=O)c4ccccc4)c4ccccc4)C(C)=C1C3(C)C)[C@]1(OC(C)=O)CO[C@@H]1C[C@@H]2O,BCL2;NR1I2;TUBB1,Mitosis,indication_expansion,-0.1458569,0.1458569,16
+13,1037,BX795,O=C(NCCCNc1nc(Nc2cccc(NC(=O)N3CCCC3)c2)ncc1I)c1cccs1,AURKB;AURKC;IKK;TBK1,Other kinases,screened_candidate,-0.0037337542,0.0037337542,2
+14,1809,Teniposide,COc1cc([C@@H]2c3cc4c(cc3[C@@H](O[C@@H]3O[C@@H]5CO[C@@H](c6cccs6)O[C@H]5[C@H](O)[C@H]3O)[C@H]3COC(=O)[C@H]23)OCO4)cc(OC)c1O,TOP2A;TOP2B,DNA replication,screened_candidate,0.066674195,-0.066674195,12
+15,2048,Vinorelbine,CCC1=C[C@@H]2CN(C1)Cc1c([nH]c3ccccc13)[C@@](C(=O)OC)(c1cc3c(cc1OC)N(C)[C@H]1[C@@](O)(C(=O)OC)[C@H](OC(C)=O)[C@]4(CC)C=CCN5CC[C@]31[C@@H]54)C2,BCL2;MAP4;MAPK1;TUBB,Mitosis,indication_expansion,0.18153763,-0.18153763,15
+16,1086,BI-2536,CC[C@@H]1C(=O)N(C)c2cnc(Nc3ccc(C(=O)NC4CCN(C)CC4)cc3OC)nc2N1C1CCCC1,PLK1;PLK2;PLK3,Cell cycle,screened_candidate,0.2921787,-0.2921787,16
+17,1191,Bortezomib,CC(C)C[C@H](NC(=O)[C@H](Cc1ccccc1)NC(=O)c1cnccn1)B(O)O,PROTEASOME;PRSS1;PSMB1;PSMB5,Protein stability and degradation,indication_expansion,0.3316821,-0.3316821,16
+18,1088,Irinotecan,CCc1c2c(nc3ccc(OC(=O)N4CCC(N5CCCCC5)CC4)cc13)-c1cc3c(c(=O)n1C2)COC(=O)[C@]3(O)CC,TOP1;TOP1MT,DNA replication,indication_expansion,0.338278,-0.338278,16
+19,1170,CCT-018159,CCc1cc(-c2[nH]nc(C)c2-c2ccc3c(c2)OCCO3)c(O)cc1O,HSP90;HSP90AA1;HSP90AB1,Protein stability and degradation,screened_candidate,0.35694385,-0.35694385,2
+20,1401,AZD5438,Cc1ncc(-c2ccnc(Nc3ccc(S(C)(=O)=O)cc3)n2)n1C(C)C,CDK2,Cell cycle,screened_candidate,0.44642672,-0.44642672,12
+21,1494,SN-38,CCc1c2c(nc3ccc(O)cc13)-c1cc3c(c(=O)n1C2)COC(=O)[C@]3(O)CC,TOP1,DNA replication,screened_candidate,0.50030494,-0.50030494,16
+22,1016,Temsirolimus,CO[C@H]1C[C@@H]2CC[C@@H](C)[C@@](O)(O2)C(=O)C(=O)N2CCCC[C@H]2C(=O)O[C@H]([C@H](C)C[C@@H]2CC[C@@H](OC(=O)C(C)(CO)CO)[C@H](OC)C2)CC(=O)[C@H](C)/C=C(\C)[C@@H](O)[C@@H](OC)C(=O)[C@H](C)C[C@H](C)/C=C/C=C/C=C/1C,MTOR,PI3K/MTOR signaling,indication_expansion,0.6213685,-0.6213685,16
+23,1084,Rapamycin,CO[C@H]1C[C@@H]2CC[C@@H](C)[C@@](O)(O2)C(=O)C(=O)N2CCCC[C@H]2C(=O)O[C@H]([C@H](C)C[C@@H]2CC[C@@H](O)[C@H](OC)C2)CC(=O)[C@H](C)/C=C(\C)[C@@H](O)[C@@H](OC)C(=O)[C@H](C)C[C@H](C)/C=C/C=C/C=C/1C,MTOR,PI3K/MTOR signaling,indication_expansion,1.0072465,-1.0072465,15
+24,1059,AZD8055,COc1ccc(-c2ccc3c(N4CCOC[C@@H]4C)nc(N4CCOC[C@@H]4C)nc3n2)cc1CO,MTOR,PI3K/MTOR signaling,screened_candidate,1.0080189,-1.0080189,14
+25,1373,Dabrafenib,CC(C)(C)c1nc(-c2cccc(NS(=O)(=O)c3c(F)cccc3F)c2F)c(-c2ccnc(N)n2)s1,BRAF;LIMK1;NEK11;RAF1;SIK1,ERK MAPK signaling,approved,1.2212632,-1.2212632,16
+26,1058,Pictilisib,CS(=O)(=O)N1CCN(Cc2cc3nc(-c4cccc5[nH]ncc45)nc(N4CCOCC4)c3s2)CC1,PIK3CG,PI3K/MTOR signaling,screened_candidate,1.3069353,-1.3069353,16
+27,1096,Tozasertib,Cc1cc(Nc2cc(N3CCN(C)CC3)nc(Sc3ccc(NC(=O)C4CC4)cc3)n2)n[nH]1,AURKA;AURKB;AURKC;LCK;OTHERS,Mitosis,screened_candidate,1.3532209,-1.3532209,2
+28,1372,Trametinib,CC(=O)Nc1cccc(-n2c(=O)n(C3CC3)c(=O)c3c(Nc4ccc(I)cc4F)n(C)c(=O)c(C)c32)c1,MAP2K1;MAP2K2,ERK MAPK signaling,approved,1.3578427,-1.3578427,16
+29,1149,TW 37,CC(C)c1ccccc1Cc1cc(C(=O)Nc2ccc(S(=O)(=O)c3ccccc3C(C)(C)C)cc2)c(O)c(O)c1O,BCL-XL;BCL2;MCL1,Apoptosis regulation,screened_candidate,1.5335253,-1.5335253,7
+30,2055,Mycophenolic acid,COc1c(C)c2c(c(O)c1C/C=C(\C)CCC(=O)O)C(=O)OC2,IMPDH1;IMPDH2,Unclassified,screened_candidate,1.5621165,-1.5621165,13

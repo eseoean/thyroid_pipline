@@ -1,0 +1,77 @@
+{
+  "input_set": "numeric_strong_context_smiles_pan_lincs",
+  "weights": {
+    "CrossAttention": 0.25709485695297385,
+    "ResidualMLP": 0.25355943730728,
+    "WideDeep": 0.25188594263797937,
+    "FlatMLP_existing": 0.23745976310176686
+  },
+  "ensemble_metrics": {
+    "n": 3387,
+    "spearman": 0.8860570844682867,
+    "pearson": 0.9211170673370361,
+    "rmse": 1.1251327991485596,
+    "mae": 0.8552657961845398,
+    "r2": 0.848415994313999,
+    "ndcg_at_20": 0.9329190699429841
+  },
+  "member_metrics": [
+    {
+      "input_set": "numeric_strong_context_smiles_pan_lincs",
+      "model": "CrossAttention",
+      "n": 3387,
+      "spearman": 0.8872687794317399,
+      "pearson": 0.9229481816291808,
+      "rmse": 1.1221613883972168,
+      "mae": 0.8519601225852966,
+      "r2": 0.8492155883284729,
+      "ndcg_at_20": 0.954027999796255,
+      "train_oof_spearman_gap": 0.0538426343748283,
+      "prediction_variance": 7.916975975036621,
+      "elapsed_sec": 13.335556983947754
+    },
+    {
+      "input_set": "numeric_strong_context_smiles_pan_lincs",
+      "model": "ResidualMLP",
+      "n": 3387,
+      "spearman": 0.8750675727993273,
+      "pearson": 0.9112218022346495,
+      "rmse": 1.21387779712677,
+      "mae": 0.906856119632721,
+      "r2": 0.8235604946836028,
+      "ndcg_at_20": 0.934277160323454,
+      "train_oof_spearman_gap": 0.0959029339436169,
+      "prediction_variance": 8.23284912109375,
+      "elapsed_sec": 28.280457973480225
+    },
+    {
+      "input_set": "numeric_strong_context_smiles_pan_lincs",
+      "model": "WideDeep",
+      "n": 3387,
+      "spearman": 0.8692921185945492,
+      "pearson": 0.9064451456069946,
+      "rmse": 1.2211735248565674,
+      "mae": 0.9382195472717284,
+      "r2": 0.8214332266065132,
+      "ndcg_at_20": 0.9359613905698092,
+      "train_oof_spearman_gap": 0.0497705310312895,
+      "prediction_variance": 6.971713542938232,
+      "elapsed_sec": 14.00131893157959
+    },
+    {
+      "input_set": "numeric_strong_context_smiles_pan_lincs",
+      "model": "FlatMLP_existing",
+      "n": 3387,
+      "spearman": 0.8195054411764954,
+      "pearson": 0.8596717715263367,
+      "rmse": 1.4797078371047974,
+      "mae": 1.1174601316452026,
+      "r2": 0.7378210804005025,
+      "ndcg_at_20": 0.8886554484964108,
+      "train_oof_spearman_gap": 0.1448118139264153,
+      "prediction_variance": 6.668078422546387,
+      "elapsed_sec": null
+    }
+  ],
+  "diversity_rows": 6
+}

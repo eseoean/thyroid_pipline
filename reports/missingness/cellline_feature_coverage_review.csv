@@ -1,0 +1,17 @@
+sample_id,cell_line_name,sample_has_crispr,sample_has_depmap_expression,sample_has_depmap_cnv,sample_has_depmap_mutation,sample_has_non_crispr_omics_fallback,ModelID,CellLineName,StrippedCellLineName,SangerModelID,COSMICID,OncotreeSubtype,depmap_model_available,depmap_crispr_model_available,suggested_action
+SIDM00056,K5,0,0,1,1,1,ACH-002148,K5,K5,SIDM00056,924238.0,Papillary Thyroid Cancer,True,False,covered_by_expression_cnv_mutation_fallback
+SIDM00213,FTC-133,1,1,1,1,1,ACH-000903,FTC-133,FTC133,SIDM00213,906864.0,Follicular Thyroid Cancer,True,True,keep_crispr_features
+SIDM00218,RO82-W-1,0,1,1,1,1,ACH-001384,RO82-W-1,RO82W1,SIDM00218,930083.0,Follicular Thyroid Cancer,True,False,covered_by_expression_cnv_mutation_fallback
+SIDM00418,TT2609-C02,1,1,1,1,1,ACH-000716,TT2609-C02,TT2609C02,SIDM00418,1240223.0,Follicular Thyroid Cancer,True,True,keep_crispr_features
+SIDM00442,ML-1,0,1,1,1,1,ACH-000058,ML-1,ML1,SIDM00442,1240178.0,Follicular Thyroid Cancer,True,False,covered_by_expression_cnv_mutation_fallback
+SIDM00484,TT,0,1,1,1,1,ACH-001321,TT,TT,SIDM00484,,Medullary Thyroid Cancer,True,False,covered_by_expression_cnv_mutation_fallback
+SIDM00491,ASH-3,1,1,1,1,1,ACH-001443,ASH-3,ASH3,SIDM00491,1290722.0,Anaplastic Thyroid Cancer,True,True,keep_crispr_features
+SIDM00496,HTC-C3,0,1,1,1,1,ACH-001350,HTC-C3,HTCC3,SIDM00496,924151.0,Anaplastic Thyroid Cancer,True,False,covered_by_expression_cnv_mutation_fallback
+SIDM00600,IHH-4,1,1,1,1,1,ACH-001528,IHH-4,IHH4,SIDM00600,1240154.0,Papillary Thyroid Cancer,True,True,keep_crispr_features
+SIDM00619,KMH-2,0,0,1,1,1,ACH-002397,KMH-2,KMHDASH2,SIDM00619,2054094.0,Anaplastic Thyroid Cancer,True,False,covered_by_expression_cnv_mutation_fallback
+SIDM00931,CAL-62,1,1,1,1,1,ACH-000174,CAL-62,CAL62,SIDM00931,906828.0,Anaplastic Thyroid Cancer,True,True,keep_crispr_features
+SIDM00987,BHT-101,1,1,1,1,1,ACH-000191,BHT-101,BHT101,SIDM00987,906696.0,Anaplastic Thyroid Cancer,True,True,keep_crispr_features
+SIDM00992,B-CPAP,1,1,1,1,1,ACH-000456,B-CPAP,BCPAP,SIDM00992,924104.0,Poorly Differentiated Thyroid Cancer,True,True,keep_crispr_features
+SIDM00996,8505C,1,1,1,1,1,ACH-001307,8505C,8505C,SIDM00996,924102.0,Anaplastic Thyroid Cancer,True,True,keep_crispr_features
+SIDM00997,8305C,1,1,1,1,1,ACH-001306,8305C,8305C,SIDM00997,906795.0,Anaplastic Thyroid Cancer,True,True,keep_crispr_features
+SIDM01248,CGTH-W-1,0,0,1,1,1,ACH-001023,CGTH-W-1,CGTHW1,SIDM01248,910568.0,Head and Neck Squamous Cell Carcinoma,True,False,covered_by_expression_cnv_mutation_fallback

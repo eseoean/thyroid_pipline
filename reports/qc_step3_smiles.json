@@ -1,0 +1,12 @@
+{
+  "step": "step3_smiles_svd",
+  "drug_count": 243,
+  "smiles_present_drugs": 243,
+  "rdkit_parse_success_drugs": 243,
+  "row_count": 3387,
+  "feature_count": 64,
+  "svd_explained_variance_sum": 0.6403064914305236,
+  "all_zero_row_count": 0,
+  "missing_smiles_drugs": [],
+  "duplicate_smiles_count": 10
+}

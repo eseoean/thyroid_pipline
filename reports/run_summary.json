@@ -1,0 +1,423 @@
+{
+  "prepare_rows": 3387,
+  "input_paths": {
+    "numeric": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/X_numeric.npy",
+    "numeric_smiles": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/X_numeric_smiles.npy",
+    "numeric_strong_context_smiles": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/data/X_numeric_strong_context_smiles.npy"
+  },
+  "metrics": {
+    "numeric": [
+      {
+        "input_set": "numeric",
+        "model": "LightGBM",
+        "n": 3387,
+        "spearman": 0.8776019610469281,
+        "pearson": 0.9164575934410095,
+        "rmse": 1.1586997509002686,
+        "mae": 0.8854107856750488,
+        "r2": 0.8392364030226764,
+        "ndcg_at_20": 0.969236491650136,
+        "train_oof_spearman_gap": 0.07584733379845165,
+        "prediction_variance": 6.631399631500244
+      },
+      {
+        "input_set": "numeric",
+        "model": "RandomForest",
+        "n": 3387,
+        "spearman": 0.8680013778381168,
+        "pearson": 0.9078172445297241,
+        "rmse": 1.2172105312347412,
+        "mae": 0.9164918661117554,
+        "r2": 0.8225903334898925,
+        "ndcg_at_20": 0.9684516664061864,
+        "train_oof_spearman_gap": 0.1045519101818645,
+        "prediction_variance": 6.301356792449951
+      },
+      {
+        "input_set": "numeric",
+        "model": "XGBoost",
+        "n": 3387,
+        "spearman": 0.8617336008596809,
+        "pearson": 0.907696545124054,
+        "rmse": 1.2397650480270386,
+        "mae": 0.9748841524124146,
+        "r2": 0.8159547415362916,
+        "ndcg_at_20": 0.9645717406650207,
+        "train_oof_spearman_gap": 0.048942248253096565,
+        "prediction_variance": 5.594736576080322
+      },
+      {
+        "input_set": "numeric",
+        "model": "ExtraTrees",
+        "n": 3387,
+        "spearman": 0.8587073392485218,
+        "pearson": 0.9023100733757019,
+        "rmse": 1.2458914518356323,
+        "mae": 0.9190817475318909,
+        "r2": 0.814131302071468,
+        "ndcg_at_20": 0.9601902904152462,
+        "train_oof_spearman_gap": 0.13350170913484827,
+        "prediction_variance": 6.767215251922607
+      },
+      {
+        "input_set": "numeric",
+        "model": "LightGBM_DART",
+        "n": 3387,
+        "spearman": 0.8483308831826594,
+        "pearson": 0.893625020980835,
+        "rmse": 1.565167784690857,
+        "mae": 1.2515267133712769,
+        "r2": 0.7066624629966927,
+        "ndcg_at_20": 0.963553531659409,
+        "train_oof_spearman_gap": 0.056907192413189644,
+        "prediction_variance": 3.7369778156280518
+      },
+      {
+        "input_set": "numeric",
+        "model": "FlatMLP",
+        "n": 3387,
+        "spearman": 0.8171657312313797,
+        "pearson": 0.8590751886367798,
+        "rmse": 1.4821193218231201,
+        "mae": 1.141746163368225,
+        "r2": 0.736965787331941,
+        "ndcg_at_20": 0.9109982624012146,
+        "train_oof_spearman_gap": 0.1505369102264108,
+        "prediction_variance": 6.63568639755249
+      }
+    ],
+    "numeric_smiles": [
+      {
+        "input_set": "numeric_smiles",
+        "model": "LightGBM",
+        "n": 3387,
+        "spearman": 0.8833276915410773,
+        "pearson": 0.9198511242866516,
+        "rmse": 1.13529372215271,
+        "mae": 0.8630041480064392,
+        "r2": 0.845665745926258,
+        "ndcg_at_20": 0.9654011855029415,
+        "train_oof_spearman_gap": 0.07900665434518206,
+        "prediction_variance": 6.744917392730713
+      },
+      {
+        "input_set": "numeric_smiles",
+        "model": "XGBoost",
+        "n": 3387,
+        "spearman": 0.8765202067664523,
+        "pearson": 0.9145953059196472,
+        "rmse": 1.1894609928131104,
+        "mae": 0.9225844740867615,
+        "r2": 0.8305871702304513,
+        "ndcg_at_20": 0.9687625551843821,
+        "train_oof_spearman_gap": 0.048672744437934234,
+        "prediction_variance": 5.862380504608154
+      },
+      {
+        "input_set": "numeric_smiles",
+        "model": "RandomForest",
+        "n": 3387,
+        "spearman": 0.8765088824445171,
+        "pearson": 0.9133787155151367,
+        "rmse": 1.181536078453064,
+        "mae": 0.8936987519264221,
+        "r2": 0.8328371207261496,
+        "ndcg_at_20": 0.9679776679858403,
+        "train_oof_spearman_gap": 0.09689751801518809,
+        "prediction_variance": 6.4044508934021
+      },
+      {
+        "input_set": "numeric_smiles",
+        "model": "LightGBM_DART",
+        "n": 3387,
+        "spearman": 0.8640598198128627,
+        "pearson": 0.9039710164070129,
+        "rmse": 1.5133380889892578,
+        "mae": 1.2101904153823853,
+        "r2": 0.7257682351424461,
+        "ndcg_at_20": 0.9609166528529952,
+        "train_oof_spearman_gap": 0.056071206323973444,
+        "prediction_variance": 3.847815990447998
+      },
+      {
+        "input_set": "numeric_smiles",
+        "model": "ExtraTrees",
+        "n": 3387,
+        "spearman": 0.8628737081607474,
+        "pearson": 0.9043506979942322,
+        "rmse": 1.2335070371627808,
+        "mae": 0.9107809662818909,
+        "r2": 0.8178080662023239,
+        "ndcg_at_20": 0.959947530738846,
+        "train_oof_spearman_gap": 0.12972249424401294,
+        "prediction_variance": 6.777090072631836
+      },
+      {
+        "input_set": "numeric_smiles",
+        "model": "FlatMLP",
+        "n": 3387,
+        "spearman": 0.8252663094170936,
+        "pearson": 0.8633891940116882,
+        "rmse": 1.4597415924072266,
+        "mae": 1.113105058670044,
+        "r2": 0.7448486640679127,
+        "ndcg_at_20": 0.9121526233366798,
+        "train_oof_spearman_gap": 0.1388481020162985,
+        "prediction_variance": 6.556889057159424
+      }
+    ],
+    "numeric_strong_context_smiles": [
+      {
+        "input_set": "numeric_strong_context_smiles",
+        "model": "LightGBM",
+        "n": 3387,
+        "spearman": 0.8834859902750168,
+        "pearson": 0.9211755394935608,
+        "rmse": 1.126425862312317,
+        "mae": 0.8608535528182983,
+        "r2": 0.8480673535696814,
+        "ndcg_at_20": 0.9688983757690606,
+        "train_oof_spearman_gap": 0.07893685170447684,
+        "prediction_variance": 6.75344181060791
+      },
+      {
+        "input_set": "numeric_strong_context_smiles",
+        "model": "XGBoost",
+        "n": 3387,
+        "spearman": 0.8766668506608101,
+        "pearson": 0.9158185720443726,
+        "rmse": 1.1825388669967651,
+        "mae": 0.918809711933136,
+        "r2": 0.8325532376835381,
+        "ndcg_at_20": 0.9663377975023879,
+        "train_oof_spearman_gap": 0.0480552673122423,
+        "prediction_variance": 5.854551792144775
+      },
+      {
+        "input_set": "numeric_strong_context_smiles",
+        "model": "RandomForest",
+        "n": 3387,
+        "spearman": 0.8762764770986728,
+        "pearson": 0.9132367372512817,
+        "rmse": 1.1825510263442993,
+        "mae": 0.8946820497512817,
+        "r2": 0.8325498296838832,
+        "ndcg_at_20": 0.967920284406009,
+        "train_oof_spearman_gap": 0.09718340705710193,
+        "prediction_variance": 6.396472454071045
+      },
+      {
+        "input_set": "numeric_strong_context_smiles",
+        "model": "LightGBM_DART",
+        "n": 3387,
+        "spearman": 0.8637739408981178,
+        "pearson": 0.9048025012016296,
+        "rmse": 1.5119904279708862,
+        "mae": 1.2093523740768433,
+        "r2": 0.7262564545503605,
+        "ndcg_at_20": 0.9598809173911733,
+        "train_oof_spearman_gap": 0.056258715237134105,
+        "prediction_variance": 3.8419172763824463
+      },
+      {
+        "input_set": "numeric_strong_context_smiles",
+        "model": "ExtraTrees",
+        "n": 3387,
+        "spearman": 0.8634615995321301,
+        "pearson": 0.9049861431121826,
+        "rmse": 1.22954261302948,
+        "mae": 0.9080343246459961,
+        "r2": 0.8189773063373997,
+        "ndcg_at_20": 0.9650952231632544,
+        "train_oof_spearman_gap": 0.12921435510750423,
+        "prediction_variance": 6.798955917358398
+      },
+      {
+        "input_set": "numeric_strong_context_smiles",
+        "model": "FlatMLP",
+        "n": 3387,
+        "spearman": 0.8287379726616144,
+        "pearson": 0.8676933646202087,
+        "rmse": 1.4382264614105225,
+        "mae": 1.0996943712234497,
+        "r2": 0.7523145883260189,
+        "ndcg_at_20": 0.922273518806993,
+        "train_oof_spearman_gap": 0.12621398762787128,
+        "prediction_variance": 6.422923564910889
+      }
+    ]
+  },
+  "groupcv": {
+    "status": "completed",
+    "input_set": "numeric_strong_context_smiles",
+    "model": "ExtraTrees",
+    "fold_metrics": [
+      {
+        "fold": 1,
+        "n": 1130,
+        "spearman": 0.5113815971670339,
+        "pearson": 0.5230252801623536,
+        "rmse": 2.478472571038661,
+        "mae": 1.8874390097555909,
+        "r2": 0.22473060527910604,
+        "ndcg_at_20": 0.7920825653172713
+      },
+      {
+        "fold": 2,
+        "n": 1128,
+        "spearman": 0.5110015633088935,
+        "pearson": 0.45806119685767255,
+        "rmse": 2.634384390766046,
+        "mae": 1.9106299180440542,
+        "r2": -0.07545597482258559,
+        "ndcg_at_20": 0.5762849811911034
+      },
+      {
+        "fold": 3,
+        "n": 1129,
+        "spearman": 0.52808795729536,
+        "pearson": 0.5480766606286462,
+        "rmse": 2.721707833658522,
+        "mae": 1.9921394658738818,
+        "r2": 0.29256213808088904,
+        "ndcg_at_20": 0.9483475450121417
+      }
+    ],
+    "oof_metrics": {
+      "n": 3387,
+      "spearman": 0.5112462989345974,
+      "pearson": 0.49028512835502625,
+      "rmse": 2.6134138107299805,
+      "mae": 1.9300626516342163,
+      "r2": 0.1821715498965022,
+      "ndcg_at_20": 0.7221685699521869
+    }
+  },
+  "top_candidates": [
+    {
+      "rank": 1,
+      "canonical_drug_id": 1191,
+      "drug_name": "Bortezomib",
+      "canonical_smiles": "CC(C)C[C@H](NC(=O)[C@H](Cc1ccccc1)NC(=O)c1cnccn1)B(O)O",
+      "target_genes": "PROTEASOME;PRSS1;PSMB1;PSMB5",
+      "PATHWAY_NAME_NORMALIZED": "Protein stability and degradation",
+      "classification": "indication_expansion",
+      "mean_pred_ln_ic50": -4.065159797668457,
+      "ensemble_score": 4.065159797668457,
+      "screened_rows": 16
+    },
+    {
+      "rank": 2,
+      "canonical_drug_id": 1911,
+      "drug_name": "Dactinomycin",
+      "canonical_smiles": "Cc1c2oc3c(C)ccc(C(=O)N[C@@H]4C(=O)N[C@H](C(C)C)C(=O)N5CCC[C@H]5C(=O)N(C)CC(=O)N(C)[C@@H](C(C)C)C(=O)O[C@@H]4C)c3nc-2c(C(=O)N[C@@H]2C(=O)N[C@H](C(C)C)C(=O)N3CCC[C@H]3C(=O)N(C)CC(=O)N(C)[C@@H](C(C)C)C(=O)O[C@@H]2C)c(N)c1=O",
+      "target_genes": "TOP1;TOP2A",
+      "PATHWAY_NAME_NORMALIZED": "Other",
+      "classification": "screened_candidate",
+      "mean_pred_ln_ic50": -3.944403648376465,
+      "ensemble_score": 3.944403648376465,
+      "screened_rows": 15
+    },
+    {
+      "rank": 3,
+      "canonical_drug_id": 1007,
+      "drug_name": "Docetaxel",
+      "canonical_smiles": "CC(=O)O[C@@]12CO[C@@H]1C[C@H](O)[C@@]1(C)C(=O)[C@H](O)C3=C(C)[C@@H](OC(=O)[C@H](O)[C@@H](NC(=O)OC(C)(C)C)c4ccccc4)C[C@@](O)([C@@H](OC(=O)c4ccccc4)[C@H]21)C3(C)C.O.O.O",
+      "target_genes": "BCL2;NR1I2;TUBB1",
+      "PATHWAY_NAME_NORMALIZED": "Mitosis",
+      "classification": "indication_expansion",
+      "mean_pred_ln_ic50": -3.530460834503174,
+      "ensemble_score": 3.530460834503174,
+      "screened_rows": 16
+    },
+    {
+      "rank": 4,
+      "canonical_drug_id": 1941,
+      "drug_name": "Sepantronium bromide",
+      "canonical_smiles": "COCC[n+]1c2c(n(Cc3cnccn3)c1C)C(=O)c1ccccc1C2=O.[Br-]",
+      "target_genes": "BIRC5",
+      "PATHWAY_NAME_NORMALIZED": "Apoptosis regulation",
+      "classification": "screened_candidate",
+      "mean_pred_ln_ic50": -2.7170848846435547,
+      "ensemble_score": 2.7170848846435547,
+      "screened_rows": 16
+    },
+    {
+      "rank": 5,
+      "canonical_drug_id": 1004,
+      "drug_name": "Vinblastine",
+      "canonical_smiles": "CC[C@]1(O)C[C@@H]2CN(CCc3c([nH]c4ccccc34)[C@@](C(=O)OC)(c3cc4c(cc3OC)N(C)[C@H]3[C@@](O)(C(=O)OC)[C@H](OC(C)=O)[C@]5(CC)C=CCN6CC[C@]43[C@@H]65)C2)C1",
+      "target_genes": "JUN;TUBA1A;TUBB;TUBB2A;TUBD1;TUBE1;TUBG1",
+      "PATHWAY_NAME_NORMALIZED": "Mitosis",
+      "classification": "screened_candidate",
+      "mean_pred_ln_ic50": -2.6648731231689453,
+      "ensemble_score": 2.6648731231689453,
+      "screened_rows": 14
+    },
+    {
+      "rank": 6,
+      "canonical_drug_id": 1034,
+      "drug_name": "Staurosporine",
+      "canonical_smiles": "CN[C@@H]1C[C@H]2O[C@@](C)([C@@H]1OC)n1c3ccccc3c3c4c(c5c6ccccc6n2c5c31)C(=O)NC4",
+      "target_genes": "CDK2;CHRM1;CSK;GSK3B;IKBKB;ITK;LCK;MAPKAPK2;PDPK1;PIK3CG;PIM1;PRKCA;PRKCQ;SYK;ZAP70",
+      "PATHWAY_NAME_NORMALIZED": "RTK signaling",
+      "classification": "screened_candidate",
+      "mean_pred_ln_ic50": -2.650351047515869,
+      "ensemble_score": 2.650351047515869,
+      "screened_rows": 16
+    },
+    {
+      "rank": 7,
+      "canonical_drug_id": 1817,
+      "drug_name": "Romidepsin",
+      "canonical_smiles": "C/C=C1\\NC(=O)[C@H]2CSSCC/C=C/[C@H](CC(=O)N[C@H](C(C)C)C(=O)N2)OC(=O)[C@H](C(C)C)NC1=O",
+      "target_genes": "HDAC1;HDAC2;HDAC3;HDAC4;HDAC6;HDAC8",
+      "PATHWAY_NAME_NORMALIZED": "Chromatin histone acetylation",
+      "classification": "indication_expansion",
+      "mean_pred_ln_ic50": -2.5289530754089355,
+      "ensemble_score": 2.5289530754089355,
+      "screened_rows": 12
+    },
+    {
+      "rank": 8,
+      "canonical_drug_id": 2048,
+      "drug_name": "Vinorelbine",
+      "canonical_smiles": "CCC1=C[C@@H]2CN(C1)Cc1c([nH]c3ccccc13)[C@@](C(=O)OC)(c1cc3c(cc1OC)N(C)[C@H]1[C@@](O)(C(=O)OC)[C@H](OC(C)=O)[C@]4(CC)C=CCN5CC[C@]31[C@@H]54)C2",
+      "target_genes": "BCL2;MAP4;MAPK1;TUBB",
+      "PATHWAY_NAME_NORMALIZED": "Mitosis",
+      "classification": "indication_expansion",
+      "mean_pred_ln_ic50": -2.430091619491577,
+      "ensemble_score": 2.430091619491577,
+      "screened_rows": 15
+    },
+    {
+      "rank": 9,
+      "canonical_drug_id": 1494,
+      "drug_name": "SN-38",
+      "canonical_smiles": "CCc1c2c(nc3ccc(O)cc13)-c1cc3c(c(=O)n1C2)COC(=O)[C@]3(O)CC",
+      "target_genes": "TOP1",
+      "PATHWAY_NAME_NORMALIZED": "DNA replication",
+      "classification": "screened_candidate",
+      "mean_pred_ln_ic50": -2.378016471862793,
+      "ensemble_score": 2.378016471862793,
+      "screened_rows": 16
+    },
+    {
+      "rank": 10,
+      "canonical_drug_id": 1248,
+      "drug_name": "Daporinad",
+      "canonical_smiles": "O=C(/C=C/c1cccnc1)NCCCCC1CCN(C(=O)c2ccccc2)CC1",
+      "target_genes": "NAMPT",
+      "PATHWAY_NAME_NORMALIZED": "Metabolism",
+      "classification": "screened_candidate",
+      "mean_pred_ln_ic50": -2.1311774253845215,
+      "ensemble_score": 2.1311774253845215,
+      "screened_rows": 9
+    }
+  ],
+  "diversity_rows": 15,
+  "validated_rows": 15,
+  "admet_rows": 15,
+  "final_rows": 15,
+  "final_report": "/Users/skku_aws2_18/team4_project/pre_project/thyroid_pipline/phase5_final_results/FINAL_REPORT.md"
+}

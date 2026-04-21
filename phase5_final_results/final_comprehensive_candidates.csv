@@ -1,0 +1,16 @@
+drug_name,canonical_drug_id,target_genes,pathway,ensemble_score,admet_category,drug_target_evidence,target_thyroid_relevance,clinical_evidence,mechanism_rationale,safety_profile,target_expression_bonus,knowledge_score,tier,final_category
+Vinorelbine,2048,BCL2;MAP4;MAPK1;TUBB,Mitosis,2.430091619491577,Candidate,1.0,1.0,0.4,1.0,0.6,0.5,4.5,Tier 1,Thyroid indication expansion candidate
+Staurosporine,1034,CDK2;CHRM1;CSK;GSK3B;IKBKB;ITK;LCK;MAPKAPK2;PDPK1;PIK3CG;PIM1;PRKCA;PRKCQ;SYK;ZAP70,RTK signaling,2.650351047515869,Caution,1.0,1.0,0.4,1.0,0.2,0.0,3.6,Tier 2,True repurposing or exploratory candidate
+Vinblastine,1004,JUN;TUBA1A;TUBB;TUBB2A;TUBD1;TUBE1;TUBG1,Mitosis,2.6648731231689453,Approved,1.0,0.0,0.4,0.3,1.0,0.5,3.2,Tier 2,True repurposing or exploratory candidate
+Romidepsin,1817,HDAC1;HDAC2;HDAC3;HDAC4;HDAC6;HDAC8,Chromatin histone acetylation,2.5289530754089355,Candidate,1.0,0.0,0.4,0.3,0.6,0.5,2.8,Tier 3,Thyroid indication expansion candidate
+Bortezomib,1191,PROTEASOME;PRSS1;PSMB1;PSMB5,Protein stability and degradation,4.065159797668457,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,Thyroid indication expansion candidate
+Dactinomycin,1911,TOP1;TOP2A,Other,3.944403648376465,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,True repurposing or exploratory candidate
+SN-38,1494,TOP1,DNA replication,2.378016471862793,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,True repurposing or exploratory candidate
+Daporinad,1248,NAMPT,Metabolism,2.1311774253845215,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,True repurposing or exploratory candidate
+Camptothecin,1003,TOP1,DNA replication,1.9975780248641968,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,Thyroid indication expansion candidate
+MG-132,1862,CAPN1;PROTEASOME,Protein stability and degradation,1.3018019199371338,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,True repurposing or exploratory candidate
+Dinaciclib,1180,CDK1;CDK2;CDK5;CDK9,Cell cycle,1.2586849927902222,Caution,1.0,0.0,0.4,0.3,0.2,0.5,2.4,Excluded,True repurposing or exploratory candidate
+Docetaxel,1007,BCL2;NR1I2;TUBB1,Mitosis,3.530460834503174,Caution,1.0,0.0,0.4,0.3,0.2,0.0,1.9,Excluded,Thyroid indication expansion candidate
+Sepantronium bromide,1941,BIRC5,Apoptosis regulation,2.7170848846435547,Caution,1.0,0.0,0.4,0.3,0.2,0.0,1.9,Excluded,True repurposing or exploratory candidate
+Paclitaxel,1080,BCL2;NR1I2;TUBB1,Mitosis,1.7978812456130981,Caution,1.0,0.0,0.4,0.3,0.2,0.0,1.9,Excluded,Thyroid indication expansion candidate
+Luminespib,1559,HSP90,Protein stability and degradation,1.57468581199646,Caution,1.0,0.0,0.4,0.3,0.2,0.0,1.9,Excluded,True repurposing or exploratory candidate

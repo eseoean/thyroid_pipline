@@ -1,0 +1,14 @@
+{
+  "step": "step10_knowledge_validation",
+  "candidate_count": 15,
+  "tier_counts": {
+    "Tier 2": 10,
+    "Excluded": 3,
+    "Tier 1": 2
+  },
+  "category_counts": {
+    "True repurposing or exploratory candidate": 9,
+    "Thyroid indication expansion candidate": 4,
+    "Known thyroid cancer positive control": 2
+  }
+}

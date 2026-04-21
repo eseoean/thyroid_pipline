@@ -1,0 +1,3 @@
+drug_name,canonical_drug_id,target_genes,pathway,ensemble_score,admet_category,drug_target_evidence,target_thyroid_relevance,clinical_evidence,mechanism_rationale,safety_profile,target_expression_bonus,knowledge_score,tier,final_category
+Trametinib,1372,MAP2K1;MAP2K2,ERK MAPK signaling,0.4799599703401327,Candidate,1.0,1.0,1.0,1.0,0.6,0.5,5.1,Tier 1,Known thyroid cancer positive control
+Ulixertinib,1908,EPHB2;MAPK1;MAPK3,ERK MAPK signaling,-2.1544026024639606,Candidate,1.0,1.0,0.4,1.0,0.6,0.5,4.5,Tier 1,Thyroid indication expansion candidate

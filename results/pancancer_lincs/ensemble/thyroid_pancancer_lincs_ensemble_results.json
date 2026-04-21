@@ -1,0 +1,35 @@
+{
+  "input_set": "numeric_strong_context_smiles_pan_lincs",
+  "lincs_variant": "pan_cancer_tumor_cells",
+  "weights": {
+    "LightGBM": 0.17042152400060137,
+    "XGBoost": 0.1695617799653903,
+    "RandomForest": 0.16891467737036667,
+    "ExtraTrees": 0.16634038188757472,
+    "LightGBM_DART": 0.16607830012442212,
+    "FlatMLP": 0.15868333665164472
+  },
+  "ensemble_metrics": {
+    "n": 3387,
+    "spearman": 0.8787208201292777,
+    "pearson": 0.9146188497543335,
+    "rmse": 1.1961865425109863,
+    "mae": 0.918738842010498,
+    "r2": 0.8286659469388009,
+    "ndcg_at_20": 0.9135838258391689
+  },
+  "best_single_model": {
+    "input_set": "numeric_strong_context_smiles_pan_lincs",
+    "model": "LightGBM",
+    "n": 3387,
+    "spearman": 0.8801262259734313,
+    "pearson": 0.9163346886634828,
+    "rmse": 1.1583527326583862,
+    "mae": 0.8768144845962524,
+    "r2": 0.8393327026758761,
+    "ndcg_at_20": 0.9317029628312812,
+    "train_oof_spearman_gap": 0.0814879349726219,
+    "prediction_variance": 6.744864463806152
+  },
+  "diversity_rows": 15
+}
