@@ -1,0 +1,135 @@
+{
+  "project": {
+    "name": "paad_pipline",
+    "disease": "pancreatic cancer",
+    "tcga_code": "PAAD",
+    "seed": 42
+  },
+  "paths": {
+    "raw_dir": "data/paad_raw",
+    "processed_dir": "data/paad",
+    "results_dir": "results/paad",
+    "reports_dir": "reports/paad",
+    "external_validation_dir": "external_validation/paad",
+    "admet_output_dir": "admet/paad",
+    "knowledge_validation_dir": "knowledge_validation/paad",
+    "phase5_dir": "phase5_final_results/paad",
+    "external_dir": "data/paad_external",
+    "admet_source_dir": "data/paad_admet"
+  },
+  "inputs": {
+    "response_table": "data/paad_raw/paad_response_pairs.csv",
+    "sample_features": "data/paad_raw/sample_features.csv",
+    "drug_features": "data/paad_raw/drug_features.csv",
+    "drug_annotations": "data/paad_raw/drug_annotations.csv",
+    "external_expression": "data/paad_external/paad_expression.csv",
+    "external_clinical": "data/paad_external/paad_clinical.csv"
+  },
+  "features": {
+    "numeric_base_policy": "choi_5524_direction_paad",
+    "physchem_context_columns": [
+      "drug_desc_hba",
+      "drug_desc_hbd",
+      "drug_desc_heavy_atoms",
+      "drug_desc_ring_count",
+      "drug_desc_rot_bonds"
+    ],
+    "smiles_svd_dim": 64,
+    "strong_context_dim": 32,
+    "context_columns": [
+      "TCGA_DESC",
+      "PATHWAY_NAME_NORMALIZED",
+      "classification",
+      "drug_bridge_strength",
+      "stage3_resolution_status"
+    ],
+    "remove_constant_numeric_features": true
+  },
+  "data_filters": {
+    "require_valid_smiles_drugs": true,
+    "lincs_missing_policy": "soft_indicator",
+    "crispr_missing_policy": "soft_indicator"
+  },
+  "sample_feature_enhancement": {
+    "crispr_feature_limit": 1024,
+    "expression_feature_limit": 256,
+    "cnv_feature_limit": 256,
+    "mutation_top_gene_limit": 96
+  },
+  "drug_feature_enhancement": {
+    "lincs_feature_limit": 512,
+    "morgan_bits": 256
+  },
+  "training": {
+    "n_splits": 4,
+    "random_state": 42,
+    "primary_input_set": "numeric_strong_context_smiles_pan_lincs",
+    "models": [
+      "LightGBM",
+      "LightGBM_DART",
+      "XGBoost",
+      "ExtraTrees",
+      "RandomForest",
+      "FlatMLP"
+    ],
+    "dl_models": [
+      "ResidualMLP",
+      "WideDeep",
+      "CrossAttention"
+    ],
+    "dl_max_epochs": 45
+  },
+  "known_paad_drugs": [
+    "Gemcitabine",
+    "Paclitaxel",
+    "Docetaxel",
+    "Irinotecan",
+    "Oxaliplatin",
+    "Cisplatin",
+    "Erlotinib",
+    "Fluorouracil",
+    "5-Fluorouracil",
+    "Capecitabine",
+    "Topotecan",
+    "Olaparib",
+    "Rucaparib",
+    "Niraparib"
+  ],
+  "paad_biology_terms": [
+    "KRAS",
+    "TP53",
+    "CDKN2A",
+    "SMAD4",
+    "BRCA1",
+    "BRCA2",
+    "PALB2",
+    "ATM",
+    "EGFR",
+    "ERBB2",
+    "MAPK",
+    "PI3K",
+    "AKT",
+    "mTOR",
+    "DNA damage",
+    "PARP",
+    "TOP1",
+    "RRM1",
+    "AURKA",
+    "WEE1",
+    "cell-cycle"
+  ],
+  "admet": {
+    "assay_glob": "tdc/*.csv",
+    "fingerprint_bits": 2048,
+    "fingerprint_radius": 2,
+    "exact_threshold": 0.99,
+    "close_threshold": 0.85,
+    "analog_threshold": 0.70
+  },
+  "external_sources": {
+    "tcga_expression": "/tmp/TCGA-PAAD.star_tpm.tsv.gz",
+    "tcga_clinical": "/tmp/TCGA-PAAD.clinical.tsv.gz",
+    "tcga_survival": "/tmp/TCGA-PAAD.survival.tsv.gz",
+    "clinical_trials": "/tmp/clinicaltrials_paad_cancer_drug_20260421_all.json"
+  }
+}

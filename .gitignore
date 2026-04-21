@@ -13,6 +13,11 @@ data/external/*
 data/admet/*
 data/processed/*
 data/source_staging/
+data/paad/
+data/paad_raw/
+data/paad_external/
+data/paad_admet/
+data/paad_source_staging/
 data/*.npy
 data/*.csv
 data/*.json
