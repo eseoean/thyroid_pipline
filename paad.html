@@ -347,7 +347,7 @@
     }
 
     .bar.group {
-      width: 75.1%;
+      width: 77.3%;
       background: var(--green);
     }
 
@@ -482,13 +482,14 @@
         <h1>PAAD Drug Repurposing Report</h1>
         <p class="lead">
           Pancreatic cancer pipeline completed with ML, DL, and ensemble models across random 4-fold and drug GroupCV 4-fold checks.
-          The primary interpretation uses drug-level GroupCV because it tests generalization to unseen compounds.
+          A GSE70138 Phase II YAPC cell-line LINCS variant is now the best-performing LINCS basis by drug-level GroupCV.
         </p>
         <nav class="actions" aria-label="Report links">
           <a class="link-btn primary" href="docs/PAAD_FULL_PIPELINE_20260421.md"><span class="icon">R</span>Full report</a>
+          <a class="link-btn" href="docs/PAAD_YAPC_LINCS_VARIANT_20260422.md"><span class="icon">Y</span>YAPC LINCS report</a>
           <a class="link-btn" href="phase5_final_results/paad/groupcv4_drug/final_comprehensive_candidates.csv"><span class="icon">C</span>Final candidates</a>
           <a class="link-btn" href="external_validation/paad/groupcv4_drug/top15_validated.csv"><span class="icon">V</span>External validation</a>
-          <a class="link-btn" href="results/paad/ensemble/groupcv4_drug/numeric_strong_context_smiles_pan_lincs/ensemble_metrics.csv"><span class="icon">M</span>Metrics CSV</a>
+          <a class="link-btn" href="results/paad/ensemble/groupcv4_drug/numeric_strong_context_smiles_yapc_lincs/ensemble_metrics.csv"><span class="icon">M</span>YAPC metrics CSV</a>
         </nav>
       </div>
       <aside class="hero-side">
@@ -508,11 +509,11 @@
 
     <section class="metrics" aria-label="Key metrics">
       <div class="metric"><div class="label">Response rows</div><div class="value">6,219</div><div class="note">SMILES-filtered GDSC2 PAAD</div></div>
-      <div class="metric"><div class="label">Feature shape</div><div class="value">2,534</div><div class="note">Strong context + SMILES + LINCS</div></div>
+      <div class="metric"><div class="label">Feature shape</div><div class="value">2,534</div><div class="note">Strong context + SMILES + YAPC LINCS</div></div>
       <div class="metric"><div class="label">Drugs</div><div class="value">243</div><div class="note">Screened compounds</div></div>
       <div class="metric"><div class="label">Cell lines</div><div class="value">29</div><div class="note">PAAD model systems</div></div>
-      <div class="metric"><div class="label">GroupCV Spearman</div><div class="value">0.7512</div><div class="note">Top4 weighted ensemble</div></div>
-      <div class="metric"><div class="label">GroupCV RMSE</div><div class="value">1.8676</div><div class="note">LN_IC50 scale</div></div>
+      <div class="metric"><div class="label">GroupCV Spearman</div><div class="value">0.7732</div><div class="note">YAPC top4 weighted ensemble</div></div>
+      <div class="metric"><div class="label">GroupCV RMSE</div><div class="value">1.7740</div><div class="note">LN_IC50 scale</div></div>
     </section>
 
     <section class="grid">
@@ -526,12 +527,12 @@
             <tr><th>Check</th><th>Model</th><th>Spearman</th><th>RMSE</th><th>R2</th></tr>
           </thead>
           <tbody>
-            <tr><td>Random 4-fold</td><td>Top4 weighted ensemble</td><td class="num">0.9911</td><td class="num">0.3926</td><td class="num">0.9799</td></tr>
-            <tr><td>Random 4-fold</td><td>DL CrossAttention</td><td class="num">0.9920</td><td class="num">0.3702</td><td class="num">0.9821</td></tr>
-            <tr><td>Random 4-fold</td><td>ML LightGBM</td><td class="num">0.9898</td><td class="num">0.4082</td><td class="num">0.9783</td></tr>
-            <tr><td>Drug GroupCV</td><td>Top4 weighted ensemble</td><td class="num">0.7512</td><td class="num">1.8676</td><td class="num">0.5453</td></tr>
-            <tr><td>Drug GroupCV</td><td>ML LightGBM DART</td><td class="num">0.7398</td><td class="num">2.0616</td><td class="num">0.4459</td></tr>
-            <tr><td>Drug GroupCV</td><td>DL CrossAttention</td><td class="num">0.7132</td><td class="num">1.9368</td><td class="num">0.5110</td></tr>
+            <tr><td>Random 4-fold</td><td>YAPC top4 weighted ensemble</td><td class="num">0.9910</td><td class="num">0.3878</td><td class="num">0.9804</td></tr>
+            <tr><td>Random 4-fold</td><td>YAPC DL CrossAttention</td><td class="num">0.9922</td><td class="num">0.3692</td><td class="num">0.9822</td></tr>
+            <tr><td>Random 4-fold</td><td>YAPC ML LightGBM</td><td class="num">0.9897</td><td class="num">0.4091</td><td class="num">0.9782</td></tr>
+            <tr><td>Drug GroupCV</td><td>YAPC top4 weighted ensemble</td><td class="num">0.7732</td><td class="num">1.7740</td><td class="num">0.5897</td></tr>
+            <tr><td>Drug GroupCV</td><td>YAPC ML XGBoost</td><td class="num">0.7518</td><td class="num">1.8368</td><td class="num">0.5601</td></tr>
+            <tr><td>Drug GroupCV</td><td>YAPC DL CrossAttention</td><td class="num">0.7437</td><td class="num">1.7969</td><td class="num">0.5791</td></tr>
           </tbody>
         </table>
       </div>
@@ -545,17 +546,17 @@
           <div class="bar-row">
             <strong>Random 4-fold</strong>
             <div class="track"><div class="bar random"></div></div>
-            <span class="num">0.9911</span>
+            <span class="num">0.9910</span>
           </div>
           <div class="bar-row">
             <strong>Drug GroupCV</strong>
             <div class="track"><div class="bar group"></div></div>
-            <span class="num">0.7512</span>
+            <span class="num">0.7732</span>
           </div>
         </div>
         <p class="footnote">
           The GroupCV ensemble combines the strongest four out-of-fold members:
-          ML_LightGBM_DART, ML_LightGBM, ML_XGBoost, and DL_CrossAttention.
+          ML_XGBoost, ML_LightGBM, ML_LightGBM_DART, and DL_CrossAttention.
         </p>
         <table style="margin-top: 13px;">
           <thead>
@@ -575,7 +576,7 @@
     <section class="panel">
       <div class="section-head">
         <h2>LINCS Variant Check</h2>
-        <p class="caption">Exact pancreatic-cell LINCS was checked, then a PAAD-focused gene-filtered LINCS variant was trained.</p>
+        <p class="caption">Pan-cancer, PAAD-focused, and exact YAPC cell-line LINCS inputs were trained with the same 4-fold checks.</p>
       </div>
       <table>
         <thead>
@@ -584,22 +585,53 @@
         <tbody>
           <tr><td>Pan-cancer LINCS</td><td>Pan-cancer tumor perturbation signature</td><td class="num">6,219 x 2,534</td><td class="num">0.9911</td><td class="num">0.7512</td><td class="num">1.8676</td></tr>
           <tr><td>PAAD-focused LINCS</td><td>88 PAAD evidence genes retained from LINCS block</td><td class="num">6,219 x 2,110</td><td class="num">0.9910</td><td class="num">0.7374</td><td class="num">1.9292</td></tr>
+          <tr><td>YAPC cell-line LINCS</td><td>GSE70138 Phase II YAPC/YAPC.311 trt_cp signatures</td><td class="num">6,219 x 2,534</td><td class="num">0.9910</td><td class="num">0.7732</td><td class="num">1.7740</td></tr>
         </tbody>
       </table>
       <p class="footnote">
-        LINCS metadata contains pancreas-like cells YAPC and YAPC.311, but both `sig_info` and `inst_info` have 0 perturbation rows for them in the available source. The PAAD-focused run therefore keeps pan-cancer perturbation values only for PAAD-priority, candidate-target, TCGA-PAAD expressed, or PAAD DepMap-supported genes. The pan-cancer LINCS model remains the primary model by drug GroupCV.
+        Phase I GSE92742 metadata contains YAPC-like cells but no usable YAPC perturbation rows in the staged source. Phase II GSE70138 contains 11,001 YAPC/YAPC.311 signatures, including 10,061 compound-treatment rows. Of those, 1,141 Level5 signatures mapped to 84 PAAD GDSC drugs and were reduced to 512 YAPC LINCS features.
       </p>
       <nav class="actions" aria-label="LINCS variant links">
         <a class="link-btn" href="docs/PAAD_LINCS_VARIANT_20260422.md"><span class="icon">L</span>LINCS variant report</a>
-        <a class="link-btn" href="results/paad/ensemble/paad_lincs_variant_comparison.csv"><span class="icon">T</span>Comparison CSV</a>
+        <a class="link-btn" href="docs/PAAD_YAPC_LINCS_VARIANT_20260422.md"><span class="icon">Y</span>YAPC report</a>
+        <a class="link-btn" href="results/paad/ensemble/paad_yapc_lincs_variant_comparison.csv"><span class="icon">T</span>YAPC comparison CSV</a>
         <a class="link-btn" href="reports/paad/paad_lincs_selected_features_20260422.csv"><span class="icon">G</span>Selected genes</a>
       </nav>
     </section>
 
     <section class="panel">
       <div class="section-head">
+        <h2>YAPC Cell-Line Top Predictions</h2>
+        <p class="caption">GroupCV ensemble ranking from the exact YAPC LINCS variant before external/ADMET tiering.</p>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Drug</th><th>Ensemble score</th><th>Screened rows</th><th>Pathway</th><th>Class</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">1</td><td>Docetaxel</td><td class="num">3.0223</td><td class="num">24</td><td>Mitosis</td><td>Known/support</td></tr>
+          <tr><td class="num">2</td><td>MG-132</td><td class="num">2.2226</td><td class="num">29</td><td>Protein stability and degradation</td><td>Screened candidate</td></tr>
+          <tr><td class="num">3</td><td>Dactinomycin</td><td class="num">2.1889</td><td class="num">24</td><td>Other</td><td>Screened candidate</td></tr>
+          <tr><td class="num">4</td><td>Bortezomib</td><td class="num">0.8777</td><td class="num">29</td><td>Protein stability and degradation</td><td>Trial/indication</td></tr>
+          <tr><td class="num">5</td><td>Camptothecin</td><td class="num">0.4422</td><td class="num">29</td><td>DNA replication</td><td>Trial/indication</td></tr>
+          <tr><td class="num">6</td><td>Temsirolimus</td><td class="num">0.2923</td><td class="num">26</td><td>PI3K/MTOR signaling</td><td>Trial/indication</td></tr>
+          <tr><td class="num">7</td><td>Lestaurtinib</td><td class="num">0.2663</td><td class="num">27</td><td>Other kinases</td><td>Trial/indication</td></tr>
+          <tr><td class="num">8</td><td>Romidepsin</td><td class="num">0.2120</td><td class="num">24</td><td>Chromatin histone acetylation</td><td>Trial/indication</td></tr>
+          <tr><td class="num">9</td><td>BI-2536</td><td class="num">0.1523</td><td class="num">27</td><td>Cell cycle</td><td>Screened candidate</td></tr>
+          <tr><td class="num">10</td><td>Mitoxantrone</td><td class="num">0.1354</td><td class="num">24</td><td>DNA replication</td><td>Trial/indication</td></tr>
+        </tbody>
+      </table>
+      <nav class="actions" aria-label="YAPC prediction links">
+        <a class="link-btn" href="results/paad/ensemble/groupcv4_drug/numeric_strong_context_smiles_yapc_lincs/ensemble_top50_drugs.csv"><span class="icon">50</span>YAPC top50</a>
+        <a class="link-btn" href="reports/paad/qc_paad_yapc_lincs_signature_20260422.json"><span class="icon">Q</span>YAPC signature QC</a>
+        <a class="link-btn" href="reports/paad/paad_yapc_lincs_phase2_mapping_20260422.csv"><span class="icon">D</span>Drug mapping</a>
+      </nav>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
         <h2>Tier 1 Candidates</h2>
-        <p class="caption">Prioritized by model rank, target expression, clinical/knowledge evidence, PRISM signal, and ADMET category.</p>
+        <p class="caption">Tiered candidates from the full external-validation stage; the YAPC-only ranking above is reported separately.</p>
       </div>
       <div class="candidate-list">
         <article class="candidate">
@@ -628,7 +660,7 @@
     <section class="panel">
       <div class="section-head">
         <h2>Final Candidate Table</h2>
-        <p class="caption">Tier 2 includes strong model or literature evidence with added ADMET caution where applicable.</p>
+        <p class="caption">Full-pipeline external validation and ADMET tiering; Tier 2 includes strong model or literature evidence with added ADMET caution where applicable.</p>
       </div>
       <table>
         <thead>
@@ -661,8 +693,11 @@
       </div>
       <div class="artifact-grid">
         <a class="artifact" href="scripts/11_run_paad_full_pipeline.py"><strong>Pipeline script</strong><span>scripts/11_run_paad_full_pipeline.py</span></a>
+        <a class="artifact" href="scripts/13_run_paad_yapc_lincs_variant.py"><strong>YAPC LINCS script</strong><span>scripts/13_run_paad_yapc_lincs_variant.py</span></a>
         <a class="artifact" href="config/paad_pipeline_config.json"><strong>Run config</strong><span>config/paad_pipeline_config.json</span></a>
         <a class="artifact" href="reports/paad/paad_full_pipeline_run_summary_20260421.json"><strong>Run summary</strong><span>reports/paad/paad_full_pipeline_run_summary_20260421.json</span></a>
+        <a class="artifact" href="reports/paad/paad_yapc_lincs_variant_run_summary_20260422.json"><strong>YAPC run summary</strong><span>reports/paad/paad_yapc_lincs_variant_run_summary_20260422.json</span></a>
+        <a class="artifact" href="results/paad/ensemble/paad_yapc_lincs_variant_comparison.csv"><strong>LINCS comparison</strong><span>Pan-cancer vs PAAD-focused vs YAPC cell-line</span></a>
         <a class="artifact" href="results/paad/ensemble/groupcv4_drug/numeric_strong_context_smiles_pan_lincs/individual_metrics.csv"><strong>Member metrics</strong><span>GroupCV ML, DL, and ensemble inputs</span></a>
         <a class="artifact" href="knowledge_validation/paad/groupcv4_drug/validation_summary.csv"><strong>Knowledge validation</strong><span>Target and clinical evidence summary</span></a>
         <a class="artifact" href="admet/paad/admet_detailed_candidates.csv"><strong>ADMET detail</strong><span>Candidate-level ADMET annotations</span></a>
