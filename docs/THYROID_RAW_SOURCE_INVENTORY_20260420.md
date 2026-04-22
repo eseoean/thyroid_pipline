@@ -11,8 +11,8 @@ This inventory records the source data collected for the thyroid cancer hybrid d
 ## S3 Upload Verification
 
 - Verified prefix: `s3://say2-4team/thyroid_raw/`
-- Verified object count: `132`
-- Verified total size: `1,973,354,972` bytes, about `1.97 GB`
+- Verified object count: `134`
+- Verified total size: `1,973,365,038` bytes, about `1.97 GB`
 - Verification command: `aws s3 ls s3://say2-4team/thyroid_raw/ --recursive --summarize`
 
 ## Thyroid Screened Response Coverage
@@ -34,16 +34,16 @@ This keeps the recommendation pipeline anchored on drugs with actual screened re
 
 | Source | Original S3 source | thyroid_raw destination | Main role |
 |---|---|---|---|
-| GDSC2 screened drug response and annotations | `s3://say2-4team/pipeline_bundle/BRCA/stage1/basic_preprocessing_20260406/gdsc/` | `s3://say2-4team/thyroid_raw/source_from_say2/gdsc/` | thyroid screened response labels, cell-line annotations, drug/pathway annotations |
-| GDSC2 original response CSV | `s3://say2-4team/raw_data/GDSC2/GDSC2-dataset.csv` | `s3://say2-4team/thyroid_raw/source_from_say2/gdsc/GDSC2-dataset.csv` | source-level provenance for screened response values |
-| BRCA GDSC drug feature catalog reference | local BRCA pipeline cache `drug_features_catalog.parquet` | `s3://say2-4team/thyroid_raw/source_from_say2/gdsc/drug_features_catalog_brca_reference_20260420.parquet` | SMILES bridge for GDSC drug IDs used by the thyroid model-ready builder |
-| DepMap/CCLE model and CRISPR/repurposing features | `s3://say2-4team/pipeline_bundle/BRCA/stage1/basic_preprocessing_20260406/depmap/` | `s3://say2-4team/thyroid_raw/source_from_say2/depmap/` | sample features, model bridge, optional repurposing matrix reference |
-| DrugBank processed source | `s3://say2-4team/pipeline_bundle/BRCA/stage1/basic_preprocessing_20260406/drugbank/` | `s3://say2-4team/thyroid_raw/source_from_say2/drugbank/` | drug metadata, synonyms, groups, targets |
-| TDC ADMET processed assays | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/admet/` | `s3://say2-4team/thyroid_raw/source_from_say2/admet/` | ADMET safety nearest-neighbor evaluation |
-| LINCS metadata/signature summaries | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/lincs/` | `s3://say2-4team/thyroid_raw/source_from_say2/lincs/` | drug perturbation metadata and signature features |
-| LINCS normalized drug signature | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/lincs_drug_signature_normalized.parquet` | `s3://say2-4team/thyroid_raw/source_from_say2/lincs/lincs_drug_signature_normalized.parquet` | drug-level LINCS numeric features |
-| OpenTargets disease/target associations | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/opentargets/` | `s3://say2-4team/thyroid_raw/source_from_say2/opentargets/` | target-thyroid relevance and KG evidence |
-| ChEMBL compound and mechanism subset | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/chembl/` selected compound/mechanism/target tables | `s3://say2-4team/thyroid_raw/source_from_say2/chembl/` | SMILES, compound metadata, drug-target mechanism evidence |
+| GDSC2 screened drug response and annotations | `s3://say2-4team/pipeline_bundle/BRCA/stage1/basic_preprocessing_20260406/gdsc/` | `s3://say2-4team/thyroid_raw/GDSC/` | thyroid screened response labels, cell-line annotations, drug/pathway annotations |
+| GDSC2 original response CSV | `s3://say2-4team/raw_data/GDSC2/GDSC2-dataset.csv` | `s3://say2-4team/thyroid_raw/GDSC/GDSC2-dataset.csv` | source-level provenance for screened response values |
+| BRCA GDSC drug feature catalog reference | local BRCA pipeline cache `drug_features_catalog.parquet` | `s3://say2-4team/thyroid_raw/GDSC/drug_features_catalog_brca_reference_20260420.parquet` | SMILES bridge for GDSC drug IDs used by the thyroid model-ready builder |
+| DepMap/CCLE model and CRISPR/repurposing features | `s3://say2-4team/pipeline_bundle/BRCA/stage1/basic_preprocessing_20260406/depmap/` | `s3://say2-4team/thyroid_raw/depmap/` | sample features, model bridge, optional repurposing matrix reference |
+| DrugBank processed source | `s3://say2-4team/pipeline_bundle/BRCA/stage1/basic_preprocessing_20260406/drugbank/` | `s3://say2-4team/thyroid_raw/drugbank/` | drug metadata, synonyms, groups, targets |
+| TDC ADMET processed assays | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/admet/` | `s3://say2-4team/thyroid_raw/admet/` | ADMET safety nearest-neighbor evaluation |
+| LINCS metadata/signature summaries | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/lincs/` | `s3://say2-4team/thyroid_raw/L1000/` | drug perturbation metadata and signature features |
+| LINCS normalized drug signature | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/lincs_drug_signature_normalized.parquet` | `s3://say2-4team/thyroid_raw/L1000/lincs_drug_signature_normalized.parquet` | drug-level LINCS numeric features |
+| OpenTargets disease/target associations | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/opentargets/` | `s3://say2-4team/thyroid_raw/opentargets/` | target-thyroid relevance and KG evidence |
+| ChEMBL compound and mechanism subset | `s3://say2-4team/20260408_new_pre_project_biso/20260408_pre_project_biso_myprotocol/data/chembl/` selected compound/mechanism/target tables | `s3://say2-4team/thyroid_raw/chembl/` | SMILES, compound metadata, drug-target mechanism evidence |
 
 ## Local Enhancement Sources
 
@@ -60,11 +60,11 @@ This keeps the recommendation pipeline anchored on drugs with actual screened re
 
 | Source | URL | thyroid_raw destination | Main role |
 |---|---|---|---|
-| TCGA-THCA STAR TPM expression matrix | `https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-THCA.star_tpm.tsv.gz` | `s3://say2-4team/thyroid_raw/external_downloads/tcga_thca/TCGA-THCA.star_tpm.tsv.gz` | external target expression validation |
-| TCGA-THCA clinical table | `https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-THCA.clinical.tsv.gz` | `s3://say2-4team/thyroid_raw/external_downloads/tcga_thca/TCGA-THCA.clinical.tsv.gz` | external clinical covariates |
-| TCGA-THCA survival table | `https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-THCA.survival.tsv.gz` | `s3://say2-4team/thyroid_raw/external_downloads/tcga_thca/TCGA-THCA.survival.tsv.gz` | survival/recurrence validation endpoint |
-| GENCODE v36 annotation GTF | `https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz` | `s3://say2-4team/thyroid_raw/external_downloads/gencode/gencode.v36.annotation.gtf.gz` | Ensembl gene ID to gene symbol mapping for TCGA matrix |
-| ClinicalTrials.gov thyroid cancer drug studies API dump | `https://clinicaltrials.gov/api/v2/studies?query.cond=Thyroid%20Cancer&query.intr=drug&pageSize=1000&format=json` | `s3://say2-4team/thyroid_raw/external_downloads/clinical_trials/clinicaltrials_thyroid_cancer_drug_20260420.json` | clinical/KG evidence for thyroid drug candidates |
+| TCGA-THCA STAR TPM expression matrix | `https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-THCA.star_tpm.tsv.gz` | `s3://say2-4team/thyroid_raw/additional_sources/tcga_thca/TCGA-THCA.star_tpm.tsv.gz` | external target expression validation |
+| TCGA-THCA clinical table | `https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-THCA.clinical.tsv.gz` | `s3://say2-4team/thyroid_raw/additional_sources/tcga_thca/TCGA-THCA.clinical.tsv.gz` | external clinical covariates |
+| TCGA-THCA survival table | `https://gdc-hub.s3.us-east-1.amazonaws.com/download/TCGA-THCA.survival.tsv.gz` | `s3://say2-4team/thyroid_raw/additional_sources/tcga_thca/TCGA-THCA.survival.tsv.gz` | survival/recurrence validation endpoint |
+| GENCODE v36 annotation GTF | `https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_36/gencode.v36.annotation.gtf.gz` | `s3://say2-4team/thyroid_raw/additional_sources/gencode/gencode.v36.annotation.gtf.gz` | Ensembl gene ID to gene symbol mapping for TCGA matrix |
+| ClinicalTrials.gov thyroid cancer drug studies API dump | `https://clinicaltrials.gov/api/v2/studies?query.cond=Thyroid%20Cancer&query.intr=drug&pageSize=1000&format=json` | `s3://say2-4team/thyroid_raw/additional_sources/clinical_trials/clinicaltrials_thyroid_cancer_drug_20260420.json` | clinical/KG evidence for thyroid drug candidates |
 
 ClinicalTrials.gov dump check:
 
@@ -75,12 +75,12 @@ ClinicalTrials.gov dump check:
 
 | Pipeline role | Covered by |
 |---|---|
-| `screened_response_labels` | GDSC2 label, cell-line, and drug annotation tables under `source_from_say2/gdsc/` |
-| `sample_features` | DepMap model tables and CRISPR matrices under `source_from_say2/depmap/` |
+| `screened_response_labels` | GDSC2 label, cell-line, and drug annotation tables under `GDSC/` |
+| `sample_features` | DepMap model tables and CRISPR matrices under `depmap/` |
 | `drug_features` | GDSC drug annotation, DrugBank, ChEMBL compound master, LINCS normalized drug signature |
 | `strong_context` | GDSC pathway/target annotation, DrugBank/ChEMBL targets, LINCS, OpenTargets |
 | `external_validation` | TCGA-THCA expression, clinical, survival, and GENCODE mapping |
-| `admet` | TDC ADMET assays under `source_from_say2/admet/` |
+| `admet` | TDC ADMET assays under `admet/` |
 | `kg_api_validation` | OpenTargets, DrugBank, ChEMBL, and ClinicalTrials.gov thyroid cancer drug studies |
 
 ## Model-Ready Build Check

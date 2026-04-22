@@ -21,10 +21,13 @@ source family at the top level:
 | `thyroid_raw/additional_sources/tcga_thca/` | TCGA-THCA expression, clinical, and survival files |
 | `thyroid_raw/manifests/` | Raw source inventory and source manifest |
 
-The older nested prefixes are retained for backward compatibility:
+The older nested prefixes were removed after the top-level layout was verified:
 
 - `thyroid_raw/source_from_say2/`
 - `thyroid_raw/external_downloads/`
+
+Use the top-level source-family prefixes above for any new download or
+recovery work.
 
 The final thyroid result bundle remains separate:
 

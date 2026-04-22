@@ -7,7 +7,7 @@
     {
       "name": "gdsc2_screened_response_and_annotations",
       "role": "screened_response_labels",
-      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/gdsc/",
+      "s3_uri": "s3://say2-4team/thyroid_raw/GDSC/",
       "destination": "data/source_staging/gdsc/",
       "required_files": [
         "GDSC2-dataset.csv",
@@ -20,55 +20,55 @@
     {
       "name": "depmap_ccle_features",
       "role": "sample_features",
-      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/depmap/",
+      "s3_uri": "s3://say2-4team/thyroid_raw/depmap/",
       "destination": "data/source_staging/depmap/"
     },
     {
       "name": "drugbank_processed_source",
       "role": "drug_metadata_targets",
-      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/drugbank/",
+      "s3_uri": "s3://say2-4team/thyroid_raw/drugbank/",
       "destination": "data/source_staging/drugbank/"
     },
     {
       "name": "chembl_compound_and_mechanism_source",
       "role": "smiles_mechanism_targets",
-      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/chembl/",
+      "s3_uri": "s3://say2-4team/thyroid_raw/chembl/",
       "destination": "data/source_staging/chembl/"
     },
     {
       "name": "lincs_perturbation_source",
       "role": "drug_signature_features",
-      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/lincs/",
+      "s3_uri": "s3://say2-4team/thyroid_raw/L1000/",
       "destination": "data/source_staging/lincs/"
     },
     {
       "name": "opentargets_disease_target_source",
       "role": "kg_target_disease_evidence",
-      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/opentargets/",
+      "s3_uri": "s3://say2-4team/thyroid_raw/opentargets/",
       "destination": "data/source_staging/opentargets/"
     },
     {
       "name": "tdc_admet_assays",
       "role": "admet_safety",
-      "s3_uri": "s3://say2-4team/thyroid_raw/source_from_say2/admet/",
+      "s3_uri": "s3://say2-4team/thyroid_raw/admet/",
       "destination": "data/source_staging/admet/"
     },
     {
       "name": "tcga_thca_expression_clinical_survival",
       "role": "external_validation",
-      "s3_uri": "s3://say2-4team/thyroid_raw/external_downloads/tcga_thca/",
+      "s3_uri": "s3://say2-4team/thyroid_raw/additional_sources/tcga_thca/",
       "destination": "data/source_staging/tcga_thca/"
     },
     {
       "name": "gencode_v36_annotation",
       "role": "gene_id_mapping",
-      "s3_uri": "s3://say2-4team/thyroid_raw/external_downloads/gencode/",
+      "s3_uri": "s3://say2-4team/thyroid_raw/additional_sources/gencode/",
       "destination": "data/source_staging/gencode/"
     },
     {
       "name": "clinicaltrials_thyroid_cancer_drug_dump",
       "role": "clinical_trial_evidence",
-      "s3_uri": "s3://say2-4team/thyroid_raw/external_downloads/clinical_trials/",
+      "s3_uri": "s3://say2-4team/thyroid_raw/additional_sources/clinical_trials/",
       "destination": "data/source_staging/clinical_trials/"
     },
     {
@@ -82,7 +82,7 @@
     "screened_response_labels": "GDSC2 contains 16 THCA cell lines, 4,037 screened response rows, and 295 unique screened drugs.",
     "external_validation": "TCGA-THCA STAR TPM, clinical, survival, and GENCODE v36 gene annotation are available.",
     "clinical_trial_evidence": "ClinicalTrials.gov thyroid cancer drug query returned 570 studies.",
-    "s3_verification": "132 objects, 1,973,354,972 bytes under s3://say2-4team/thyroid_raw/ as of 2026-04-20.",
+    "s3_verification": "134 objects, 1,973,365,038 bytes under s3://say2-4team/thyroid_raw/ as of 2026-04-22 after duplicate nested prefixes were removed.",
     "model_ready_build": "scripts/02_build_model_ready_from_thyroid_raw.py converts thyroid_raw source staging into data/raw, data/external, and data/admet/tdc model inputs."
   }
 }
